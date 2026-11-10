@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Academy from "./design-pages/Academy";
 import Account from "./design-pages/Account";
 import Family from "./design-pages/Family";
@@ -282,8 +282,123 @@ function PasswordPage() {
   );
 }
 
+function AvatarMenu({
+  onClose,
+  onFamily,
+  onAccount,
+  onLogout,
+}: {
+  onClose: () => void;
+  onFamily: () => void;
+  onAccount: () => void;
+  onLogout: () => void;
+}) {
+  const [membersExpanded, setMembersExpanded] = useState(false);
+  const [selectedMember, setSelectedMember] = useState("王媽");
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const members = [
+    { name: "黃哥", image: "/assets/45647.png" },
+    { name: "黃妹", image: "/assets/644ba.png" },
+    { name: "鼠鼠", image: "/assets/23595.png" },
+  ];
+
+  useEffect(() => {
+    closeButtonRef.current?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [onClose]);
+
+  return (
+    <>
+      <button
+        aria-label="關閉帳號選單"
+        className="avatar-menu-backdrop"
+        onClick={onClose}
+        type="button"
+      />
+      <section
+        aria-label="帳號與家庭選單"
+        aria-modal="true"
+        className="avatar-menu"
+        onClick={(event) => event.stopPropagation()}
+        role="dialog"
+      >
+        <div className="avatar-menu-close-row">
+          <button
+            aria-label="關閉選單"
+            className="avatar-menu-close"
+            onClick={onClose}
+            ref={closeButtonRef}
+            type="button"
+          >
+            <img alt="" height="30" src="/assets/8b70b.svg" width="30" />
+          </button>
+        </div>
+        <img
+          alt={`${selectedMember}的頭像`}
+          className="avatar-menu-profile"
+          height="100"
+          src="/assets/6c914.png"
+          width="100"
+        />
+        <p className="avatar-menu-name">{selectedMember}</p>
+        <div className="avatar-menu-actions">
+          <div className="avatar-menu-primary-actions">
+            <button onClick={onFamily} type="button">
+              <img alt="" height="16" src="/assets/79b00.svg" width="16" />
+              家庭資訊
+            </button>
+            <button onClick={onAccount} type="button">
+              <img alt="" height="16" src="/assets/91706.svg" width="16" />
+              帳號資訊
+            </button>
+          </div>
+          <button
+            aria-expanded={membersExpanded}
+            className="avatar-menu-members-toggle"
+            onClick={() => setMembersExpanded((current) => !current)}
+            type="button"
+          >
+            <span>{membersExpanded ? "隱藏成員" : "選擇成員"}</span>
+            <img
+              alt=""
+              height="24"
+              src={membersExpanded ? "/assets/e4575.svg" : "/assets/bf5a9.svg"}
+              width="24"
+            />
+          </button>
+          {membersExpanded && (
+            <div className="avatar-menu-members">
+              {members.map((member) => (
+                <button
+                  className={selectedMember === member.name ? "is-selected" : ""}
+                  key={member.name}
+                  onClick={() => setSelectedMember(member.name)}
+                  type="button"
+                >
+                  <img alt="" height="45" src={member.image} width="45" />
+                  <span>{member.name}</span>
+                </button>
+              ))}
+            </div>
+          )}
+          <button className="avatar-menu-logout" onClick={onLogout} type="button">
+            <img alt="" height="16" src="/assets/11d77.svg" width="16" />
+            登出
+          </button>
+        </div>
+      </section>
+    </>
+  );
+}
+
 export default function App() {
   const [route, setRoute] = useState(readRoute);
+  const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
+  const [logoutMessage, setLogoutMessage] = useState(false);
   const PageComponent = useMemo(() => route.page.component, [route.page]);
 
   useEffect(() => {
@@ -340,15 +455,22 @@ export default function App() {
     const text = target.textContent?.trim();
     const named = target.closest<HTMLElement>("[data-name]");
     const name = named?.dataset.name;
+    const isHeaderAvatar =
+      name === "媽媽" && Boolean(named?.closest('[data-name="網站標題與帳號"]'));
 
     let page: PageDefinition | undefined;
     let sectionId: string | undefined;
+
+    if (isHeaderAvatar) {
+      event.preventDefault();
+      setAvatarMenuOpen((current) => !current);
+      return;
+    }
 
     if (text?.startsWith("目前登入家庭") || text === "我的家庭1")
       page = allPages.find((candidate) => candidate.id === "family");
     else if (text === "更改密碼") page = allPages.find((candidate) => candidate.id === "password");
     else if (name === "品牌") page = mainPages[0];
-    else if (name === "媽媽") page = allPages.find((candidate) => candidate.id === "account");
     else if (name && sideRoutes[name])
       page = mainPages.find((candidate) => candidate.id === sideRoutes[name]);
     else if (name) {
@@ -367,6 +489,30 @@ export default function App() {
   return (
     <div className="design-page" onClick={handleClick}>
       <PageComponent />
+      {avatarMenuOpen && (
+        <AvatarMenu
+          onAccount={() => {
+            setAvatarMenuOpen(false);
+            navigate(allPages.find((page) => page.id === "account")!);
+          }}
+          onClose={() => setAvatarMenuOpen(false)}
+          onFamily={() => {
+            setAvatarMenuOpen(false);
+            navigate(allPages.find((page) => page.id === "family")!);
+          }}
+          onLogout={() => {
+            setAvatarMenuOpen(false);
+            setLogoutMessage(true);
+            navigate(mainPages[0]);
+            window.setTimeout(() => setLogoutMessage(false), 3000);
+          }}
+        />
+      )}
+      {logoutMessage && (
+        <div aria-live="polite" className="logout-toast" role="status">
+          已登出
+        </div>
+      )}
     </div>
   );
 }

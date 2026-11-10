@@ -223,6 +223,216 @@
   outline-offset: 2px;
 }
 
+.avatar-menu-backdrop {
+  position: fixed;
+  z-index: 90;
+  inset: 0;
+  cursor: default;
+  background: transparent;
+}
+
+.avatar-menu {
+  position: fixed;
+  z-index: 100;
+  top: 101px;
+  right: 40px;
+  display: flex;
+  width: 360px;
+  max-height: calc(100vh - 121px);
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  overflow-y: auto;
+  padding: 20px;
+  border-radius: 10px;
+  background: #f8f8f2;
+  box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+}
+
+.avatar-menu-close-row {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.avatar-menu-close {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.avatar-menu-close:hover,
+.avatar-menu-close:focus-visible {
+  background: #e8f0eb;
+}
+
+.avatar-menu-profile {
+  display: block;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar-menu-name {
+  color: #253e38;
+  font-family: "Noto Sans TC:Medium", sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.avatar-menu-actions {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 15px;
+  padding-top: 20px;
+}
+
+.avatar-menu-primary-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 0 20px;
+}
+
+.avatar-menu-primary-actions button {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 8px;
+  border: 1px solid #315e4c;
+  border-radius: 12px;
+  color: #315e4c;
+  font-family: "Noto Sans TC:Medium", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.avatar-menu-primary-actions button:hover,
+.avatar-menu-primary-actions button:focus-visible {
+  color: #fff;
+  background: #315e4c;
+}
+
+.avatar-menu-primary-actions button:hover img,
+.avatar-menu-primary-actions button:focus-visible img {
+  filter: brightness(0) invert(1);
+}
+
+.avatar-menu-members-toggle {
+  display: flex;
+  width: 100%;
+  height: 55px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border-bottom: 1px solid #d6ded3;
+  border-radius: 12px 12px 2px 2px;
+  color: #315e4c;
+  background: #fff;
+  font-family: "Noto Sans TC:Medium", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1;
+  text-align: left;
+}
+
+.avatar-menu-members-toggle span {
+  flex: 1 1 0%;
+}
+
+.avatar-menu-members-toggle:hover,
+.avatar-menu-members-toggle:focus-visible,
+.avatar-menu-logout:hover,
+.avatar-menu-logout:focus-visible {
+  background: #e8f0eb;
+}
+
+.avatar-menu-members {
+  display: flex;
+  flex-direction: column;
+  margin-top: -15px;
+  border-bottom: 1px solid #d6ded3;
+  background: #fff;
+}
+
+.avatar-menu-members button {
+  display: flex;
+  height: 54px;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 12px;
+  border-bottom: 1px solid #d6ded3;
+  color: #253e38;
+  text-align: left;
+}
+
+.avatar-menu-members button:last-child {
+  border-bottom: 0;
+}
+
+.avatar-menu-members button:hover,
+.avatar-menu-members button:focus-visible,
+.avatar-menu-members button.is-selected {
+  background: #e8f0eb;
+}
+
+.avatar-menu-members img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar-menu-members span {
+  font-family: "Noto Sans TC:Bold", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.avatar-menu-logout {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 8px;
+  border-radius: 12px;
+  color: #315e4c;
+  background: #fff;
+  font-family: "Noto Sans TC:Medium", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.logout-toast {
+  position: fixed;
+  z-index: 110;
+  right: 40px;
+  bottom: 32px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  color: #fff;
+  background: #315e4c;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 18%);
+  font-family: "Noto Sans TC:Medium", sans-serif;
+  font-weight: 500;
+}
+
 @media (max-width: 900px) {
   .design-page [data-name="網站標題與帳號"] {
     padding: 18px 22px !important;
@@ -291,6 +501,11 @@
   .design-page [data-name="同理心"] {
     padding: 64px 48% 64px 80px !important;
   }
+
+  .avatar-menu {
+    top: 84px;
+    right: 22px;
+  }
 }
 
 @media (max-width: 560px) {
@@ -330,6 +545,22 @@
 
   .design-page [data-name="頁面主體"] > :last-child {
     padding: 24px 18px !important;
+  }
+
+  .avatar-menu {
+    top: 73px;
+    right: 16px;
+    width: min(360px, calc(100vw - 32px));
+    max-height: calc(100vh - 89px);
+  }
+
+  .avatar-menu-primary-actions {
+    padding: 0;
+  }
+
+  .logout-toast {
+    right: 16px;
+    bottom: 16px;
   }
 }
 
