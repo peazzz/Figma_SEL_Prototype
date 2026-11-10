@@ -1,0 +1,10 @@
+{
+  "description": "透過導覽列與側邊欄連結各頁面區塊，協助使用者快速瀏覽並切換網站內容。",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

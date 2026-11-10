@@ -1,0 +1,340 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Inter:Regular";
+  src: url("https://static.figma.com/font/Inter_1") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Noto Sans TC:Bold";
+  src: url("https://static.figma.com/font/NotoSansTC-VF_2") format("woff2");
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Noto Sans TC:DemiLight";
+  src: url("https://static.figma.com/font/NotoSansTC-VF_2") format("woff2");
+  font-style: normal;
+  font-weight: 350;
+}
+
+@font-face {
+  font-family: "Noto Sans TC:Light";
+  src: url("https://static.figma.com/font/NotoSansTC-VF_2") format("woff2");
+  font-style: normal;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: "Noto Sans TC:Medium";
+  src: url("https://static.figma.com/font/NotoSansTC-VF_2") format("woff2");
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Noto Sans TC:Regular";
+  src: url("https://static.figma.com/font/NotoSansTC-VF_2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Noto Serif JP:Bold";
+  src: url("https://static.figma.com/font/NotoSerifJP-VF_3") format("woff2");
+  font-style: normal;
+  font-weight: 700;
+}
+
+@layer base {
+  :root {
+    color: #253e38;
+    background: #f8f8f2;
+    font-family: "Noto Sans TC:Regular", "Noto Sans TC", sans-serif;
+    font-synthesis: none;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body,
+  #root {
+    min-width: 320px;
+    min-height: 100vh;
+    background: #f8f8f2;
+  }
+
+  body {
+    overflow-x: clip;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+.design-page {
+  width: 100%;
+  min-height: 100vh;
+  overflow: visible;
+  background: #f8f8f2;
+}
+
+.design-page > div,
+.design-page [data-name="網站標題與帳號"],
+.design-page [data-name="頁面主體"],
+.design-page [data-name="本週品格與SEL主題(banner)"] {
+  width: 100% !important;
+}
+
+.design-page [data-name="同理心"] {
+  width: 100% !important;
+}
+
+.design-page [data-name="頁面主體"] > :last-child {
+  width: auto !important;
+  min-width: 0;
+  flex: 1 1 0%;
+}
+
+.design-page [data-name="頁面主體"] {
+  align-items: flex-start !important;
+  overflow: visible !important;
+}
+
+.design-page [data-name="頁面主體"] > :last-child > * {
+  max-width: 100%;
+}
+
+.design-page [data-name="頁面主體"] > [data-name="八大主題覽"],
+.design-page [data-name="頁面主體"] > [data-name="八大主導覽"] {
+  position: sticky;
+  z-index: 20;
+  top: 56px;
+  align-self: flex-start;
+}
+
+.design-page [data-name="頁面主體"] > [data-name="八大主導覽"],
+.design-page [data-name="八大主題覽"] > [data-name="八大主導覽"] {
+  height: calc(100vh - 56px);
+  overflow-y: auto !important;
+}
+
+.design-page [data-name="頁面主體"] [data-name],
+.design-page [data-name="頁面主體"] p,
+.design-page [data-name="頁面主體"] h1,
+.design-page [data-name="頁面主體"] h2,
+.design-page [data-name="頁面主體"] h3 {
+  scroll-margin-top: 72px;
+}
+
+.design-page [data-name="分頁主題"] {
+  position: sticky;
+  z-index: 30;
+  top: 0;
+  height: 56px !important;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.design-page [data-name="分頁主題"]::-webkit-scrollbar {
+  display: none;
+}
+
+.design-page [data-name="分頁主題"] > [data-name] {
+  position: relative;
+  height: 56px;
+  box-sizing: border-box;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 12px 10px !important;
+  color: #526b60 !important;
+  font-family: "Noto Sans TC:Regular", sans-serif !important;
+  font-weight: 400 !important;
+  border-bottom: 0;
+}
+
+.design-page [data-name="分頁主題"] > [data-name]::after {
+  position: absolute;
+  top: 38px;
+  right: 12px;
+  left: 12px;
+  height: 3px;
+  border-radius: 2px;
+  background: transparent;
+  content: "";
+}
+
+.design-page [data-name="分頁主題"] > [data-name] > p {
+  color: #526b60 !important;
+  font-family: "Noto Sans TC:Regular", sans-serif !important;
+  font-weight: 400 !important;
+}
+
+.design-page [data-name="分頁主題"] > [data-name] > div {
+  display: none;
+}
+
+.design-page [data-name="分頁主題"] > [data-route-active="true"] {
+  color: #315e4c !important;
+  font-family: "Noto Sans TC:Bold", sans-serif !important;
+  font-weight: 700 !important;
+}
+
+.design-page [data-name="分頁主題"] > [data-route-active="true"]::after {
+  background: #315e4c;
+}
+
+.design-page [data-name="分頁主題"] > [data-route-active="true"] > p {
+  color: #315e4c !important;
+  font-family: "Noto Sans TC:Bold", sans-serif !important;
+  font-weight: 700 !important;
+}
+
+.design-page [data-name="分頁主題"] > [data-name]:hover,
+.design-page [data-name="分頁主題"] > [data-name]:focus-visible {
+  background: rgb(255 255 255 / 35%);
+}
+
+.design-page [data-name="八大主導覽"] a:hover,
+.design-page [data-name="八大主導覽"] a:focus-visible {
+  background: #e8f0eb;
+}
+
+.design-page [data-name="品牌"],
+.design-page [data-name="媽媽"],
+.design-page [data-name^="導覽 /"],
+.design-page [data-name="分頁主題"] > [data-name] {
+  cursor: pointer;
+}
+
+.design-page [data-name="媽媽"] {
+  border-radius: 50%;
+}
+
+.design-page [data-name="媽媽"]:hover,
+.design-page [data-name="媽媽"]:focus-visible {
+  outline: 2px solid #315e4c;
+  outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  .design-page [data-name="網站標題與帳號"] {
+    padding: 18px 22px !important;
+  }
+
+  .design-page [data-name="品牌"] > p:first-child {
+    font-size: 19px !important;
+  }
+
+  .design-page [data-name="頁面主體"] {
+    flex-direction: column;
+    overflow: visible !important;
+  }
+
+  .design-page [data-name="八大主題覽"],
+  .design-page [data-name="八大主導覽"] {
+    width: 100% !important;
+  }
+
+  .design-page [data-name="八大主題覽"] {
+    display: block !important;
+  }
+
+  .design-page [data-name="八大主題覽"] [data-name="八大主導覽"] {
+    position: static;
+  }
+
+  .design-page [data-name="八大主導覽"] {
+    position: sticky;
+    z-index: 20;
+    top: 56px;
+    height: auto !important;
+    min-height: 0;
+    flex-direction: row !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    padding: 10px 16px !important;
+    scrollbar-width: none;
+  }
+
+  .design-page [data-name="八大主導覽"]::-webkit-scrollbar {
+    display: none;
+  }
+
+  .design-page [data-name="八大主導覽"] > * {
+    width: auto !important;
+    min-width: max-content;
+    height: 42px !important;
+    padding: 8px 12px !important;
+  }
+
+  .design-page [data-name="頁面主體"] > :last-child {
+    align-items: stretch !important;
+    padding: 28px 24px !important;
+  }
+
+  .design-page [data-name="頁面主體"] > :last-child > * {
+    width: 100% !important;
+  }
+
+  .design-page [data-name="本週品格與SEL主題(banner)"],
+  .design-page [data-name="同理心"] {
+    height: 280px !important;
+  }
+
+  .design-page [data-name="同理心"] {
+    padding: 64px 48% 64px 80px !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .design-page [data-name="網站標題與帳號"] {
+    padding: 14px 16px !important;
+  }
+
+  .design-page [data-name="品牌"] > p:first-child {
+    max-width: 230px;
+    font-size: 17px !important;
+  }
+
+  .design-page [data-name="品牌"] > :last-child {
+    display: none;
+  }
+
+  .design-page [data-name="分頁主題"] {
+    justify-content: flex-start !important;
+  }
+
+  .design-page [data-name="本週品格與SEL主題(banner)"],
+  .design-page [data-name="同理心"] {
+    height: 230px !important;
+  }
+
+  .design-page [data-name="同理心"] {
+    padding: 54px 45% 54px 28px !important;
+  }
+
+  .design-page [data-name="同理心"] p {
+    white-space: normal !important;
+  }
+
+  .design-page [data-name="同理心"] span {
+    font-size: 32px !important;
+  }
+
+  .design-page [data-name="頁面主體"] > :last-child {
+    padding: 24px 18px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
