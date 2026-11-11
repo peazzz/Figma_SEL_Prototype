@@ -1,6 +1,8 @@
+import BannerCarousel from "../components/BannerCarousel";
+
 const assetPathPrefix = "/assets";
-const img = `${assetPathPrefix}/9cf24.png`;
 const img1 = `${assetPathPrefix}/f164d.png`;
+const img = `${assetPathPrefix}/9cf24.png`;
 const img3 = `${assetPathPrefix}/1aba5.png`;
 const img4 = `${assetPathPrefix}/e970d.png`;
 const img5 = `${assetPathPrefix}/c26d2.png`;
@@ -8,9 +10,6 @@ const img6 = `${assetPathPrefix}/0038d.png`;
 const img3C = `${assetPathPrefix}/0c66b.png`;
 const img7 = `${assetPathPrefix}/24391.png`;
 const imgAi = `${assetPathPrefix}/74ef4.png`;
-const imgBannerDots3Page21 = `${assetPathPrefix}/19588.svg`;
-const imgBannerArrowLeft1 = `${assetPathPrefix}/52ab0.svg`;
-const imgBannerArrowRight1 = `${assetPathPrefix}/6c5c4.svg`;
 const imgVector11 = `${assetPathPrefix}/23674.svg`;
 const imgVector1 = `${assetPathPrefix}/01bd7.svg`;
 const img2 = `${assetPathPrefix}/e4b23.svg`;
@@ -62,81 +61,7 @@ export default function Component() {
           />
         </div>
       </div>
-      <div
-        className="bg-[#e9efe4] h-[370px] overflow-clip relative shrink-0 w-[1440px]"
-        data-node-id="7:255"
-        data-name="本週品格與SEL主題(banner)"
-      >
-        <div
-          className="absolute content-stretch flex flex-col gap-[10px] h-[370px] items-start justify-center left-0 pb-[113px] pl-[244px] pr-[944px] pt-[112px] top-0 w-[1440px]"
-          data-node-id="7:257"
-          data-name="同理心"
-        >
-          <img
-            alt=""
-            className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-            src={img1}
-          />
-          <p
-            className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-[0] relative shrink-0 text-[0px] text-black whitespace-nowrap"
-            data-node-id="7:258"
-          >
-            <span className="leading-[1.55] text-[#d64e57] text-[80px]">同理心</span>
-            <span className="leading-[1.55] text-[40px]">
-              <br aria-hidden />
-            </span>
-            <span className="leading-[1.55] text-[#8a5a5a] text-[40px]">聽見彼此的感受</span>
-          </p>
-          <a
-            className="bg-[#fbfbfb] border border-[#d6ded3] border-solid content-stretch cursor-pointer flex gap-[8px] items-center justify-center overflow-clip px-[12px] py-[14px] relative rounded-[12px] shrink-0"
-            data-node-id="7:259"
-            data-name="操作 / 查看推薦  →"
-          >
-            <p
-              className="[word-break:break-word] font-['Noto_Sans_TC:Medium'] font-medium leading-none relative shrink-0 text-[#6c6969] text-[15px] text-left whitespace-pre"
-              data-node-id="I7:259;4185:3781"
-            >{`查看推薦  →`}</p>
-          </a>
-        </div>
-        <div
-          className="absolute h-[40px] left-[660px] top-[312px] w-[120px]"
-          data-node-id="7:261"
-          data-name="banner-dots-3-page-2 1"
-        >
-          <img
-            alt=""
-            className="absolute block inset-0 max-w-none size-full"
-            src={imgBannerDots3Page21}
-          />
-        </div>
-        <div
-          className="absolute content-stretch flex h-[370px] items-center justify-between left-0 px-[30px] top-0 w-[1440px]"
-          data-node-id="7:265"
-        >
-          <div
-            className="relative shrink-0 size-[44px]"
-            data-node-id="7:266"
-            data-name="banner-arrow-left 1"
-          >
-            <img
-              alt=""
-              className="absolute block inset-0 max-w-none size-full"
-              src={imgBannerArrowLeft1}
-            />
-          </div>
-          <div
-            className="relative shrink-0 size-[44px]"
-            data-node-id="7:269"
-            data-name="banner-arrow-right 1"
-          >
-            <img
-              alt=""
-              className="absolute block inset-0 max-w-none size-full"
-              src={imgBannerArrowRight1}
-            />
-          </div>
-        </div>
-      </div>
+      <BannerCarousel />
       <div
         className="bg-[#e8f0eb] content-stretch cursor-pointer flex h-[48px] items-start justify-center overflow-clip relative shrink-0 w-full"
         data-node-id="7:272"
@@ -298,7 +223,7 @@ export default function Component() {
           </div>
         </div>
         <div
-          className="content-stretch flex flex-col gap-[16px] items-end justify-end overflow-clip p-[40px] relative shrink-0 w-[1176px]"
+          className="content-stretch flex flex-col gap-[16px] items-start overflow-clip p-[40px] relative shrink-0 w-[1176px]"
           data-node-id="7:293"
           data-name="家庭首頁內容"
         >
