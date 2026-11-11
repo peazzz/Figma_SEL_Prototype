@@ -16,9 +16,9 @@ export default function BannerCarousel() {
   }
 
   return (
-    <section className="banner-carousel" aria-label="本週品格與 SEL 主題" aria-roledescription="輪播" data-name="首頁 Banner 輪播">
+    <section className="banner-carousel" aria-label="本週品格與 SEL 主題" aria-roledescription="輪播" data-name="主題 Banner 輪播">
       <div className="banner-carousel-stage">
-        <div id="home-banner-slide" className="banner-carousel-slide" role="group" aria-roledescription="投影片" aria-label={`${activeIndex + 1} / ${slides.length}：${slide.label}`}>
+        <div id="theme-banner-slide" className="banner-carousel-slide" role="group" aria-roledescription="投影片" aria-label={`${activeIndex + 1} / ${slides.length}：${slide.label}`}>
           <img className="banner-carousel-image" src={slide.image} alt={slide.label} />
           {slide.title && (
             <div className="banner-carousel-copy">
@@ -28,16 +28,16 @@ export default function BannerCarousel() {
             </div>
           )}
         </div>
-        <button type="button" className="banner-carousel-arrow banner-carousel-previous" aria-label="上一張 Banner" aria-controls="home-banner-slide" onClick={() => move(-1)}>
+        <button type="button" className="banner-carousel-arrow banner-carousel-previous" aria-label="上一張 Banner" aria-controls="theme-banner-slide" onClick={() => move(-1)}>
           <img src="/assets/52ab0.svg" alt="" />
         </button>
-        <button type="button" className="banner-carousel-arrow banner-carousel-next" aria-label="下一張 Banner" aria-controls="home-banner-slide" onClick={() => move(1)}>
+        <button type="button" className="banner-carousel-arrow banner-carousel-next" aria-label="下一張 Banner" aria-controls="theme-banner-slide" onClick={() => move(1)}>
           <img src="/assets/6c5c4.svg" alt="" />
         </button>
       </div>
       <div className="banner-carousel-dots" role="group" aria-label="選擇 Banner">
         {slides.map((item, index) => (
-          <button key={item.image} type="button" aria-label={`切換至第 ${index + 1} 張：${item.label}`} aria-current={index === activeIndex ? "true" : undefined} aria-controls="home-banner-slide" onClick={() => setActiveIndex(index)}>
+          <button key={item.image} type="button" aria-label={`切換至第 ${index + 1} 張：${item.label}`} aria-current={index === activeIndex ? "true" : undefined} aria-controls="theme-banner-slide" onClick={() => setActiveIndex(index)}>
             <span />
           </button>
         ))}

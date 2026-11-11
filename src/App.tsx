@@ -1,3 +1,4 @@
+import { useSectionNavigation } from "./useSectionNavigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Academy from "./design-pages/Academy";
 import Account from "./design-pages/Account";
@@ -134,14 +135,14 @@ const sideRoutes: Record<string, string> = {
 };
 
 function hashFor(page: PageDefinition, sectionId?: string) {
-  const section = sectionId ?? page.sections[0]?.id;
+  const section = sectionId;
   return `#/${page.id}${section ? `/${section}` : ""}`;
 }
 
 function readRoute() {
   const [pageId = "home", sectionId] = window.location.hash.replace(/^#\/?/, "").split("/");
   const page = allPages.find((candidate) => candidate.id === pageId) ?? mainPages[0];
-  const section = page.sections.find((candidate) => candidate.id === sectionId) ?? page.sections[0];
+  const section = page.sections.find((candidate) => candidate.id === sectionId);
   return { page, section };
 }
 
@@ -408,41 +409,7 @@ export default function App() {
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
-  useEffect(() => {
-    requestAnimationFrame(() => {
-      const tabBar = document.querySelector('[data-name="分頁主題"]');
-      tabBar
-        ?.querySelectorAll("[data-route-active]")
-        .forEach((element) => element.removeAttribute("data-route-active"));
-
-      if (!route.section) {
-        window.scrollTo({ top: 0 });
-        return;
-      }
-
-      const namedElements = Array.from(document.querySelectorAll<HTMLElement>("[data-name]"));
-      const tabMatches = namedElements.filter(
-        (element) => element.dataset.name === route.section?.label,
-      );
-      const activeTab = tabMatches.find((element) => element.closest('[data-name="分頁主題"]'));
-      activeTab?.setAttribute("data-route-active", "true");
-      const targetName = route.section.target ?? route.section.label;
-      const namedTarget = namedElements.find(
-        (element) =>
-          element.dataset.name === targetName &&
-          !element.closest('[data-name="分頁主題"]') &&
-          !element.closest('[data-name="八大主導覽"]'),
-      );
-      const textTarget = Array.from(document.querySelectorAll<HTMLElement>("p, h1, h2, h3")).find(
-        (element) =>
-          element.textContent?.trim() === targetName &&
-          !element.closest('[data-name="分頁主題"]') &&
-          !element.closest('[data-name="八大主導覽"]'),
-      );
-      const target = namedTarget ?? textTarget;
-      target?.scrollIntoView({ block: "start" });
-    });
-  }, [route]);
+  useSectionNavigation(route.page.sections, route.section, route);
 
   function navigate(page: PageDefinition, sectionId?: string) {
     const nextHash = hashFor(page, sectionId);
