@@ -1,9 +1,10 @@
+import { CollapsibleSection, SectionToggle } from "../components/CollapsibleSection";
+
 const assetPathPrefix = "/assets";
 const img = `${assetPathPrefix}/9cf24.png`;
 const imgFrame135 = `${assetPathPrefix}/775c3.png`;
 const imgVector11 = `${assetPathPrefix}/23674.svg`;
 const imgVector1 = `${assetPathPrefix}/01bd7.svg`;
-const imgChevronUp = `${assetPathPrefix}/279f8.svg`;
 const imgBannerArrowLeft1 = `${assetPathPrefix}/52ab0.svg`;
 const imgBannerArrowRight1 = `${assetPathPrefix}/6c5c4.svg`;
 const imgPlus = `${assetPathPrefix}/1d156.svg`;
@@ -90,13 +91,13 @@ export default function Component() {
         <a
           className="content-stretch flex gap-[8px] items-center justify-center overflow-clip pt-[16px] px-[12px] relative shrink-0"
           data-node-id="7:1367"
-          data-name="共讀提問"
+          data-name="導讀教學"
         >
           <p
             className="[word-break:break-word] font-['Noto_Sans_TC:Regular'] font-normal leading-none relative shrink-0 text-[#526b60] text-[16px] text-left whitespace-nowrap"
             data-node-id="I7:1367;4185:3781"
           >
-            共讀提問
+            導讀教學
           </p>
         </a>
         <a
@@ -235,7 +236,7 @@ export default function Component() {
               <img alt="" className="block max-w-none size-full" src={imgVector1} />
             </div>
           </div>
-          <div
+          <CollapsibleSection label="分齡故事"
             className="content-stretch flex flex-col gap-[28px] items-start relative shrink-0 w-full"
             data-node-id="7:1382"
             data-name="分齡故事"
@@ -254,17 +255,7 @@ export default function Component() {
                 >
                   分齡故事
                 </p>
-                <div
-                  className="relative shrink-0 size-[24px]"
-                  data-node-id="7:1386"
-                  data-name="Chevron up"
-                >
-                  <img
-                    alt=""
-                    className="absolute block inset-0 max-w-none size-full"
-                    src={imgChevronUp}
-                  />
-                </div>
+                <SectionToggle />
               </div>
               <div
                 className="content-stretch flex flex-col gap-[12px] items-start relative shrink-0 w-full"
@@ -729,13 +720,13 @@ export default function Component() {
                 </p>
               </a>
             </div>
-          </div>
+          </CollapsibleSection>
           <div className="h-0 relative shrink-0 w-[1096px]" data-node-id="7:1458">
             <div className="absolute inset-[-0.5px_0]">
               <img alt="" className="block max-w-none size-full" src={imgVector1} />
             </div>
           </div>
-          <div
+          <CollapsibleSection label="偉人與標竿人物故事"
             className="content-stretch flex flex-col gap-[28px] items-start relative shrink-0 w-full"
             data-node-id="7:1459"
             data-name="偉人與標竿人物故事"
@@ -750,17 +741,7 @@ export default function Component() {
               >
                 偉人與標竿人物故事
               </p>
-              <div
-                className="relative shrink-0 size-[24px]"
-                data-node-id="7:1462"
-                data-name="Chevron up"
-              >
-                <img
-                  alt=""
-                  className="absolute block inset-0 max-w-none size-full"
-                  src={imgChevronUp}
-                />
-              </div>
+              <SectionToggle />
             </div>
             <div
               className="content-stretch flex flex-col gap-[12px] items-end justify-center relative shrink-0 w-full"
@@ -1044,13 +1025,13 @@ export default function Component() {
                 </p>
               </a>
             </div>
-          </div>
+          </CollapsibleSection>
           <div className="h-0 relative shrink-0 w-[1096px]" data-node-id="7:1509">
             <div className="absolute inset-[-0.5px_0]">
               <img alt="" className="block max-w-none size-full" src={imgVector1} />
             </div>
           </div>
-          <div
+          <CollapsibleSection label="導讀教學"
             className="content-stretch flex flex-col gap-[28px] items-start relative shrink-0 w-full"
             data-node-id="7:1510"
             data-name="導讀教學"
@@ -1065,17 +1046,7 @@ export default function Component() {
               >
                 導讀教學
               </p>
-              <div
-                className="relative shrink-0 size-[24px]"
-                data-node-id="7:1513"
-                data-name="Chevron up"
-              >
-                <img
-                  alt=""
-                  className="absolute block inset-0 max-w-none size-full"
-                  src={imgChevronUp}
-                />
-              </div>
+              <SectionToggle />
             </div>
             <div
               className="bg-white content-stretch flex gap-[16px] items-start overflow-clip p-[22px] relative rounded-[20px] shrink-0 w-full"
@@ -1167,13 +1138,13 @@ export default function Component() {
                 </div>
               </div>
             </div>
-          </div>
+          </CollapsibleSection>
           <div className="h-0 relative shrink-0 w-[1096px]" data-node-id="7:1532">
             <div className="absolute inset-[-0.5px_0]">
               <img alt="" className="block max-w-none size-full" src={imgVector1} />
             </div>
           </div>
-          <div
+          <CollapsibleSection label="品格行動延伸任務"
             className="content-stretch flex flex-col gap-[12px] items-start relative shrink-0 w-full"
             data-node-id="7:1533"
           >
@@ -1187,17 +1158,7 @@ export default function Component() {
               >
                 品格行動延伸任務
               </p>
-              <div
-                className="relative shrink-0 size-[24px]"
-                data-node-id="7:1536"
-                data-name="Chevron up"
-              >
-                <img
-                  alt=""
-                  className="absolute block inset-0 max-w-none size-full"
-                  src={imgChevronUp}
-                />
-              </div>
+              <SectionToggle />
             </div>
             <div
               className="content-stretch flex gap-[12px] items-center relative rounded-[10px] shrink-0 w-full"
@@ -1504,7 +1465,7 @@ export default function Component() {
                 </p>
               </div>
             </div>
-          </div>
+          </CollapsibleSection>
         </div>
       </div>
     </div>

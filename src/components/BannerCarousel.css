@@ -1,4 +1,5 @@
 .banner-carousel {
+  position: relative;
   width: 100%;
   min-width: 0;
   flex-shrink: 0;
@@ -68,6 +69,11 @@
 .banner-carousel-next { right: clamp(0px, 2cqw, 30px); }
 
 .banner-carousel-dots {
+  position: absolute;
+  bottom: clamp(0px, 1cqw, 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;

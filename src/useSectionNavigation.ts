@@ -1,3 +1,4 @@
+import { flushSync } from "react-dom";
 import { useEffect } from "react";
 
 type Section = { id: string; label: string; target?: string };
@@ -66,7 +67,12 @@ export function useSectionNavigation(sections: Section[], selected: Section | un
       highlight(selected);
       if (selected) {
         const previousY = window.scrollY;
-        targets.find(({ section }) => section.id === selected.id)?.element.scrollIntoView({ block: "start", behavior: "instant" });
+        const target = targets.find(({ section }) => section.id === selected.id)?.element;
+        flushSync(() => {
+          const sectionRoot = target?.closest("[data-collapsible-section]");
+          sectionRoot?.dispatchEvent(new Event("expand-section"));
+        });
+        target?.scrollIntoView({ block: "start", behavior: "instant" });
         skipNavigationScroll = window.scrollY !== previousY;
       } else {
         window.scrollTo({ top: 0, left: 0, behavior: "instant" });

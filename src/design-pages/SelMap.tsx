@@ -1,8 +1,9 @@
+import { CollapsibleSection, SectionToggle } from "../components/CollapsibleSection";
+
 const assetPathPrefix = "/assets";
 const img = `${assetPathPrefix}/9cf24.png`;
 const imgVector11 = `${assetPathPrefix}/3c87e.svg`;
 const imgVector1 = `${assetPathPrefix}/01bd7.svg`;
-const imgChevronUp = `${assetPathPrefix}/279f8.svg`;
 const img2 = `${assetPathPrefix}/6adc3.svg`;
 const imgVector26 = `${assetPathPrefix}/9788c.svg`;
 const imgBannerArrowLeft1 = `${assetPathPrefix}/52ab0.svg`;
@@ -248,7 +249,7 @@ export default function Sel() {
               <img alt="" className="block max-w-none size-full" src={imgVector1} />
             </div>
           </div>
-          <div
+          <CollapsibleSection label="個人 SEL 雷達圖"
             className="content-stretch flex flex-col gap-[28px] items-start relative shrink-0 w-full"
             data-node-id="7:2013"
             data-name="個人SEL雷達圖"
@@ -263,17 +264,7 @@ export default function Sel() {
               >
                 個人 SEL 雷達圖
               </p>
-              <div
-                className="relative shrink-0 size-[24px]"
-                data-node-id="7:2016"
-                data-name="Chevron up"
-              >
-                <img
-                  alt=""
-                  className="absolute block inset-0 max-w-none size-full"
-                  src={imgChevronUp}
-                />
-              </div>
+              <SectionToggle />
             </div>
             <div
               className="bg-[#f7f9f7] content-stretch flex gap-[20px] items-start relative rounded-[12px] shrink-0 w-full"
@@ -416,7 +407,7 @@ export default function Sel() {
                 </ul>
               </div>
             </div>
-          </div>
+          </CollapsibleSection>
           <div className="h-0 relative shrink-0 w-[1096px]" data-node-id="7:2058">
             <div className="absolute inset-[-0.5px_0]">
               <img alt="" className="block max-w-none size-full" src={imgVector1} />
@@ -591,7 +582,7 @@ export default function Sel() {
               <img alt="" className="block max-w-none size-full" src={imgVector1} />
             </div>
           </div>
-          <div
+          <CollapsibleSection label="品格任務歷程"
             className="content-stretch flex flex-col gap-[16px] items-start relative shrink-0 w-full"
             data-node-id="7:2099"
             data-name="品格任務歷程"
@@ -606,17 +597,7 @@ export default function Sel() {
               >
                 品格任務歷程
               </p>
-              <div
-                className="relative shrink-0 size-[24px]"
-                data-node-id="7:2102"
-                data-name="Chevron up"
-              >
-                <img
-                  alt=""
-                  className="absolute block inset-0 max-w-none size-full"
-                  src={imgChevronUp}
-                />
-              </div>
+              <SectionToggle />
             </div>
             <div
               className="content-stretch flex flex-col gap-[16px] items-start relative shrink-0 w-full"
@@ -1065,13 +1046,13 @@ export default function Sel() {
                 </div>
               </div>
             </div>
-          </div>
+          </CollapsibleSection>
           <div className="h-0 relative shrink-0 w-[1096px]" data-node-id="7:2167">
             <div className="absolute inset-[-0.5px_0]">
               <img alt="" className="block max-w-none size-full" src={imgVector1} />
             </div>
           </div>
-          <div
+          <CollapsibleSection label="家庭成長敘事月報"
             className="content-stretch flex flex-col gap-[16px] items-start relative shrink-0 w-full"
             data-node-id="7:2168"
             data-name="家庭成長敘事月報"
@@ -1086,17 +1067,7 @@ export default function Sel() {
               >
                 家庭成長敘事月報
               </p>
-              <div
-                className="relative shrink-0 size-[24px]"
-                data-node-id="7:2171"
-                data-name="Chevron up"
-              >
-                <img
-                  alt=""
-                  className="absolute block inset-0 max-w-none size-full"
-                  src={imgChevronUp}
-                />
-              </div>
+              <SectionToggle />
             </div>
             <div
               className="content-stretch flex gap-[16px] items-center relative shrink-0"
@@ -1155,13 +1126,13 @@ export default function Sel() {
                 生成日期：2026/11/5
               </p>
             </div>
-          </div>
+          </CollapsibleSection>
           <div className="h-0 relative shrink-0 w-[1096px]" data-node-id="7:2179">
             <div className="absolute inset-[-0.5px_0]">
               <img alt="" className="block max-w-none size-full" src={imgVector1} />
             </div>
           </div>
-          <div
+          <CollapsibleSection label="自訂下一步目標" empty
             className="content-stretch flex gap-[16px] items-center relative shrink-0 w-full"
             data-node-id="7:2180"
           >
@@ -1171,18 +1142,8 @@ export default function Sel() {
             >
               自訂下一步目標
             </p>
-            <div
-              className="relative shrink-0 size-[24px]"
-              data-node-id="7:2182"
-              data-name="Chevron up"
-            >
-              <img
-                alt=""
-                className="absolute block inset-0 max-w-none size-full"
-                src={imgChevronUp}
-              />
-            </div>
-          </div>
+            <SectionToggle />
+          </CollapsibleSection>
         </div>
       </div>
     </div>

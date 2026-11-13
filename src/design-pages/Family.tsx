@@ -1,3 +1,7 @@
+import { useRef, useState } from "react";
+import FamilySelectionDialog from "../components/FamilySelectionDialog";
+import AccountFamilyNavigation, { familySections } from "../components/AccountFamilyNavigation";
+
 const assetPathPrefix = "/assets";
 const img = `${assetPathPrefix}/9cf24.png`;
 const img1 = `${assetPathPrefix}/1c033.png`;
@@ -23,6 +27,13 @@ const imgVector1 = `${assetPathPrefix}/b249c.svg`;
 const imgUserPlus = `${assetPathPrefix}/00eba.svg`;
 
 export default function Component() {
+  const [selectedFamily, setSelectedFamily] = useState("我的家庭1");
+  const [familyDialogOpen, setFamilyDialogOpen] = useState(false);
+  const familyTriggerRef = useRef<HTMLButtonElement>(null);
+  function closeFamilyDialog() {
+    setFamilyDialogOpen(false);
+    familyTriggerRef.current?.focus({ preventScroll: true });
+  }
   return (
     <div
       className="bg-[#f8f8f2] content-stretch flex flex-col items-start relative size-full"
@@ -53,7 +64,7 @@ export default function Component() {
               <span className="font-['Noto_Sans_TC:Light'] font-light leading-[1.55] text-black">
                 目前登入家庭：
               </span>
-              <span className="font-['Noto_Sans_TC:Bold'] font-bold leading-[1.55]">我的家庭1</span>
+              <span className="font-['Noto_Sans_TC:Bold'] font-bold leading-[1.55]">{selectedFamily}</span>
             </p>
           </div>
         </div>
@@ -67,6 +78,7 @@ export default function Component() {
           />
         </div>
       </div>
+      <AccountFamilyNavigation sections={familySections} />
       <div
         className="content-stretch flex items-start overflow-clip relative shrink-0 w-[1440px]"
         data-node-id="7:735"
@@ -194,7 +206,12 @@ export default function Component() {
               className="content-stretch flex flex-col items-center justify-center relative shrink-0"
               data-node-id="7:748"
             >
-              <a
+              <button
+                type="button"
+                ref={familyTriggerRef}
+                aria-haspopup="dialog"
+                aria-expanded={familyDialogOpen}
+                onClick={(event) => { event.stopPropagation(); setFamilyDialogOpen(true); }}
                 className="bg-[#315e4c] content-stretch cursor-pointer flex gap-[8px] items-center justify-center overflow-clip px-[12px] py-[14px] relative rounded-[12px] shrink-0 w-full"
                 data-node-id="7:749"
                 data-name="選擇登入家庭"
@@ -205,7 +222,7 @@ export default function Component() {
                 >
                   選擇登入家庭
                 </p>
-              </a>
+              </button>
             </div>
             <p
               className="[word-break:break-word] flex-[1_0_0] font-['Noto_Sans_TC:Light'] font-light leading-[1.5] min-w-px relative text-[#253e38] text-[20px] text-right"
@@ -226,6 +243,7 @@ export default function Component() {
             >
               <div
                 className="bg-white border-2 border-[#056b0c] border-solid content-stretch flex flex-col gap-[10px] items-center overflow-clip p-[22px] relative rounded-[20px] shrink-0 w-full"
+                style={{ borderColor: selectedFamily === "我的家庭1" ? "#056b0c" : "transparent" }}
                 data-node-id="7:753"
                 data-name="我的家庭1"
               >
@@ -447,13 +465,16 @@ export default function Component() {
               </div>
               <p
                 className="[word-break:break-word] font-['Noto_Sans_TC:Light'] font-light leading-[1.5] relative shrink-0 text-[#315e4c] text-[12px] whitespace-nowrap"
+                hidden={selectedFamily !== "我的家庭1"}
                 data-node-id="7:784"
               >
                 ．目前登入家庭
               </p>
             </div>
+            <div className="flex flex-1 min-w-0 flex-col items-stretch">
             <div
               className="bg-white content-stretch flex flex-[1_0_0] flex-col gap-[10px] items-center min-w-px overflow-clip p-[22px] relative rounded-[20px]"
+              style={{ border: "2px solid", borderColor: selectedFamily === "王家" ? "#056b0c" : "transparent" }}
               data-node-id="7:785"
               data-name="王家"
             >
@@ -830,6 +851,8 @@ export default function Component() {
                 </p>
               </div>
             </div>
+              {selectedFamily === "王家" && <p className="family-login-marker">．目前登入家庭</p>}
+            </div>
             <div
               className="bg-white content-stretch flex flex-[1_0_0] flex-col gap-[10px] items-start min-w-px overflow-clip p-[22px] relative rounded-[20px]"
               data-node-id="7:846"
@@ -1200,6 +1223,8 @@ export default function Component() {
           </div>
         </div>
       </div>
+      {familyDialogOpen && <FamilySelectionDialog selected={selectedFamily} onClose={closeFamilyDialog}
+        onSelect={(name) => { setSelectedFamily(name); closeFamilyDialog(); }} />}
     </div>
   );
 }

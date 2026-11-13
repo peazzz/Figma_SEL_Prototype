@@ -1,5 +1,7 @@
+import AssistantWidget from "./components/AssistantWidget";
+import { accountSections, familySections } from "./components/AccountFamilyNavigation";
 import { useSectionNavigation } from "./useSectionNavigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import Academy from "./design-pages/Academy";
 import Account from "./design-pages/Account";
 import Family from "./design-pages/Family";
@@ -52,7 +54,7 @@ const mainPages: PageDefinition[] = [
     sections: [
       { id: "age-stories", label: "分齡故事" },
       { id: "role-models", label: "偉人與標竿人物故事" },
-      { id: "reading-prompts", label: "共讀提問", target: "導讀教學" },
+      { id: "reading-prompts", label: "導讀教學" },
       { id: "character-actions", label: "品格行動延伸任務" },
     ],
   },
@@ -117,8 +119,8 @@ const mainPages: PageDefinition[] = [
 ];
 
 const utilityPages: PageDefinition[] = [
-  { id: "account", label: "帳號資訊", component: Account, sections: [] },
-  { id: "family", label: "家庭資訊", component: Family, sections: [] },
+  { id: "account", label: "帳號資訊", component: Account, sections: accountSections },
+  { id: "family", label: "家庭資訊", component: Family, sections: familySections },
   { id: "password", label: "設定新密碼", component: PasswordPage, sections: [] },
 ];
 
@@ -294,6 +296,19 @@ function AvatarMenu({
   onAccount: () => void;
   onLogout: () => void;
 }) {
+  const [menuTop, setMenuTop] = useState(0);
+  useLayoutEffect(() => {
+    const header = document.querySelector<HTMLElement>('[data-name="網站標題與帳號"]');
+    const page = header?.closest<HTMLElement>(".design-page");
+    if (!header || !page) return;
+    const updatePosition = () => {
+      setMenuTop(header.getBoundingClientRect().bottom - page.getBoundingClientRect().top);
+    };
+    updatePosition();
+    const observer = new ResizeObserver(updatePosition);
+    observer.observe(header);
+    return () => observer.disconnect();
+  }, []);
   const [membersExpanded, setMembersExpanded] = useState(false);
   const [selectedMember, setSelectedMember] = useState("王媽");
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -324,6 +339,7 @@ function AvatarMenu({
         aria-label="帳號與家庭選單"
         aria-modal="true"
         className="avatar-menu"
+        style={{ top: menuTop }}
         onClick={(event) => event.stopPropagation()}
         role="dialog"
       >
@@ -456,6 +472,10 @@ export default function App() {
   return (
     <div className="design-page" onClick={handleClick}>
       <PageComponent />
+      <footer className="site-footer">
+        Copyright © 2026 國立中央大學 學習與教學研究所
+      </footer>
+      <AssistantWidget />
       {avatarMenuOpen && (
         <AvatarMenu
           onAccount={() => {

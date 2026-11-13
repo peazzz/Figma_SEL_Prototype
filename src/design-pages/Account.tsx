@@ -1,3 +1,5 @@
+import AccountFamilyNavigation, { accountSections } from "../components/AccountFamilyNavigation";
+
 const assetPathPrefix = "/assets";
 const img = `${assetPathPrefix}/9cf24.png`;
 const img1 = `${assetPathPrefix}/ce491.png`;
@@ -103,6 +105,7 @@ export default function Component() {
           />
         </div>
       </div>
+      <AccountFamilyNavigation sections={accountSections} />
       <div
         className="content-stretch flex items-start overflow-clip relative shrink-0 w-[1440px]"
         data-node-id="7:571"
