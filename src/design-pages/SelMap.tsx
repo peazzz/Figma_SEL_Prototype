@@ -1,6 +1,6 @@
 import { CollapsibleSection, SectionToggle } from "../components/CollapsibleSection";
 
-const assetPathPrefix = "/assets";
+const assetPathPrefix = `${import.meta.env.BASE_URL}assets`;
 const img = `${assetPathPrefix}/9cf24.png`;
 const imgVector11 = `${assetPathPrefix}/3c87e.svg`;
 const imgVector1 = `${assetPathPrefix}/01bd7.svg`;

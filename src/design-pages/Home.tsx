@@ -1,7 +1,7 @@
 import { CollapsibleSection, SectionToggle } from "../components/CollapsibleSection";
 import BannerCarousel from "../components/BannerCarousel";
 
-const assetPathPrefix = "/assets";
+const assetPathPrefix = `${import.meta.env.BASE_URL}assets`;
 const img1 = `${assetPathPrefix}/f164d.png`;
 const img = `${assetPathPrefix}/9cf24.png`;
 const img3 = `${assetPathPrefix}/1aba5.png`;

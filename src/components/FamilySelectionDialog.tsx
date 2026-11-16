@@ -2,8 +2,8 @@ import { useEffect, useRef } from "react";
 import "./FamilySelectionDialog.css";
 
 const families = [
-  { name: "我的家庭1", image: "/assets/family-choice-home.png" },
-  { name: "王家", image: "/assets/family-choice-wang.png" },
+  { name: "我的家庭1", image: `${import.meta.env.BASE_URL}assets/family-choice-home.png` },
+  { name: "王家", image: `${import.meta.env.BASE_URL}assets/family-choice-wang.png` },
 ];
 
 export default function FamilySelectionDialog({ selected, onSelect, onClose }: {

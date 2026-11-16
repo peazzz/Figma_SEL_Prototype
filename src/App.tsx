@@ -171,7 +171,7 @@ function DesignHeader() {
           alt=""
           className="absolute block inset-0 max-w-none size-full"
           height="45"
-          src="/assets/9cf24.png"
+          src={`${import.meta.env.BASE_URL}assets/9cf24.png`}
           width="45"
         />
       </div>
@@ -313,9 +313,9 @@ function AvatarMenu({
   const [selectedMember, setSelectedMember] = useState("王媽");
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const members = [
-    { name: "黃哥", image: "/assets/45647.png" },
-    { name: "黃妹", image: "/assets/644ba.png" },
-    { name: "鼠鼠", image: "/assets/23595.png" },
+    { name: "黃哥", image: `${import.meta.env.BASE_URL}assets/45647.png` },
+    { name: "黃妹", image: `${import.meta.env.BASE_URL}assets/644ba.png` },
+    { name: "鼠鼠", image: `${import.meta.env.BASE_URL}assets/23595.png` },
   ];
 
   useEffect(() => {
@@ -351,25 +351,25 @@ function AvatarMenu({
             ref={closeButtonRef}
             type="button"
           >
-            <img alt="" height="30" src="/assets/8b70b.svg" width="30" />
+            <img alt="" height="30" src={`${import.meta.env.BASE_URL}assets/8b70b.svg`} width="30" />
           </button>
         </div>
         <img
           alt={`${selectedMember}的頭像`}
           className="avatar-menu-profile"
           height="100"
-          src="/assets/6c914.png"
+          src={`${import.meta.env.BASE_URL}assets/6c914.png`}
           width="100"
         />
         <p className="avatar-menu-name">{selectedMember}</p>
         <div className="avatar-menu-actions">
           <div className="avatar-menu-primary-actions">
             <button onClick={onFamily} type="button">
-              <img alt="" height="16" src="/assets/79b00.svg" width="16" />
+              <img alt="" height="16" src={`${import.meta.env.BASE_URL}assets/79b00.svg`} width="16" />
               家庭資訊
             </button>
             <button onClick={onAccount} type="button">
-              <img alt="" height="16" src="/assets/91706.svg" width="16" />
+              <img alt="" height="16" src={`${import.meta.env.BASE_URL}assets/91706.svg`} width="16" />
               帳號資訊
             </button>
           </div>
@@ -383,7 +383,7 @@ function AvatarMenu({
             <img
               alt=""
               height="24"
-              src={membersExpanded ? "/assets/e4575.svg" : "/assets/bf5a9.svg"}
+              src={membersExpanded ? `${import.meta.env.BASE_URL}assets/e4575.svg` : `${import.meta.env.BASE_URL}assets/bf5a9.svg`}
               width="24"
             />
           </button>
@@ -403,7 +403,7 @@ function AvatarMenu({
             </div>
           )}
           <button className="avatar-menu-logout" onClick={onLogout} type="button">
-            <img alt="" height="16" src="/assets/11d77.svg" width="16" />
+            <img alt="" height="16" src={`${import.meta.env.BASE_URL}assets/11d77.svg`} width="16" />
             登出
           </button>
         </div>

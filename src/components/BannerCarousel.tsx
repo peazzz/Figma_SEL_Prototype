@@ -2,9 +2,9 @@ import { useState } from "react";
 import "./BannerCarousel.css";
 
 const slides = [
-  { image: "/assets/f164d.png", label: "同理心：聽見彼此的感受", title: "同理心", subtitle: "聽見彼此的感受" },
-  { image: "/assets/banners/care.png", label: "關懷主題", title: "關懷", subtitle: "" },
-  { image: "/assets/banners/parenting.png", label: "育兒親職網・衛生福利部社會及家庭署", title: "", subtitle: "" },
+  { image: `${import.meta.env.BASE_URL}assets/f164d.png`, label: "同理心：聽見彼此的感受", title: "同理心", subtitle: "聽見彼此的感受" },
+  { image: `${import.meta.env.BASE_URL}assets/banners/care.png`, label: "關懷主題", title: "關懷", subtitle: "" },
+  { image: `${import.meta.env.BASE_URL}assets/banners/parenting.png`, label: "育兒親職網・衛生福利部社會及家庭署", title: "", subtitle: "" },
 ];
 
 export default function BannerCarousel() {
@@ -29,10 +29,10 @@ export default function BannerCarousel() {
           )}
         </div>
         <button type="button" className="banner-carousel-arrow banner-carousel-previous" aria-label="上一張 Banner" aria-controls="theme-banner-slide" onClick={() => move(-1)}>
-          <img src="/assets/52ab0.svg" alt="" />
+          <img src={`${import.meta.env.BASE_URL}assets/52ab0.svg`} alt="" />
         </button>
         <button type="button" className="banner-carousel-arrow banner-carousel-next" aria-label="下一張 Banner" aria-controls="theme-banner-slide" onClick={() => move(1)}>
-          <img src="/assets/6c5c4.svg" alt="" />
+          <img src={`${import.meta.env.BASE_URL}assets/6c5c4.svg`} alt="" />
         </button>
       </div>
       <div className="banner-carousel-dots" role="group" aria-label="選擇 Banner">

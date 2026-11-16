@@ -51,7 +51,7 @@ export function SectionToggle() {
       aria-expanded={empty ? undefined : expanded} aria-controls={id} disabled={empty}
       title={empty ? "此區塊目前只有標題，尚無可收合內容" : undefined}
       onClick={(event) => { event.stopPropagation(); toggle(); }}>
-      <img src="/assets/279f8.svg" alt="" style={{ transform: expanded ? undefined : "rotate(180deg)" }} />
+      <img src={`${import.meta.env.BASE_URL}assets/279f8.svg`} alt="" style={{ transform: expanded ? undefined : "rotate(180deg)" }} />
     </button>
   );
 }

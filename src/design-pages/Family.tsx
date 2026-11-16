@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import FamilySelectionDialog from "../components/FamilySelectionDialog";
 import AccountFamilyNavigation, { familySections } from "../components/AccountFamilyNavigation";
 
-const assetPathPrefix = "/assets";
+const assetPathPrefix = `${import.meta.env.BASE_URL}assets`;
 const img = `${assetPathPrefix}/9cf24.png`;
 const img1 = `${assetPathPrefix}/1c033.png`;
 const img2 = `${assetPathPrefix}/ad49b.png`;

@@ -1,6 +1,6 @@
 import AccountFamilyNavigation, { accountSections } from "../components/AccountFamilyNavigation";
 
-const assetPathPrefix = "/assets";
+const assetPathPrefix = `${import.meta.env.BASE_URL}assets`;
 const img = `${assetPathPrefix}/9cf24.png`;
 const img1 = `${assetPathPrefix}/ce491.png`;
 const img2 = `${assetPathPrefix}/91857.png`;

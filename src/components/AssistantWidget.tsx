@@ -43,7 +43,7 @@ export default function AssistantWidget() {
       )}
       <button ref={triggerRef} className="floating-assistant" type="button" aria-label="AI 小幫手" title="AI 小幫手" data-name="AI"
         aria-expanded={open} aria-controls={open ? panelId : undefined} aria-haspopup="dialog" onClick={() => setOpen((value) => !value)}>
-        <img src="/assets/74ef4.png" alt="" width="50" height="50" />
+        <img src={`${import.meta.env.BASE_URL}assets/74ef4.png`} alt="" width="50" height="50" />
       </button>
     </div>
   );
