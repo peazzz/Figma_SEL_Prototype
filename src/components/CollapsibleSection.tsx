@@ -5,7 +5,7 @@ const CollapseContext = createContext({ expanded: true, toggle: () => {}, id: ""
 
 function hasToggle(node: ReactNode): boolean {
   return Children.toArray(node).some((child) => isValidElement<ContentProps>(child) &&
-    (child.type === SectionToggle || hasToggle(child.props.children)));
+    (child.type === SectionToggle || (child.type !== CollapsibleSection && hasToggle(child.props.children))));
 }
 
 function hasCollapsibleContent(children: ReactNode): boolean {
@@ -25,8 +25,8 @@ function renderContents(children: ReactNode, expanded: boolean): ReactNode {
   });
 }
 
-export function CollapsibleSection({ children, label, empty = false, ...props }: HTMLAttributes<HTMLDivElement> & { label: string; empty?: boolean }) {
-  const [expanded, setExpanded] = useState(true);
+export function CollapsibleSection({ children, label, empty = false, defaultExpanded = true, ...props }: HTMLAttributes<HTMLDivElement> & { label: string; empty?: boolean; defaultExpanded?: boolean }) {
+  const [expanded, setExpanded] = useState(defaultExpanded);
   const id = useId();
   const root = useRef<HTMLDivElement>(null);
   useEffect(() => {

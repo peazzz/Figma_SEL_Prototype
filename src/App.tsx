@@ -42,7 +42,6 @@ const mainPages: PageDefinition[] = [
         target: "教養情緒與壓力覺察",
       },
       { id: "emotion-coaching", label: "親子情緒教練" },
-      { id: "supportive-boundaries", label: "自主支持與有效界線" },
       { id: "conflict-repair", label: "衝突修復與家庭溝通" },
       { id: "digital-life", label: "健康數位生活與手機不育兒" },
     ],

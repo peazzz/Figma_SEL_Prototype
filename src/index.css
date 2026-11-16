@@ -632,3 +632,30 @@
   text-align: center;
   overflow-wrap: anywhere;
 }
+
+.emotion-toolkit-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding: 0;
+  width: 100%;
+}
+.emotion-toolkit-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  height: 200px;
+  padding: 10px;
+  border-radius: 12px;
+  background: #e8f0eb;
+  color: #293d35;
+  font-family: "Noto Sans TC:Medium", sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1;
+  text-align: center;
+}
+@media (max-width: 600px) {
+  .emotion-toolkit-grid { grid-template-columns: 1fr; }
+}

@@ -1,3 +1,4 @@
+import EmotionToolkits from "../components/EmotionToolkits";
 import { CollapsibleSection, SectionToggle } from "../components/CollapsibleSection";
 
 const assetPathPrefix = `${import.meta.env.BASE_URL}assets`;
@@ -91,18 +92,7 @@ export default function Component() {
             親子情緒教練
           </p>
         </div>
-        <div
-          className="content-stretch flex gap-[8px] items-center justify-center overflow-clip pt-[16px] px-[12px] relative shrink-0"
-          data-node-id="7:1049"
-          data-name="自主支持與有效界線"
-        >
-          <p
-            className="[word-break:break-word] font-['Noto_Sans_TC:Regular'] font-normal leading-none relative shrink-0 text-[#526b60] text-[16px] whitespace-nowrap"
-            data-node-id="I7:1049;4185:3781"
-          >
-            自主支持與有效界線
-          </p>
-        </div>
+
         <div
           className="content-stretch flex gap-[8px] items-center justify-center overflow-clip pt-[16px] px-[12px] relative shrink-0"
           data-node-id="7:1050"
@@ -264,7 +254,7 @@ export default function Component() {
                   自我覺察
                 </span>
                 <span className="leading-[1.55] text-[#29332e]">
-                  技巧，協助家長辨識壓力來源、情緒觸發點、教養信念與慣性反應；再搭配「親子情緒教練」、「自主支持與有效界線」、「衝突修復與家庭溝通」，練習調節情緒與壓力，並學習同理表達、界線溝通與關係修復。將覺察與反思轉化為日常的小練習，逐步培養
+                  技巧，協助家長辨識壓力來源、情緒觸發點、教養信念與慣性反應；再搭配「親子情緒教練」、「衝突修復與家庭溝通」，練習調節情緒與壓力，並學習同理表達、界線溝通與關係修復。將覺察與反思轉化為日常的小練習，逐步培養
                 </span>
                 <span className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-[1.55] text-[#29332e]">
                   自我管理
@@ -308,7 +298,7 @@ export default function Component() {
               </div>
               <SectionToggle />
             </div>
-            <div
+            <CollapsibleSection label="壓力來源、情緒觸發點" defaultExpanded={false}
               className="content-stretch flex flex-col gap-[5px] items-start relative shrink-0 w-full"
               data-node-id="7:1073"
               data-name="我的壓力來源"
@@ -323,11 +313,7 @@ export default function Component() {
                 >
                   <p className="leading-none">壓力來源、情緒觸發點</p>
                 </div>
-                <div
-                  className="content-stretch flex items-center justify-center overflow-clip relative shrink-0 size-[24px]"
-                  data-node-id="7:1076"
-                  data-name="下拉"
-                />
+                <SectionToggle />
               </div>
               <div
                 className="bg-white border border-[#dce5df] border-solid content-stretch flex flex-col gap-[12px] items-start p-[16px] relative rounded-[10px] shrink-0 w-full"
@@ -410,8 +396,8 @@ export default function Component() {
                   </div>
                 </div>
               </div>
-            </div>
-            <div
+            </CollapsibleSection>
+            <CollapsibleSection label="教養信念、慣性反應" defaultExpanded={false}
               className="content-stretch flex flex-col gap-[5px] items-start relative shrink-0 w-full"
               data-node-id="7:1088"
               data-name="教養信念"
@@ -426,11 +412,7 @@ export default function Component() {
                 >
                   <p className="leading-none">教養信念、慣性反應</p>
                 </div>
-                <div
-                  className="content-stretch flex items-center justify-center overflow-clip relative shrink-0 size-[24px]"
-                  data-node-id="7:1091"
-                  data-name="下拉"
-                />
+                <SectionToggle />
               </div>
               <div
                 className="bg-white border border-[#dce5df] border-solid content-stretch flex flex-col gap-[12px] items-start p-[16px] relative rounded-[10px] shrink-0 w-full"
@@ -513,137 +495,8 @@ export default function Component() {
                   </div>
                 </div>
               </div>
-            </div>
-          </CollapsibleSection>
-          <div className="h-0 relative shrink-0 w-[1096px]" data-node-id="7:1113">
-            <div className="absolute inset-[-0.5px_0]">
-              <img alt="" className="block max-w-none size-full" src={imgVector1} />
-            </div>
-          </div>
-          <CollapsibleSection label="親子情緒教練"
-            className="content-stretch flex flex-col gap-[16px] items-start relative shrink-0 w-full"
-            data-node-id="7:1114"
-            data-name="家庭情緒教練"
-          >
-            <div
-              className="content-stretch flex gap-[16px] items-center relative shrink-0 w-full"
-              data-node-id="7:1115"
-            >
-              <p
-                className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-[1.6] relative shrink-0 text-[#253e38] text-[23px] whitespace-nowrap"
-                data-node-id="7:1116"
-              >
-                親子情緒教練
-              </p>
-              <p
-                className="[word-break:break-word] flex-[1_0_0] font-['Noto_Sans_TC:Regular'] font-normal leading-[1.6] min-w-px relative text-[#69786f] text-[14px]"
-                data-node-id="7:1117"
-              >
-                先照顧自己，再照顧孩子
-              </p>
-              <SectionToggle />
-            </div>
-            <div className="h-[150px] relative shrink-0 w-full" data-node-id="7:1119">
-              <div
-                className="absolute content-stretch flex gap-[8px] h-[150px] items-center justify-center left-0 overflow-clip right-0 top-0"
-                data-node-id="7:1120"
-              >
-                <div
-                  className="bg-[#ffe6e6] content-stretch flex flex-col h-[150px] items-center justify-center relative rounded-[12px] shrink-0 w-[200px]"
-                  data-node-id="7:1121"
-                >
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#293d35] text-[24px] text-right whitespace-nowrap"
-                    data-node-id="7:1122"
-                  >
-                    <p className="leading-none">陪伴卡</p>
-                  </div>
-                </div>
-                <div
-                  className="bg-[#ffe6e6] content-stretch flex flex-col h-[150px] items-center justify-center relative rounded-[12px] shrink-0 w-[200px]"
-                  data-node-id="7:1123"
-                >
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#293d35] text-[24px] text-right whitespace-nowrap"
-                    data-node-id="7:1124"
-                  >
-                    <p className="leading-none">陪伴卡</p>
-                  </div>
-                </div>
-                <div
-                  className="bg-[#ffe6e6] content-stretch flex flex-col h-[150px] items-center justify-center relative rounded-[12px] shrink-0 w-[200px]"
-                  data-node-id="7:1125"
-                >
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#293d35] text-[24px] text-right whitespace-nowrap"
-                    data-node-id="7:1126"
-                  >
-                    <p className="leading-none">陪伴卡</p>
-                  </div>
-                </div>
-                <div
-                  className="bg-[#ffe6e6] content-stretch flex flex-col h-[150px] items-center justify-center relative rounded-[12px] shrink-0 w-[200px]"
-                  data-node-id="7:1127"
-                >
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#293d35] text-[24px] text-right whitespace-nowrap"
-                    data-node-id="7:1128"
-                  >
-                    <p className="leading-none">陪伴卡</p>
-                  </div>
-                </div>
-                <div
-                  className="bg-[#ffe6e6] content-stretch flex flex-col h-[150px] items-center justify-center relative rounded-[12px] shrink-0 w-[200px]"
-                  data-node-id="7:1129"
-                >
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#293d35] text-[24px] text-right whitespace-nowrap"
-                    data-node-id="7:1130"
-                  >
-                    <p className="leading-none">陪伴卡</p>
-                  </div>
-                </div>
-                <div
-                  className="bg-[#ffe6e6] content-stretch flex flex-col h-[150px] items-center justify-center relative rounded-[12px] shrink-0 w-[200px]"
-                  data-node-id="7:1131"
-                >
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#293d35] text-[24px] text-right whitespace-nowrap"
-                    data-node-id="7:1132"
-                  >
-                    <p className="leading-none">陪伴卡</p>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="absolute content-stretch flex items-center justify-between left-0 top-[53px] w-[1096px]"
-                data-node-id="7:1133"
-              >
-                <div
-                  className="relative shrink-0 size-[44px]"
-                  data-node-id="7:1134"
-                  data-name="banner-arrow-left 1"
-                >
-                  <img
-                    alt=""
-                    className="absolute block inset-0 max-w-none size-full"
-                    src={imgBannerArrowLeft1}
-                  />
-                </div>
-                <div
-                  className="relative shrink-0 size-[44px]"
-                  data-node-id="7:1137"
-                  data-name="banner-arrow-right 1"
-                >
-                  <img
-                    alt=""
-                    className="absolute block inset-0 max-w-none size-full"
-                    src={imgBannerArrowRight1}
-                  />
-                </div>
-              </div>
-            </div>
-            <div
+            </CollapsibleSection>
+          <CollapsibleSection label="面對壓力時，如何調節？" defaultExpanded={false}
               className="content-stretch flex flex-col gap-[12px] items-start relative rounded-[10px] shrink-0 w-full"
               data-node-id="7:1140"
             >
@@ -657,9 +510,10 @@ export default function Component() {
                 >
                   <p className="leading-none">面對壓力時，如何調節？</p>
                 </div>
+              <SectionToggle />
               </div>
               <div
-                className="content-stretch cursor-pointer flex gap-[28px] items-start relative shrink-0 w-full"
+                className="content-stretch cursor-pointer flex gap-[28px] items-stretch relative shrink-0 w-full"
                 data-node-id="7:1147"
               >
                 <a
@@ -802,13 +656,13 @@ export default function Component() {
                     </p>
                   </div>
                 </a>
-                <a
+                <div
                   className="bg-white content-stretch flex flex-[1_0_0] flex-col items-start min-w-px overflow-clip px-[28px] py-[16px] relative rounded-[20px]"
                   data-node-id="7:1174"
                   data-name="尋求支持"
                 >
                   <div
-                    className="content-stretch flex flex-col gap-[6px] items-start relative shrink-0 w-full"
+                    className="content-stretch flex flex-col gap-[6px] items-start relative flex-1 w-full"
                     data-node-id="7:1175"
                   >
                     <p
@@ -817,225 +671,45 @@ export default function Component() {
                     >
                       尋求支持
                     </p>
-                    <div
-                      className="bg-[#315e4c] content-stretch flex gap-[8px] items-center justify-center overflow-clip px-[12px] py-[14px] relative rounded-[12px] shrink-0"
-                      data-node-id="7:1178"
-                      data-name="親子故事與閱讀館"
-                    >
-                      <p
-                        className="[word-break:break-word] font-['Noto_Sans_TC:Medium'] font-medium leading-[0] relative shrink-0 text-[16px] text-left text-white whitespace-nowrap"
-                        data-node-id="I7:1178;4185:3781"
-                      >
-                        <span className="font-['Noto_Sans_TC:Bold'] font-bold leading-none">
-                          前往資源與支持
-                        </span>
-                        <span className="leading-none">→</span>
-                      </p>
-                    </div>
+                    <a href="#/resources" onClick={(event) => event.stopPropagation()} className="font-['Noto_Sans_TC:Bold'] font-bold text-[16px] text-[#315e4c] text-left underline underline-offset-4 mt-auto" data-node-id="7:1178">前往資源與支持 →</a>
                   </div>
-                </a>
+                </div>
               </div>
-            </div>
+            </CollapsibleSection>
           </CollapsibleSection>
-          <div className="h-0 relative shrink-0 w-[1096px]" data-node-id="7:1179">
+          <div className="h-0 relative shrink-0 w-[1096px]" data-node-id="7:1113">
             <div className="absolute inset-[-0.5px_0]">
               <img alt="" className="block max-w-none size-full" src={imgVector1} />
             </div>
           </div>
-          <CollapsibleSection label="自主支持與有效界線"
+          <CollapsibleSection label="親子情緒教練"
             className="content-stretch flex flex-col gap-[16px] items-start relative shrink-0 w-full"
-            data-node-id="7:1180"
-            data-name="自主支持與有效界線"
+            data-node-id="7:1114"
+            data-name="家庭情緒教練"
           >
             <div
               className="content-stretch flex gap-[16px] items-center relative shrink-0 w-full"
-              data-node-id="7:1181"
+              data-node-id="7:1115"
             >
               <p
                 className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-[1.6] relative shrink-0 text-[#253e38] text-[23px] whitespace-nowrap"
-                data-node-id="7:1182"
+                data-node-id="7:1116"
               >
-                自主支持與有效界線
+                親子情緒教練
               </p>
               <p
                 className="[word-break:break-word] flex-[1_0_0] font-['Noto_Sans_TC:Regular'] font-normal leading-[1.6] min-w-px relative text-[#69786f] text-[14px]"
-                data-node-id="7:1183"
+                data-node-id="7:1117"
               >
-                用SEL語言與孩子說話
+                先照顧自己，再照顧孩子
               </p>
               <SectionToggle />
             </div>
-            <div
-              className="content-stretch flex flex-col gap-[12px] items-end justify-center relative rounded-[10px] shrink-0 w-full"
-              data-node-id="7:1185"
-            >
-              <div className="h-[150px] relative shrink-0 w-full" data-node-id="7:1192">
-                <div
-                  className="[word-break:break-word] absolute content-stretch flex font-['Noto_Sans_TC:Medium'] font-medium gap-[8px] h-[150px] items-center justify-center leading-[0] left-0 overflow-clip right-0 top-0 whitespace-nowrap"
-                  data-node-id="7:1193"
-                >
-                  <div
-                    className="bg-[#e6eff3] content-stretch flex flex-col gap-[8px] h-[150px] items-center justify-center relative rounded-[12px] shrink-0 w-[200px]"
-                    data-node-id="7:1194"
-                  >
-                    <div
-                      className="flex flex-col justify-center relative shrink-0 text-[#293d35] text-[24px] text-right"
-                      data-node-id="7:1195"
-                    >
-                      <p className="leading-none">情境圖卡</p>
-                    </div>
-                    <div
-                      className="flex flex-col justify-center relative shrink-0 text-[#526b60] text-[16px] text-center"
-                      data-node-id="7:1196"
-                    >
-                      <p className="leading-none mb-0">對話句型、情境模擬</p>
-                      <p className="leading-none">、錯誤示例與修正版</p>
-                    </div>
-                  </div>
-                  <div
-                    className="bg-[#e6eff3] content-stretch flex flex-col gap-[8px] h-[150px] items-center justify-center relative rounded-[12px] shrink-0 w-[200px]"
-                    data-node-id="7:1197"
-                  >
-                    <div
-                      className="flex flex-col justify-center relative shrink-0 text-[#293d35] text-[24px] text-right"
-                      data-node-id="7:1198"
-                    >
-                      <p className="leading-none">情境圖卡</p>
-                    </div>
-                    <div
-                      className="flex flex-col justify-center relative shrink-0 text-[#526b60] text-[16px] text-center"
-                      data-node-id="7:1199"
-                    >
-                      <p className="leading-none mb-0">對話句型、情境模擬</p>
-                      <p className="leading-none">、錯誤示例與修正版</p>
-                    </div>
-                  </div>
-                  <div
-                    className="bg-[#e6eff3] content-stretch flex flex-col gap-[8px] h-[150px] items-center justify-center relative rounded-[12px] shrink-0 w-[200px]"
-                    data-node-id="7:1200"
-                  >
-                    <div
-                      className="flex flex-col justify-center relative shrink-0 text-[#293d35] text-[24px] text-right"
-                      data-node-id="7:1201"
-                    >
-                      <p className="leading-none">情境圖卡</p>
-                    </div>
-                    <div
-                      className="flex flex-col justify-center relative shrink-0 text-[#526b60] text-[16px] text-center"
-                      data-node-id="7:1202"
-                    >
-                      <p className="leading-none mb-0">對話句型、情境模擬</p>
-                      <p className="leading-none">、錯誤示例與修正版</p>
-                    </div>
-                  </div>
-                  <div
-                    className="bg-[#e6eff3] content-stretch flex flex-col gap-[8px] h-[150px] items-center justify-center relative rounded-[12px] shrink-0 w-[200px]"
-                    data-node-id="7:1203"
-                  >
-                    <div
-                      className="flex flex-col justify-center relative shrink-0 text-[#293d35] text-[24px] text-right"
-                      data-node-id="7:1204"
-                    >
-                      <p className="leading-none">情境圖卡</p>
-                    </div>
-                    <div
-                      className="flex flex-col justify-center relative shrink-0 text-[#526b60] text-[16px] text-center"
-                      data-node-id="7:1205"
-                    >
-                      <p className="leading-none mb-0">對話句型、情境模擬</p>
-                      <p className="leading-none">、錯誤示例與修正版</p>
-                    </div>
-                  </div>
-                  <div
-                    className="bg-[#e6eff3] content-stretch flex flex-col gap-[8px] h-[150px] items-center justify-center relative rounded-[12px] shrink-0 w-[200px]"
-                    data-node-id="7:1206"
-                  >
-                    <div
-                      className="flex flex-col justify-center relative shrink-0 text-[#293d35] text-[24px] text-right"
-                      data-node-id="7:1207"
-                    >
-                      <p className="leading-none">情境圖卡</p>
-                    </div>
-                    <div
-                      className="flex flex-col justify-center relative shrink-0 text-[#526b60] text-[16px] text-center"
-                      data-node-id="7:1208"
-                    >
-                      <p className="leading-none mb-0">對話句型、情境模擬</p>
-                      <p className="leading-none">、錯誤示例與修正版</p>
-                    </div>
-                  </div>
-                  <div
-                    className="bg-[#e6eff3] content-stretch flex flex-col gap-[8px] h-[150px] items-center justify-center relative rounded-[12px] shrink-0 w-[200px]"
-                    data-node-id="7:1209"
-                  >
-                    <div
-                      className="flex flex-col justify-center relative shrink-0 text-[#293d35] text-[24px] text-right"
-                      data-node-id="7:1210"
-                    >
-                      <p className="leading-none">情境圖卡</p>
-                    </div>
-                    <div
-                      className="flex flex-col justify-center relative shrink-0 text-[#526b60] text-[16px] text-center"
-                      data-node-id="7:1211"
-                    >
-                      <p className="leading-none mb-0">對話句型、情境模擬</p>
-                      <p className="leading-none">、錯誤示例與修正版</p>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="absolute content-stretch flex items-center justify-between left-0 top-[53px] w-[1096px]"
-                  data-node-id="7:1212"
-                >
-                  <div
-                    className="relative shrink-0 size-[44px]"
-                    data-node-id="7:1213"
-                    data-name="banner-arrow-left 1"
-                  >
-                    <img
-                      alt=""
-                      className="absolute block inset-0 max-w-none size-full"
-                      src={imgBannerArrowLeft1}
-                    />
-                  </div>
-                  <div
-                    className="relative shrink-0 size-[44px]"
-                    data-node-id="7:1216"
-                    data-name="banner-arrow-right 1"
-                  >
-                    <img
-                      alt=""
-                      className="absolute block inset-0 max-w-none size-full"
-                      src={imgBannerArrowRight1}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div
-                className="bg-white border border-[#315e4c] border-solid content-stretch flex gap-[8px] items-center justify-center overflow-clip px-[12px] py-[6px] relative rounded-[12px] shrink-0"
-                data-node-id="7:1219"
-                data-name="展開全部"
-              >
-                <div
-                  className="relative shrink-0 size-[16px]"
-                  data-node-id="I7:1219;4185:3780"
-                  data-name="Plus"
-                >
-                  <img
-                    alt=""
-                    className="absolute block inset-0 max-w-none size-full"
-                    src={imgPlus}
-                  />
-                </div>
-                <p
-                  className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-none relative shrink-0 text-[#315e4c] text-[12px] whitespace-nowrap"
-                  data-node-id="I7:1219;4185:3781"
-                >
-                  展開全部
-                </p>
-              </div>
-            </div>
+            <EmotionToolkits />
+
           </CollapsibleSection>
+
+
           <div className="h-0 relative shrink-0 w-[1096px]" data-node-id="7:1220">
             <div className="absolute inset-[-0.5px_0]">
               <img alt="" className="block max-w-none size-full" src={imgVector1} />
@@ -1446,61 +1120,7 @@ export default function Component() {
                 </div>
               </div>
             </div>
-            <div
-              className="content-stretch flex flex-col items-start relative shrink-0 w-full"
-              data-node-id="7:1329"
-              data-name="情境工具包"
-            >
-              <div
-                className="content-stretch flex gap-[16px] items-center relative shrink-0 w-full"
-                data-node-id="7:1330"
-              >
-                <p
-                  className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-[1.6] relative shrink-0 text-[#253e38] text-[16px] whitespace-nowrap"
-                  data-node-id="7:1331"
-                >
-                  情境工具包
-                </p>
-              </div>
-              <div
-                className="content-stretch flex gap-[12px] items-center justify-center p-[10px] relative shrink-0 w-full"
-                data-node-id="7:1334"
-              >
-                <div
-                  className="bg-[#e8f0eb] content-stretch flex flex-[1_0_0] flex-col h-[200px] items-center justify-center min-w-px p-[10px] relative rounded-[12px]"
-                  data-node-id="7:1335"
-                >
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#293d35] text-[24px] text-center whitespace-nowrap"
-                    data-node-id="7:1336"
-                  >
-                    <p className="leading-none">情境工具包</p>
-                  </div>
-                </div>
-                <div
-                  className="bg-[#e8f0eb] content-stretch flex flex-[1_0_0] flex-col h-[200px] items-center justify-center min-w-px p-[10px] relative rounded-[12px]"
-                  data-node-id="7:1337"
-                >
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#293d35] text-[24px] text-center whitespace-nowrap"
-                    data-node-id="7:1338"
-                  >
-                    <p className="leading-none">情境工具包</p>
-                  </div>
-                </div>
-                <div
-                  className="bg-[#e8f0eb] content-stretch flex flex-[1_0_0] flex-col h-[200px] items-center justify-center min-w-px p-[10px] relative rounded-[12px]"
-                  data-node-id="7:1339"
-                >
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#293d35] text-[24px] text-center whitespace-nowrap"
-                    data-node-id="7:1340"
-                  >
-                    <p className="leading-none">情境工具包</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+
             <div className="h-0 relative shrink-0 w-[1096px]" data-node-id="7:1341">
               <div className="absolute inset-[-0.5px_0]">
                 <img alt="" className="block max-w-none size-full" src={imgVector1} />
