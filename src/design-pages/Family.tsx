@@ -1,3 +1,4 @@
+import { useFamilyProfile } from "../FamilyProfile";
 import { useRef, useState } from "react";
 import FamilySelectionDialog from "../components/FamilySelectionDialog";
 import AccountFamilyNavigation, { familySections } from "../components/AccountFamilyNavigation";
@@ -27,7 +28,7 @@ const imgVector1 = `${assetPathPrefix}/b249c.svg`;
 const imgUserPlus = `${assetPathPrefix}/00eba.svg`;
 
 export default function Component() {
-  const [selectedFamily, setSelectedFamily] = useState("我的家庭1");
+  const { selectedFamily, setSelectedFamily } = useFamilyProfile();
   const [familyDialogOpen, setFamilyDialogOpen] = useState(false);
   const familyTriggerRef = useRef<HTMLButtonElement>(null);
   function closeFamilyDialog() {

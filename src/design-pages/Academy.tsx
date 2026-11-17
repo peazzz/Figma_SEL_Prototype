@@ -1,3 +1,6 @@
+import DigitalContract from "../components/DigitalContract";
+import AgeActivityLibrary from "../components/AgeActivityLibrary";
+import ParentVideoCarousel from "../components/ParentVideoCarousel";
 import EmotionToolkits from "../components/EmotionToolkits";
 import { CollapsibleSection, SectionToggle } from "../components/CollapsibleSection";
 
@@ -308,7 +311,7 @@ export default function Component() {
                 data-node-id="7:1074"
               >
                 <div
-                  className="[word-break:break-word] flex flex-[1_0_0] flex-col font-['Noto_Sans_TC:Medium'] font-medium h-[30px] justify-center leading-[0] min-w-px relative text-[#315e4c] text-[24px]"
+                  className="[word-break:break-word] flex flex-[1_0_0] flex-col font-['Noto_Sans_TC:Medium'] font-medium h-[30px] justify-center leading-[0] min-w-px relative text-[#315e4c] text-[20px]"
                   data-node-id="7:1075"
                 >
                   <p className="leading-none">壓力來源、情緒觸發點</p>
@@ -407,7 +410,7 @@ export default function Component() {
                 data-node-id="7:1089"
               >
                 <div
-                  className="[word-break:break-word] flex flex-[1_0_0] flex-col font-['Noto_Sans_TC:Medium'] font-medium h-[30px] justify-center leading-[0] min-w-px relative text-[#315e4c] text-[24px]"
+                  className="[word-break:break-word] flex flex-[1_0_0] flex-col font-['Noto_Sans_TC:Medium'] font-medium h-[30px] justify-center leading-[0] min-w-px relative text-[#315e4c] text-[20px]"
                   data-node-id="7:1090"
                 >
                   <p className="leading-none">教養信念、慣性反應</p>
@@ -505,7 +508,7 @@ export default function Component() {
                 data-node-id="7:1141"
               >
                 <div
-                  className="[word-break:break-word] flex flex-[1_0_0] flex-col font-['Noto_Sans_TC:Medium'] font-medium h-[30px] justify-center leading-[0] min-w-px relative text-[#315e4c] text-[24px]"
+                  className="[word-break:break-word] flex flex-[1_0_0] flex-col font-['Noto_Sans_TC:Medium'] font-medium h-[30px] justify-center leading-[0] min-w-px relative text-[#315e4c] text-[20px]"
                   data-node-id="7:1142"
                 >
                   <p className="leading-none">面對壓力時，如何調節？</p>
@@ -863,263 +866,10 @@ export default function Component() {
               </p>
               <SectionToggle />
             </div>
-            <div
-              className="content-stretch flex gap-[12px] items-center relative rounded-[10px] shrink-0 w-full"
-              data-node-id="7:1287"
-              data-name="年齡"
-            >
-              <p
-                className="[word-break:break-word] font-['Noto_Sans_TC:Regular'] font-normal leading-none relative shrink-0 text-[16px] text-black whitespace-nowrap"
-                data-node-id="7:1288"
-              >
-                孩子年齡：
-              </p>
-              <div
-                className="bg-white border border-[#315e4c] border-solid content-stretch flex gap-[8px] items-center justify-center overflow-clip px-[12px] py-[6px] relative rounded-[12px] shrink-0 w-[64px]"
-                data-node-id="7:1289"
-                data-name="全部"
-              >
-                <p
-                  className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-none relative shrink-0 text-[#315e4c] text-[12px] whitespace-nowrap"
-                  data-node-id="I7:1289;4185:3781"
-                >
-                  全部
-                </p>
-              </div>
-              <div
-                className="bg-[#315e4c] content-stretch flex gap-[8px] items-center justify-center overflow-clip px-[12px] py-[6px] relative rounded-[12px] shrink-0 w-[64px]"
-                data-node-id="7:1290"
-                data-name="0~3歲"
-              >
-                <p
-                  className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-none relative shrink-0 text-[12px] text-white whitespace-nowrap"
-                  data-node-id="I7:1290;4185:3781"
-                >
-                  0~3歲
-                </p>
-              </div>
-              <div
-                className="bg-white border border-[#315e4c] border-solid content-stretch flex gap-[8px] items-center justify-center overflow-clip px-[12px] py-[6px] relative rounded-[12px] shrink-0 w-[64px]"
-                data-node-id="7:1291"
-                data-name="4~6歲"
-              >
-                <p
-                  className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-none relative shrink-0 text-[#315e4c] text-[12px] whitespace-nowrap"
-                  data-node-id="I7:1291;4185:3781"
-                >
-                  4~6歲
-                </p>
-              </div>
-              <div
-                className="bg-white border border-[#315e4c] border-solid content-stretch flex gap-[8px] items-center justify-center overflow-clip px-[12px] py-[6px] relative rounded-[12px] shrink-0 w-[64px]"
-                data-node-id="7:1292"
-                data-name="7~9歲"
-              >
-                <p
-                  className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-none relative shrink-0 text-[#315e4c] text-[12px] whitespace-nowrap"
-                  data-node-id="I7:1292;4185:3781"
-                >
-                  7~9歲
-                </p>
-              </div>
-              <div
-                className="bg-white border border-[#315e4c] border-solid content-stretch flex gap-[8px] items-center justify-center overflow-clip px-[12px] py-[6px] relative rounded-[12px] shrink-0 w-[64px]"
-                data-node-id="7:1293"
-                data-name="10~12歲"
-              >
-                <p
-                  className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-none relative shrink-0 text-[#315e4c] text-[12px] whitespace-nowrap"
-                  data-node-id="I7:1293;4185:3781"
-                >
-                  10~12歲
-                </p>
-              </div>
-            </div>
-            <div
-              className="content-stretch flex gap-[12px] items-start relative shrink-0 w-full"
-              data-node-id="7:1294"
-              data-name="活動庫"
-            >
-              <div
-                className="bg-[#ffe6e6] h-[150px] relative rounded-[12px] shrink-0 w-[209.6px]"
-                data-node-id="7:1295"
-              >
-                <div
-                  className="-translate-x-full -translate-y-1/2 [word-break:break-word] absolute flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] left-[128.8px] text-[#293d35] text-[24px] text-right top-[75px] whitespace-nowrap"
-                  data-node-id="7:1297"
-                >
-                  <p className="leading-none">活動</p>
-                </div>
-                <div
-                  className="absolute bg-[#679d86] content-stretch flex gap-[8px] items-center justify-center left-[144px] overflow-clip px-[12px] py-[6px] rounded-[12px] top-[122px]"
-                  data-node-id="7:1298"
-                  data-name="0~3歲"
-                >
-                  <p
-                    className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-none relative shrink-0 text-[12px] text-white whitespace-nowrap"
-                    data-node-id="I7:1298;4185:3781"
-                  >
-                    0~3歲
-                  </p>
-                </div>
-              </div>
-              <div
-                className="bg-[#ffe6e6] h-[150px] relative rounded-[12px] shrink-0 w-[209.6px]"
-                data-node-id="7:1299"
-              >
-                <div
-                  className="-translate-x-full -translate-y-1/2 [word-break:break-word] absolute flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] left-[128.8px] text-[#293d35] text-[24px] text-right top-[75px] whitespace-nowrap"
-                  data-node-id="7:1301"
-                >
-                  <p className="leading-none">活動</p>
-                </div>
-                <div
-                  className="absolute bg-[#679d86] content-stretch flex gap-[8px] items-center justify-center left-[143.4px] overflow-clip px-[12px] py-[6px] rounded-[12px] top-[122px]"
-                  data-node-id="7:1302"
-                  data-name="0~3歲"
-                >
-                  <p
-                    className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-none relative shrink-0 text-[12px] text-white whitespace-nowrap"
-                    data-node-id="I7:1302;4185:3781"
-                  >
-                    0~3歲
-                  </p>
-                </div>
-              </div>
-              <div
-                className="bg-[#ffe6e6] h-[150px] relative rounded-[12px] shrink-0 w-[209.6px]"
-                data-node-id="7:1303"
-              >
-                <div
-                  className="-translate-x-full -translate-y-1/2 [word-break:break-word] absolute flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] left-[128.8px] text-[#293d35] text-[24px] text-right top-[75px] whitespace-nowrap"
-                  data-node-id="7:1305"
-                >
-                  <p className="leading-none">活動</p>
-                </div>
-                <div
-                  className="absolute bg-[#679d86] content-stretch flex gap-[8px] items-center justify-center left-[143.8px] overflow-clip px-[12px] py-[6px] rounded-[12px] top-[122px]"
-                  data-node-id="7:1306"
-                  data-name="0~6歲"
-                >
-                  <p
-                    className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-none relative shrink-0 text-[12px] text-white whitespace-nowrap"
-                    data-node-id="I7:1306;4185:3781"
-                  >
-                    0~6歲
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div
-              className="content-stretch flex flex-col items-start relative shrink-0 w-full"
-              data-node-id="7:1307"
-              data-name="家庭經驗短片"
-            >
-              <div
-                className="content-stretch flex gap-[16px] items-center relative shrink-0 w-full"
-                data-node-id="7:1308"
-              >
-                <p
-                  className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-[1.6] relative shrink-0 text-[#253e38] text-[16px] whitespace-nowrap"
-                  data-node-id="7:1309"
-                >
-                  家長經驗短片
-                </p>
-              </div>
-              <div
-                className="content-stretch flex gap-[10px] items-start overflow-clip p-[10px] relative shrink-0 w-full"
-                data-node-id="7:1312"
-              >
-                <div
-                  className="content-stretch flex flex-col gap-[6px] items-center justify-center relative shrink-0"
-                  data-node-id="7:1313"
-                >
-                  <div
-                    className="bg-[#e6eff3] content-stretch flex flex-col h-[360px] items-center justify-center p-[10px] relative rounded-[12px] shrink-0 w-[240px]"
-                    data-node-id="7:1314"
-                  >
-                    <div
-                      className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#293d35] text-[24px] text-center whitespace-nowrap"
-                      data-node-id="7:1315"
-                    >
-                      <p className="leading-none">家長經驗短片</p>
-                    </div>
-                  </div>
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#293d35] text-[24px] text-center whitespace-nowrap"
-                    data-node-id="7:1316"
-                  >
-                    <p className="leading-none">影片名稱</p>
-                  </div>
-                </div>
-                <div
-                  className="content-stretch flex flex-col gap-[6px] items-center justify-center relative shrink-0"
-                  data-node-id="7:1317"
-                >
-                  <div
-                    className="bg-[#e6eff3] content-stretch flex flex-col h-[360px] items-center justify-center p-[10px] relative rounded-[12px] shrink-0 w-[240px]"
-                    data-node-id="7:1318"
-                  >
-                    <div
-                      className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#293d35] text-[24px] text-center whitespace-nowrap"
-                      data-node-id="7:1319"
-                    >
-                      <p className="leading-none">家長經驗短片</p>
-                    </div>
-                  </div>
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#293d35] text-[24px] text-center whitespace-nowrap"
-                    data-node-id="7:1320"
-                  >
-                    <p className="leading-none">影片名稱</p>
-                  </div>
-                </div>
-                <div
-                  className="content-stretch flex flex-col gap-[6px] items-center justify-center relative shrink-0"
-                  data-node-id="7:1321"
-                >
-                  <div
-                    className="bg-[#e6eff3] content-stretch flex flex-col h-[360px] items-center justify-center p-[10px] relative rounded-[12px] shrink-0 w-[240px]"
-                    data-node-id="7:1322"
-                  >
-                    <div
-                      className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#293d35] text-[24px] text-center whitespace-nowrap"
-                      data-node-id="7:1323"
-                    >
-                      <p className="leading-none">家長經驗短片</p>
-                    </div>
-                  </div>
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#293d35] text-[24px] text-center whitespace-nowrap"
-                    data-node-id="7:1324"
-                  >
-                    <p className="leading-none">影片名稱</p>
-                  </div>
-                </div>
-                <div
-                  className="content-stretch flex flex-col gap-[6px] items-center justify-center relative shrink-0"
-                  data-node-id="7:1325"
-                >
-                  <div
-                    className="bg-[#e6eff3] content-stretch flex flex-col h-[360px] items-center justify-center p-[10px] relative rounded-[12px] shrink-0 w-[240px]"
-                    data-node-id="7:1326"
-                  >
-                    <div
-                      className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#293d35] text-[24px] text-center whitespace-nowrap"
-                      data-node-id="7:1327"
-                    >
-                      <p className="leading-none">家長經驗短片</p>
-                    </div>
-                  </div>
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#293d35] text-[24px] text-center whitespace-nowrap"
-                    data-node-id="7:1328"
-                  >
-                    <p className="leading-none">影片名稱</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <h3 className="academy-subheading">分齡替代活動庫</h3>
+            <AgeActivityLibrary />
+
+            <ParentVideoCarousel />
 
             <div className="h-0 relative shrink-0 w-[1096px]" data-node-id="7:1341">
               <div className="absolute inset-[-0.5px_0]">
@@ -1135,54 +885,7 @@ export default function Component() {
                 className="content-stretch flex gap-[12px] items-center relative shrink-0 w-full"
                 data-node-id="7:1343"
               >
-                <div
-                  className="flex flex-[1_0_0] flex-row items-center self-stretch"
-                  data-node-id="7:1344"
-                >
-                  <div className="bg-white content-stretch flex flex-[1_0_0] flex-col gap-[24px] h-full items-start min-w-px p-[28px] relative rounded-[12px]">
-                    <div
-                      className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#315e4c] text-[24px] text-center whitespace-nowrap"
-                      data-node-id="7:1345"
-                    >
-                      <p className="leading-none">家庭數位契約產生器</p>
-                    </div>
-                    <div
-                      className="[word-break:break-word] content-stretch flex flex-col font-['Noto_Sans_TC:Regular'] font-normal gap-[12px] items-start leading-[0] relative shrink-0 text-[#64766f] text-[15px] text-center whitespace-nowrap"
-                      data-node-id="7:1346"
-                    >
-                      <div
-                        className="flex flex-col justify-center relative shrink-0"
-                        data-node-id="7:1347"
-                      >
-                        <p className="leading-none">平日螢幕時間：2小時</p>
-                      </div>
-                      <div
-                        className="flex flex-col justify-center relative shrink-0"
-                        data-node-id="7:1348"
-                      >
-                        <p className="leading-none">假日螢幕時間：4小時</p>
-                      </div>
-                      <div
-                        className="flex flex-col justify-center relative shrink-0"
-                        data-node-id="7:1349"
-                      >
-                        <p className="leading-none">禁用時段：睡前、用餐</p>
-                      </div>
-                    </div>
-                    <div
-                      className="bg-white border border-[#d6ded3] border-solid content-stretch flex gap-[8px] items-center justify-center overflow-clip px-[12px] py-[14px] relative rounded-[12px] shrink-0"
-                      data-node-id="7:1350"
-                      data-name="查看詳細"
-                    >
-                      <p
-                        className="[word-break:break-word] font-['Noto_Sans_TC:Medium'] font-medium leading-none relative shrink-0 text-[#315e4c] text-[16px] whitespace-nowrap"
-                        data-node-id="I7:1350;4185:3781"
-                      >
-                        查看詳細
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <div className="flex flex-1 min-w-0 self-stretch"><DigitalContract /></div>
                 <div
                   className="flex flex-[1_0_0] flex-row items-center self-stretch"
                   data-node-id="7:1351"

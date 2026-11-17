@@ -1,6 +1,6 @@
 import { Children, cloneElement, createContext, isValidElement, useContext, useId, useRef, useState, useEffect, type HTMLAttributes, type ReactNode } from "react";
 
-type ContentProps = { children?: ReactNode; hidden?: boolean; style?: React.CSSProperties };
+type ContentProps = HTMLAttributes<HTMLElement>;
 const CollapseContext = createContext({ expanded: true, toggle: () => {}, id: "", label: "", empty: false });
 
 function hasToggle(node: ReactNode): boolean {
@@ -14,13 +14,28 @@ function hasCollapsibleContent(children: ReactNode): boolean {
   return items.some((item) => isValidElement<ContentProps>(item) &&
     (!hasToggle(item) || hasCollapsibleContent(item.props.children)));
 }
-function renderContents(children: ReactNode, expanded: boolean): ReactNode {
+function renderContents(children: ReactNode, expanded: boolean, toggle: () => void, empty: boolean): ReactNode {
   const items = Children.toArray(children);
   // Keep the complete title row, including its description and toggle.
   if (items.some((item) => isValidElement(item) && item.type === SectionToggle)) return children;
   return items.map((item) => {
     if (!isValidElement<ContentProps>(item)) return item;
-    if (hasToggle(item)) return cloneElement(item, {}, renderContents(item.props.children, expanded));
+    if (hasToggle(item)) {
+      const isTitleRow = Children.toArray(item.props.children).some((child) => isValidElement(child) && child.type === SectionToggle);
+      return cloneElement(item, isTitleRow && !empty ? {
+        style: { ...item.props.style, cursor: "pointer" },
+        onClick: (event: React.MouseEvent<HTMLElement>) => {
+          event.stopPropagation();
+          // Keep links and other controls in the row independent.
+          if ((event.target as HTMLElement).closest("button, a, input, select, textarea")) return;
+          toggle();
+        },
+      } : {}, renderContents(item.props.children, expanded, toggle, empty));
+    }
+    // Custom components may not forward hidden/style to their rendered element.
+    if (typeof item.type !== "string") {
+      return <div key={item.key} hidden={!expanded} style={{ display: expanded ? "contents" : "none" }}>{item}</div>;
+    }
     return cloneElement(item, expanded ? {} : { hidden: true, style: { ...item.props.style, display: "none" } });
   });
 }
@@ -35,10 +50,12 @@ export function CollapsibleSection({ children, label, empty = false, defaultExpa
     element?.addEventListener("expand-section", expand);
     return () => element?.removeEventListener("expand-section", expand);
   }, []);
+  const isEmpty = empty || !hasCollapsibleContent(children);
+  const toggle = () => setExpanded((value) => !value);
   return (
-    <CollapseContext.Provider value={{ expanded, toggle: () => setExpanded((value) => !value), id, label, empty: empty || !hasCollapsibleContent(children) }}>
+    <CollapseContext.Provider value={{ expanded, toggle, id, label, empty: isEmpty }}>
       <div {...props} ref={root} id={id} data-collapsible-section="" data-collapsed={!expanded}>
-        {renderContents(children, expanded)}
+        {renderContents(children, expanded, toggle, isEmpty)}
       </div>
     </CollapseContext.Provider>
   );

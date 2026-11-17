@@ -1,3 +1,4 @@
+import { useCategoryFilter } from "../useCategoryFilter";
 import { useEffect, useRef, useState } from "react";
 import "./EmotionToolkits.css";
 
@@ -13,11 +14,11 @@ function ToolkitDialog({ onClose }: { onClose: () => void }) {
   const ref = useRef<HTMLDialogElement>(null);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
-  const [age, setAge] = useState("全部");
-  const [kind, setKind] = useState("全部");
+  const ageFilter = useCategoryFilter(ages);
+  const kindFilter = useCategoryFilter(["陪伴卡", "情境卡"]);
   const filteredCards = sampleCards.filter((card) =>
-    (age === "全部" || card.age === age) &&
-    (kind === "全部" || card.kind === kind) &&
+    ageFilter.matches(card.age) &&
+    kindFilter.matches(card.kind) &&
     (card.kind + " " + card.age).includes(query.trim()));
   const hasResults = filteredCards.length > 0;
   const pageCount = Math.ceil(filteredCards.length / 8);
@@ -46,8 +47,8 @@ function ToolkitDialog({ onClose }: { onClose: () => void }) {
         </button>
       </header>
       <div className="toolkit-filters">
-        <div role="group" aria-label="孩子年齡"><span>孩子年齡：</span>{["全部", "0~3歲", "4~6歲", "7~9歲", "10~12歲"].map((value) => <button type="button" key={value} aria-pressed={age === value} onClick={() => { setAge(value); setPage(1); }}>{value}</button>)}</div>
-        <div role="group" aria-label="卡片種類"><span>卡片種類：</span>{["全部", "陪伴卡", "情境卡"].map((value) => <button type="button" key={value} aria-pressed={kind === value} onClick={() => { setKind(value); setPage(1); }}>{value}</button>)}</div>
+        <div role="group" aria-label="孩子年齡"><span>孩子年齡：</span>{["全部", "0~3歲", "4~6歲", "7~9歲", "10~12歲"].map((value) => <button type="button" key={value} aria-pressed={ageFilter.isSelected(value)} onClick={() => { ageFilter.toggle(value); setPage(1); }}>{value}</button>)}</div>
+        <div role="group" aria-label="卡片種類"><span>卡片種類：</span>{["全部", "陪伴卡", "情境卡"].map((value) => <button type="button" key={value} aria-pressed={kindFilter.isSelected(value)} onClick={() => { kindFilter.toggle(value); setPage(1); }}>{value}</button>)}</div>
       </div>
       <div className="toolkit-companion-grid">
         {visibleCards.map((card) => (

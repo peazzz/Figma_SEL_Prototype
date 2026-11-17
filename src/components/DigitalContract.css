@@ -1,0 +1,71 @@
+.digital-contract-entry { width: 100%; padding: 28px; border-radius: 12px; background: white; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+.digital-contract-entry h3 { color: #315e4c; font-family: "Noto Sans TC:Medium", sans-serif; font-size: 24px; }
+.digital-contract-entry p { color: #64766f; font-size: 15px; line-height: 1.6; }
+.digital-contract-entry button, .digital-contract-dialog button { border: 1px solid #315e4c; border-radius: 10px; padding: 10px 16px; color: #315e4c; cursor: pointer; background: white; }
+.digital-contract-entry .contract-primary, .digital-contract-dialog .contract-primary { background: #315e4c; color: white; }
+.digital-contract-dialog { position: fixed; inset: 0; margin: auto; width: min(960px, calc(100vw - 32px)); max-width: none; max-height: calc(100dvh - 32px); padding: 28px; border: 0; border-radius: 24px; background: #f8f8f2; color: #253e38; overflow-y: auto; }
+.digital-contract-dialog::backdrop { background: rgb(0 0 0 / 35%); }
+.contract-dialog-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 24px; }
+.contract-dialog-header h2 { font-family: "Noto Sans TC:Bold", sans-serif; font-size: 26px; color: #315e4c; }
+.contract-dialog-header p, .contract-note { font-size: 14px; color: #64766f; line-height: 1.6; }
+.contract-dialog-header button { font-size: 26px; line-height: 1; flex-shrink: 0; }
+.contract-form { display: flex; flex-direction: column; gap: 24px; }
+.contract-form fieldset { border: 1px solid #d6ded3; padding: 20px; border-radius: 12px; background: white; min-width: 0; }
+.contract-form legend { color: #315e4c; padding: 0 6px; font-family: "Noto Sans TC:Bold", sans-serif; }
+.contract-field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.contract-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.contract-field input, .contract-field textarea { width: 100%; min-width: 0; padding: 9px 10px; border: 1px solid #9caea5; border-radius: 6px; background: white; font: inherit; }
+.contract-field textarea { resize: vertical; }
+.contract-form fieldset > .contract-field, .contract-form .contract-note { margin-bottom: 12px; }
+.contract-form fieldset > .contract-field { margin-top: 16px; }
+.contract-checks { display: flex; flex-wrap: wrap; gap: 12px 20px; }
+.contract-checks label { display: flex; align-items: center; gap: 8px; }
+.contract-checks input { accent-color: #315e4c; width: 18px; height: 18px; }
+.contract-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px; margin-bottom: 16px; }
+.contract-error { color: #a12f2f; }
+.digital-contract-dialog :is(button, input, textarea):focus-visible, .digital-contract-entry button:focus-visible { outline: 3px solid #679d86; outline-offset: 3px; }
+.digital-contract-paper { background: white; padding: 32px; line-height: 1.7; overflow-wrap: anywhere; }
+.digital-contract-paper header { text-align: center; margin-bottom: 24px; }
+.digital-contract-paper h2 { font-family: "Noto Sans TC:Bold", sans-serif; font-size: 26px; color: #315e4c; }
+.contract-eyebrow { color: #64766f; font-size: 14px; }
+.contract-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.contract-meta dt { font-size: 13px; color: #64766f; }
+.digital-contract-paper section { margin-top: 20px; }
+.digital-contract-paper h3 { font-family: "Noto Sans TC:Bold", sans-serif; color: #315e4c; margin-bottom: 8px; }
+.digital-contract-paper p { white-space: pre-wrap; margin-top: 6px; }
+.digital-contract-paper table { width: 100%; border-collapse: collapse; }
+.digital-contract-paper th, .digital-contract-paper td { padding: 8px; border: 1px solid #d6ded3; text-align: left; }
+.contract-signatures { display: flex; flex-wrap: wrap; gap: 24px; margin-top: 32px; }
+@media (max-width: 600px) {
+  .digital-contract-dialog { padding: 20px; }
+  .contract-field-grid, .contract-meta { grid-template-columns: 1fr; }
+  .contract-form fieldset { padding: 14px; }
+  .digital-contract-paper { padding: 16px; }
+  .contract-dialog-header h2, .digital-contract-paper h2 { font-size: 22px; }
+}
+@media print {
+  @page { size: A4; margin: 15mm; }
+  body:has(.digital-contract-dialog[open]) { overflow: visible !important; background: white; }
+  body:has(.digital-contract-dialog[open]) > :not(.digital-contract-dialog) { display: none !important; }
+  .digital-contract-dialog[open] { position: static !important; display: block !important; width: 100% !important; max-width: none; max-height: none; height: auto; margin: 0; padding: 0; border: 0; border-radius: 0; overflow: visible; background: white; }
+  .digital-contract-dialog::backdrop { display: none; }
+  .contract-dialog-header, .contract-actions, .contract-form { display: none !important; }
+  .digital-contract-paper { padding: 0; color: black; font-size: 11pt; line-height: 1.5; }
+  .digital-contract-paper h2 { font-size: 20pt; }
+  .contract-meta { grid-template-columns: 1fr 1fr; }
+  .digital-contract-paper section { margin-top: 12px; }
+  .digital-contract-paper h3 { break-after: avoid; }
+  .digital-contract-paper tr, .contract-signatures { break-inside: avoid; }
+}
+
+.contract-family-identity { display: flex; align-items: center; gap: 14px; margin: 16px 0; }
+.contract-family-identity > img { width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0; }
+.contract-family-identity .contract-field { flex: 1; }
+.contract-member-group { margin-bottom: 20px; }
+.contract-member-group > p { margin-bottom: 10px; }
+.contract-member-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.contract-member-option { display: flex; align-items: center; gap: 10px; border: 1px solid #d6ded3; border-radius: 12px; padding: 12px; cursor: pointer; }
+.contract-member-option[data-selected="true"] { background: #e8f0eb; border-color: #315e4c; }
+.contract-member-option input { accent-color: #315e4c; width: 18px; height: 18px; flex-shrink: 0; }
+.contract-member-option img { width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; }
+@media (max-width: 600px) { .contract-member-options { grid-template-columns: 1fr; } }
