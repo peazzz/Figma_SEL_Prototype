@@ -44,3 +44,23 @@
 
 .assistant-panel-primary { background: #315e4c; color: #fff; }
 .assistant-panel-secondary { background: #e8f0eb; color: #315e4c; }
+
+.back-to-top {
+  position: fixed;
+  right: calc(max(20px, env(safe-area-inset-right)) + 62px);
+  bottom: max(20px, env(safe-area-inset-bottom));
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border: 1px solid #315e4c;
+  border-radius: 50%;
+  background: #e8f0eb;
+  color: #315e4c;
+  box-shadow: 0 4px 8px rgb(0 0 0 / 15%);
+  cursor: pointer;
+}
+.back-to-top:hover { background: #d6e6db; }
+.back-to-top:focus-visible { outline: 3px solid #315e4c; outline-offset: 3px; }
+@media print { .back-to-top { display: none; } }

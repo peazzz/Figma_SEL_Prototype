@@ -1,0 +1,7 @@
+.family-details-dialog .family-delete-entry { display:block; margin-top:24px; padding:12px 0; width:100%; border-top:1px solid #eadbd8; border-radius:0; background:transparent; color:#b42332; text-align:left; }
+.delete-family-dialog h2 { font-size:24px; overflow-wrap:anywhere; }
+.delete-family-dialog header { align-items:flex-start; }
+.delete-family-dialog p { line-height:1.8; color:#64766f; margin:12px 0; }
+.delete-family-dialog .delete-family-warning { background:#fff2f0; color:#a52a35; border-radius:12px; padding:12px; }
+.delete-family-dialog label { display:block; color:#315e4c; margin:18px 0 8px; }
+.delete-family-dialog .family-delete-confirm { background:#c43744; }

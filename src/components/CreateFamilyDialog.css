@@ -1,0 +1,13 @@
+.create-family-step { font-size:24px; margin-right:auto; }
+.create-family-dialog header h2 { flex-shrink:0; }
+.create-family-dialog h3 { color:#64766f; font-size:14px; }
+.create-member-actions { display:flex; align-items:center; gap:5px; }
+.create-family-dialog .member-row .member-name { font-size:18px; }
+.create-family-dialog .member-outline { padding:10px 8px; font-size:14px; }
+.create-family-parent { color:#315e4c; font-size:14px; }
+.create-family-dialog .create-family-complete { width:100%; margin-top:24px; }
+.create-family-dialog footer { padding-top:12px; }
+.created-family-card { background:white; padding:22px; border-radius:20px; flex:1; min-width:0; display:flex; flex-direction:column; gap:10px; color:#253e38; }
+.created-family-heading { display:flex; align-items:center; justify-content:center; gap:10px; font-size:20px; font-weight:700; overflow-wrap:anywhere; }
+.created-family-heading img { width:45px; height:45px; }
+@media(max-width:420px) { .create-family-dialog .member-row { flex-wrap:wrap; } .create-member-actions { margin-left:auto; } }

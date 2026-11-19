@@ -1,0 +1,12 @@
+.family-meeting-entry { background: #fff0ec; height: 100%; }
+.family-meeting-entry ul { padding-left: 20px; list-style: disc; color: #64766f; line-height: 1.8; font-size: 15px; }
+.family-meeting-entry > button { margin-top: auto; }
+.family-meeting-dialog .contract-field select { width: 100%; min-width: 0; padding: 9px 10px; border: 1px solid #9caea5; border-radius: 6px; background: white; font: inherit; }
+.family-meeting-dialog select:focus-visible { outline: 3px solid #679d86; outline-offset: 3px; }
+.family-meeting-dialog .contract-member-group { margin-top: 20px; }
+.meeting-action-editor { display: flex; flex-direction: column; gap: 12px; padding: 16px; border: 1px solid #d6ded3; border-radius: 10px; margin-bottom: 16px; }
+.meeting-action-editor > button { align-self: flex-start; }
+.meeting-action-summary > div { padding: 10px 0; border-bottom: 1px solid #d6ded3; break-inside: avoid; }
+@media (max-width: 600px) {
+  [data-node-id="7:1343"] { flex-direction: column; align-items: stretch; }
+}

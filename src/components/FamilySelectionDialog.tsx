@@ -2,9 +2,10 @@ import { familyProfiles } from "../FamilyProfile";
 import { useEffect, useRef } from "react";
 import "./FamilySelectionDialog.css";
 
-const families = familyProfiles.map((family) => ({ name: family.name, image: import.meta.env.BASE_URL + "assets/" + family.image }));
+const defaultFamilies = familyProfiles.map((family) => ({ name: family.name, image: import.meta.env.BASE_URL + "assets/" + family.image }));
 
-export default function FamilySelectionDialog({ selected, onSelect, onClose }: {
+export default function FamilySelectionDialog({ selected, onSelect, onClose, families = defaultFamilies }: {
+  families?: { name: string; image: string; label?: string }[];
   selected: string;
   onSelect: (name: string) => void;
   onClose: () => void;
@@ -42,7 +43,7 @@ export default function FamilySelectionDialog({ selected, onSelect, onClose }: {
         <button key={family.name} type="button" className="family-selection-option"
           aria-pressed={selected === family.name} onClick={() => onSelect(family.name)}>
           <img src={family.image} alt="" width="100" height="100" />
-          <span>{family.name}</span>
+          <span>{family.label ?? family.name}</span>
         </button>
       ))}
     </dialog>

@@ -46,7 +46,7 @@ export function useSectionNavigation(sections: Section[], selected: Section | un
       }
       let current: Section | undefined;
       for (const { section, element } of targets) {
-        if (element.getBoundingClientRect().top <= readingLine) current = section;
+        if (element.getBoundingClientRect().top <= readingLine + 2) current = section;
       }
       const atBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
       if (atBottom) current = targets.at(-1)?.section ?? current;
@@ -72,7 +72,7 @@ export function useSectionNavigation(sections: Section[], selected: Section | un
           const sectionRoot = target?.closest("[data-collapsible-section]");
           sectionRoot?.dispatchEvent(new Event("expand-section"));
         });
-        target?.scrollIntoView({ block: "start", behavior: "instant" });
+        target?.scrollIntoView({ block: "start", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
         skipNavigationScroll = window.scrollY !== previousY;
       } else {
         window.scrollTo({ top: 0, left: 0, behavior: "instant" });

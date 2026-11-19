@@ -1,5 +1,10 @@
+import RelativeDialog, { relativeAge, initialRelativeProfiles, type RelativeProfile } from "../components/RelativeDialog";
+import JoinFamilyDialog from "../components/JoinFamilyDialog";
+import CreateFamilyDialog, { type CreatedFamily } from "../components/CreateFamilyDialog";
+import FamilyDetailsDialog, { initialFamilyDetails } from "../components/FamilyDetailsDialog";
 import { useFamilyProfile } from "../FamilyProfile";
 import { useRef, useState } from "react";
+import FamilyMemberDialog, { initialMembers } from "../components/FamilyMemberDialog";
 import FamilySelectionDialog from "../components/FamilySelectionDialog";
 import AccountFamilyNavigation, { familySections } from "../components/AccountFamilyNavigation";
 
@@ -29,8 +34,33 @@ const imgUserPlus = `${assetPathPrefix}/00eba.svg`;
 
 export default function Component() {
   const { selectedFamily, setSelectedFamily } = useFamilyProfile();
+  const [relativesAdded, setRelativesAdded] = useState<RelativeProfile[]>(initialRelativeProfiles);
+  const [relativeEditor, setRelativeEditor] = useState<RelativeProfile | "new" | null>(null);
+  const [joinOpen, setJoinOpen] = useState(false);
+  const [homeDeleted, setHomeDeleted] = useState(false);
+  const [createdDetailsOpen, setCreatedDetailsOpen] = useState(false);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [createdFamily, setCreatedFamily] = useState<CreatedFamily | null>(null);
+  const [familyDetails, setFamilyDetails] = useState(initialFamilyDetails);
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [familyMembers, setFamilyMembers] = useState(initialMembers);
+  const canManageFamily = !homeDeleted && familyMembers.some(member => member.id === "mom" && member.parent);
+  const [memberDialogOpen, setMemberDialogOpen] = useState(false);
   const [familyDialogOpen, setFamilyDialogOpen] = useState(false);
   const familyTriggerRef = useRef<HTMLButtonElement>(null);
+  const availableFamilies = [
+    ...(!homeDeleted ? [{ name: "我的家庭1", label: familyDetails.name, image: assetPathPrefix + "/family-choice-home.png" }] : []),
+    { name: "王家", image: assetPathPrefix + "/family-choice-wang.png" },
+    ...(createdFamily ? [{ name: "created-family", label: createdFamily.details.name, image: assetPathPrefix + "/5b005.png" }] : []),
+  ];
+  function deleteFamily(target: "home" | "created") {
+    if (target === "home" && !canManageFamily) return;
+    if (target === "created" && !createdFamily?.members.some(member => member.id === "mom" && member.parent)) return;
+    setDetailsOpen(false); setCreatedDetailsOpen(false); setMemberDialogOpen(false);
+    if (target === "home") setHomeDeleted(true); else setCreatedFamily(null);
+    const selectedId = target === "home" ? "我的家庭1" : "created-family";
+    if (selectedFamily === selectedId) { setSelectedFamily(""); setFamilyDialogOpen(true); }
+  }
   function closeFamilyDialog() {
     setFamilyDialogOpen(false);
     familyTriggerRef.current?.focus({ preventScroll: true });
@@ -65,7 +95,7 @@ export default function Component() {
               <span className="font-['Noto_Sans_TC:Light'] font-light leading-[1.55] text-black">
                 目前登入家庭：
               </span>
-              <span className="font-['Noto_Sans_TC:Bold'] font-bold leading-[1.55]">{selectedFamily}</span>
+              <span className="font-['Noto_Sans_TC:Bold'] font-bold leading-[1.55]">{availableFamilies.find(family => family.name === selectedFamily)?.label ?? (selectedFamily || "尚未選擇家庭")}</span>
             </p>
           </div>
         </div>
@@ -229,7 +259,7 @@ export default function Component() {
               className="[word-break:break-word] flex-[1_0_0] font-['Noto_Sans_TC:Light'] font-light leading-[1.5] min-w-px relative text-[#253e38] text-[20px] text-right"
               data-node-id="7:750"
             >
-              2/3
+              {availableFamilies.length}/3
             </p>
           </div>
           <div
@@ -237,7 +267,7 @@ export default function Component() {
             data-node-id="7:751"
             data-name="家庭"
           >
-            <div
+            {!homeDeleted && <div
               className="content-stretch flex flex-[1_0_0] flex-col items-start justify-center min-w-px relative"
               data-node-id="7:752"
               data-name="我的家庭1"
@@ -248,8 +278,8 @@ export default function Component() {
                 data-node-id="7:753"
                 data-name="我的家庭1"
               >
-                <div
-                  className="content-stretch flex gap-[10px] items-center justify-center relative shrink-0 w-full"
+                <button type="button" aria-label={"查看" + familyDetails.name + "家庭資料"} onClick={(event) => { event.stopPropagation(); setDetailsOpen(true); }}
+                  className="family-details-trigger content-stretch flex gap-[10px] items-center justify-center relative shrink-0 w-full"
                   data-node-id="7:754"
                 >
                   <div
@@ -269,176 +299,25 @@ export default function Component() {
                     className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-[1.55] relative shrink-0 text-[#253e38] text-[20px] whitespace-nowrap"
                     data-node-id="7:756"
                   >
-                    我的家庭1
+                    {familyDetails.name}
                   </p>
-                </div>
+                </button>
                 <p
                   className="[word-break:break-word] font-['Noto_Sans_TC:Regular'] font-normal leading-[1.55] min-w-full relative shrink-0 text-[#64766f] text-[14px] w-[min-content]"
                   data-node-id="7:758"
                 >
-                  家庭成員(4)
+                  家庭成員({familyMembers.length})
                 </p>
-                <div
-                  className="content-stretch flex gap-[10px] items-center relative shrink-0 w-full"
-                  data-node-id="7:759"
-                  data-name="媽媽"
-                >
-                  <div
-                    className="relative shrink-0 size-[45px]"
-                    data-node-id="7:760"
-                    data-name="媽媽"
-                  >
-                    <img
-                      alt=""
-                      className="absolute block inset-0 max-w-none size-full"
-                      height="45"
-                      src={img}
-                      width="45"
-                    />
-                  </div>
-                  <div
-                    className="[word-break:break-word] content-stretch flex flex-[1_0_0] items-center leading-[1.55] min-w-px relative whitespace-nowrap"
-                    data-node-id="7:761"
-                  >
-                    <p
-                      className="font-['Noto_Sans_TC:Bold'] font-bold relative shrink-0 text-[#253e38] text-[20px]"
-                      data-node-id="7:762"
-                    >
-                      媽媽
-                    </p>
-                    <p
-                      className="font-['Noto_Sans_TC:Regular'] font-normal relative shrink-0 text-[#717171] text-[12px] text-right"
-                      data-node-id="7:763"
-                    >
-                      (家長)(我)
-                    </p>
-                  </div>
-                  <p
-                    className="[word-break:break-word] font-['Noto_Sans_TC:Regular'] font-normal leading-[1.55] relative shrink-0 text-[#717171] text-[16px] text-right whitespace-nowrap"
-                    data-node-id="7:764"
-                  >
-                    王媽
-                  </p>
-                </div>
-                <div
-                  className="content-stretch flex gap-[10px] items-center relative shrink-0 w-full"
-                  data-node-id="7:765"
-                  data-name="爸爸"
-                >
-                  <div
-                    className="relative shrink-0 size-[45px]"
-                    data-node-id="7:766"
-                    data-name="爸爸"
-                  >
-                    <img
-                      alt=""
-                      className="absolute block inset-0 max-w-none size-full"
-                      height="45"
-                      src={img2}
-                      width="45"
-                    />
-                  </div>
-                  <div
-                    className="[word-break:break-word] content-stretch flex flex-[1_0_0] items-center leading-[1.55] min-w-px relative whitespace-nowrap"
-                    data-node-id="7:767"
-                  >
-                    <p
-                      className="font-['Noto_Sans_TC:Bold'] font-bold relative shrink-0 text-[#253e38] text-[20px]"
-                      data-node-id="7:768"
-                    >
-                      爸爸
-                    </p>
-                    <p
-                      className="font-['Noto_Sans_TC:Regular'] font-normal relative shrink-0 text-[#717171] text-[12px] text-right"
-                      data-node-id="7:769"
-                    >
-                      (家長)
-                    </p>
-                  </div>
-                  <p
-                    className="[word-break:break-word] font-['Noto_Sans_TC:Regular'] font-normal leading-[1.55] relative shrink-0 text-[#717171] text-[16px] text-right whitespace-nowrap"
-                    data-node-id="7:770"
-                  >
-                    黃爸
-                  </p>
-                </div>
-                <div
-                  className="content-stretch flex gap-[10px] items-center relative shrink-0 w-full"
-                  data-node-id="7:771"
-                  data-name="妹妹"
-                >
-                  <div
-                    className="relative shrink-0 size-[45px]"
-                    data-node-id="7:772"
-                    data-name="妹妹"
-                  >
-                    <img
-                      alt=""
-                      className="absolute block inset-0 max-w-none size-full"
-                      height="45"
-                      src={img3}
-                      width="45"
-                    />
-                  </div>
-                  <div
-                    className="content-stretch flex flex-[1_0_0] items-center min-w-px relative"
-                    data-node-id="7:773"
-                  >
-                    <p
-                      className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-[1.55] relative shrink-0 text-[#253e38] text-[20px] whitespace-nowrap"
-                      data-node-id="7:774"
-                    >
-                      妹妹
-                    </p>
-                  </div>
-                  <p
-                    className="[word-break:break-word] font-['Noto_Sans_TC:Regular'] font-normal leading-[1.55] relative shrink-0 text-[#717171] text-[16px] text-right whitespace-nowrap"
-                    data-node-id="7:775"
-                  >
-                    黃妹
-                  </p>
-                </div>
-                <div
-                  className="content-stretch flex gap-[10px] items-center relative shrink-0 w-full"
-                  data-node-id="7:776"
-                  data-name="哥哥"
-                >
-                  <div
-                    className="relative shrink-0 size-[45px]"
-                    data-node-id="7:777"
-                    data-name="哥哥"
-                  >
-                    <img
-                      alt=""
-                      className="absolute block inset-0 max-w-none size-full"
-                      height="45"
-                      src={img4}
-                      width="45"
-                    />
-                  </div>
-                  <div
-                    className="content-stretch flex flex-[1_0_0] items-center min-w-px relative"
-                    data-node-id="7:778"
-                  >
-                    <p
-                      className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-[1.55] relative shrink-0 text-[#253e38] text-[20px] whitespace-nowrap"
-                      data-node-id="7:779"
-                    >
-                      哥哥
-                    </p>
-                  </div>
-                  <p
-                    className="[word-break:break-word] font-['Noto_Sans_TC:Regular'] font-normal leading-[1.55] relative shrink-0 text-[#717171] text-[16px] text-right whitespace-nowrap"
-                    data-node-id="7:780"
-                  >
-                    黃哥
-                  </p>
-                </div>
-                <div
+                {familyMembers.map(member => <div key={member.id} className="family-current-member" data-member-id={member.id}>
+                  <img src={assetPathPrefix + "/" + member.avatar} alt="" width="45" height="45"/>
+                  <div><strong>{member.name}</strong><small>{member.parent ? "(家長)" : ""}{member.id === "mom" ? "(我)" : ""}</small></div>
+                  {member.hasEditedName && <span>{member.realName}</span>}
+                </div>)}
+                {canManageFamily && <div
                   className="content-stretch cursor-pointer flex gap-[10px] items-start pt-[20px] relative shrink-0 w-full"
                   data-node-id="7:781"
                 >
-                  <a
+                  <button type="button" onClick={(event) => { event.stopPropagation(); setMemberDialogOpen(true); }}
                     className="bg-[#315e4c] content-stretch flex flex-[1_0_0] gap-[8px] items-center justify-center min-w-px overflow-clip px-[12px] py-[14px] relative rounded-[12px]"
                     data-node-id="7:782"
                     data-name="編輯成員"
@@ -449,8 +328,8 @@ export default function Component() {
                     >
                       編輯成員
                     </p>
-                  </a>
-                  <a
+                  </button>
+                  <button type="button" onClick={(event) => { event.stopPropagation(); setDetailsOpen(true); }}
                     className="bg-white border border-[#315e4c] border-solid content-stretch flex flex-[1_0_0] gap-[8px] items-center justify-center min-w-px overflow-clip px-[12px] py-[14px] relative rounded-[12px]"
                     data-node-id="7:783"
                     data-name="家庭資料"
@@ -461,8 +340,8 @@ export default function Component() {
                     >
                       家庭資料
                     </p>
-                  </a>
-                </div>
+                  </button>
+                </div>}
               </div>
               <p
                 className="[word-break:break-word] font-['Noto_Sans_TC:Light'] font-light leading-[1.5] relative shrink-0 text-[#315e4c] text-[12px] whitespace-nowrap"
@@ -471,7 +350,7 @@ export default function Component() {
               >
                 ．目前登入家庭
               </p>
-            </div>
+            </div>}
             <div className="flex flex-1 min-w-0 flex-col items-stretch">
             <div
               className="bg-white content-stretch flex flex-[1_0_0] flex-col gap-[10px] items-center min-w-px overflow-clip p-[22px] relative rounded-[20px]"
@@ -854,7 +733,11 @@ export default function Component() {
             </div>
               {selectedFamily === "王家" && <p className="family-login-marker">．目前登入家庭</p>}
             </div>
-            <div
+            {createdFamily ? <section style={{ border: selectedFamily === "created-family" ? "2px solid #056b0c" : "2px solid transparent" }} className="created-family-card" aria-label={createdFamily.details.name}>
+              <button type="button" className="created-family-heading family-details-trigger" onClick={event => { event.stopPropagation(); setCreatedDetailsOpen(true); }}><img src={assetPathPrefix + "/5b005.png"} alt=""/><h3>{createdFamily.details.name}</h3></button>
+              <p className="member-caption">家庭成員({createdFamily.members.length})</p>
+              {createdFamily.members.map(member => <div key={member.id} className="family-current-member"><img src={assetPathPrefix + "/" + member.avatar} alt=""/><div><strong>{member.name}</strong><small>{member.parent ? "(家長)" : ""}{member.id === "mom" ? "(我)" : ""}</small></div>{member.hasEditedName && <span>{member.realName}</span>}</div>)}
+            </section> : <div
               className="bg-white content-stretch flex flex-[1_0_0] flex-col gap-[10px] items-start min-w-px overflow-clip p-[22px] relative rounded-[20px]"
               data-node-id="7:846"
               data-name="空"
@@ -875,7 +758,7 @@ export default function Component() {
                 className="content-stretch cursor-pointer flex gap-[10px] items-start relative shrink-0"
                 data-node-id="7:849"
               >
-                <a
+                <button type="button" onClick={event => { event.stopPropagation(); setCreateOpen(true); }}
                   className="bg-white border border-[#d6ded3] border-solid content-stretch flex gap-[8px] items-center justify-center overflow-clip px-[12px] py-[14px] relative rounded-[12px] shrink-0"
                   data-node-id="7:850"
                   data-name="建立家庭"
@@ -886,8 +769,8 @@ export default function Component() {
                   >
                     建立家庭
                   </p>
-                </a>
-                <a
+                </button>
+                <button type="button" onClick={event => { event.stopPropagation(); setJoinOpen(true); }}
                   className="bg-white border border-[#d6ded3] border-solid content-stretch flex gap-[8px] items-center justify-center overflow-clip px-[12px] py-[14px] relative rounded-[12px] shrink-0"
                   data-node-id="7:851"
                   data-name="加入家庭"
@@ -898,9 +781,9 @@ export default function Component() {
                   >
                     加入家庭
                   </p>
-                </a>
+                </button>
               </div>
-            </div>
+            </div>}
           </div>
           <div className="h-0 relative shrink-0 w-[1096px]" data-node-id="7:861">
             <div className="absolute inset-[-0.5px_0]">
@@ -927,7 +810,7 @@ export default function Component() {
                 className="content-stretch flex flex-col items-center justify-center relative shrink-0"
                 data-node-id="7:865"
               >
-                <a
+                <button type="button" onClick={event => { event.stopPropagation(); setRelativeEditor("new"); }}
                   className="bg-[#315e4c] content-stretch cursor-pointer flex gap-[8px] items-center justify-center overflow-clip px-[12px] py-[14px] relative rounded-[12px] shrink-0 w-full"
                   data-node-id="7:866"
                   data-name="新增"
@@ -947,284 +830,26 @@ export default function Component() {
                   >
                     新增
                   </p>
-                </a>
+                </button>
               </div>
             </div>
             <div
-              className="content-stretch flex gap-[14px] items-start relative shrink-0 w-full"
+              className="family-relatives-grid"
               data-node-id="7:868"
               data-name="家庭成員"
             >
-              <div
-                className="bg-[#d2cdc4] border-3 border-[#8c8c8c] border-solid content-stretch flex flex-col gap-[10px] items-start overflow-clip px-[10px] py-[22px] relative rounded-[20px] shrink-0 w-[208px]"
-                data-node-id="7:869"
-                data-name="哥哥"
-              >
-                <div
-                  className="content-stretch flex flex-col gap-[10px] items-center justify-center relative shrink-0 w-full"
-                  data-node-id="7:870"
-                >
-                  <div
-                    className="relative shrink-0 size-[150px]"
-                    data-node-id="7:871"
-                    data-name="哥哥"
-                  >
-                    <img
-                      alt=""
-                      className="absolute block inset-0 max-w-none size-full"
-                      height="150"
-                      src={img15}
-                      width="150"
-                    />
-                  </div>
-                  <p
-                    className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-[1.55] relative shrink-0 text-[#253e38] text-[20px] whitespace-nowrap"
-                    data-node-id="7:872"
-                  >
-                    黃哥
-                  </p>
-                  <p
-                    className="[word-break:break-word] font-['Noto_Sans_TC:Regular'] font-normal leading-[1.55] relative shrink-0 text-[#64766f] text-[14px] whitespace-nowrap"
-                    data-node-id="7:873"
-                  >
-                    9歲·兒子
-                  </p>
-                </div>
-                <div
-                  className="content-stretch flex gap-[10px] items-start relative shrink-0 w-full"
-                  data-node-id="7:874"
-                >
-                  <a
-                    className="bg-white border border-[#d6ded3] border-solid content-stretch cursor-pointer flex flex-[1_0_0] gap-[8px] items-center justify-center min-w-px overflow-clip px-[12px] py-[14px] relative rounded-[12px]"
-                    data-node-id="7:875"
-                    data-name="編輯資料"
-                  >
-                    <p
-                      className="[word-break:break-word] font-['Noto_Sans_TC:Medium'] font-medium leading-none relative shrink-0 text-[#315e4c] text-[15px] text-left whitespace-nowrap"
-                      data-node-id="I7:875;4185:3781"
-                    >
-                      個人資料
-                    </p>
-                  </a>
-                </div>
-              </div>
-              <div
-                className="bg-[#eeabca] border-3 border-[#8c8c8c] border-solid content-stretch flex flex-col gap-[10px] items-start overflow-clip px-[10px] py-[22px] relative rounded-[20px] shrink-0 w-[208px]"
-                data-node-id="7:877"
-                data-name="妹妹"
-              >
-                <div
-                  className="content-stretch flex flex-col gap-[10px] items-center justify-center relative shrink-0 w-full"
-                  data-node-id="7:878"
-                >
-                  <div
-                    className="relative shrink-0 size-[150px]"
-                    data-node-id="7:879"
-                    data-name="妹妹"
-                  >
-                    <img
-                      alt=""
-                      className="absolute block inset-0 max-w-none size-full"
-                      height="150"
-                      src={img16}
-                      width="150"
-                    />
-                  </div>
-                  <p
-                    className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-[1.55] relative shrink-0 text-[#253e38] text-[20px] whitespace-nowrap"
-                    data-node-id="7:880"
-                  >
-                    黃妹
-                  </p>
-                  <p
-                    className="[word-break:break-word] font-['Noto_Sans_TC:Regular'] font-normal leading-[1.55] relative shrink-0 text-[#64766f] text-[14px] whitespace-nowrap"
-                    data-node-id="7:881"
-                  >
-                    6歲·女兒
-                  </p>
-                </div>
-                <div
-                  className="content-stretch flex gap-[10px] items-start relative shrink-0 w-full"
-                  data-node-id="7:882"
-                >
-                  <a
-                    className="bg-white border border-[#d6ded3] border-solid content-stretch cursor-pointer flex flex-[1_0_0] gap-[8px] items-center justify-center min-w-px overflow-clip px-[12px] py-[14px] relative rounded-[12px]"
-                    data-node-id="7:883"
-                    data-name="編輯資料"
-                  >
-                    <p
-                      className="[word-break:break-word] font-['Noto_Sans_TC:Medium'] font-medium leading-none relative shrink-0 text-[#315e4c] text-[15px] text-left whitespace-nowrap"
-                      data-node-id="I7:883;4185:3781"
-                    >
-                      個人資料
-                    </p>
-                  </a>
-                </div>
-              </div>
-              <div
-                className="bg-[#abe2ee] border-3 border-[#8c8c8c] border-solid content-stretch flex flex-col gap-[10px] items-start overflow-clip px-[10px] py-[22px] relative rounded-[20px] shrink-0 w-[208px]"
-                data-node-id="7:885"
-                data-name="寵物"
-              >
-                <div
-                  className="content-stretch flex flex-col gap-[10px] items-center justify-center relative shrink-0 w-full"
-                  data-node-id="7:886"
-                >
-                  <div
-                    className="relative shrink-0 size-[150px]"
-                    data-node-id="7:887"
-                    data-name="寵物"
-                  >
-                    <img
-                      alt=""
-                      className="absolute block inset-0 max-w-none size-full"
-                      height="150"
-                      src={img17}
-                      width="150"
-                    />
-                  </div>
-                  <p
-                    className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-[1.55] relative shrink-0 text-[#253e38] text-[20px] whitespace-nowrap"
-                    data-node-id="7:888"
-                  >
-                    鼠鼠
-                  </p>
-                  <p
-                    className="[word-break:break-word] font-['Noto_Sans_TC:Regular'] font-normal leading-[1.55] relative shrink-0 text-[#64766f] text-[14px] whitespace-nowrap"
-                    data-node-id="7:889"
-                  >
-                    1歲·三線鼠
-                  </p>
-                </div>
-                <div
-                  className="content-stretch flex gap-[10px] items-start relative shrink-0 w-full"
-                  data-node-id="7:890"
-                >
-                  <a
-                    className="bg-white border border-[#d6ded3] border-solid content-stretch cursor-pointer flex flex-[1_0_0] gap-[8px] items-center justify-center min-w-px overflow-clip px-[12px] py-[14px] relative rounded-[12px]"
-                    data-node-id="7:891"
-                    data-name="編輯資料"
-                  >
-                    <p
-                      className="[word-break:break-word] font-['Noto_Sans_TC:Medium'] font-medium leading-none relative shrink-0 text-[#315e4c] text-[15px] text-left whitespace-nowrap"
-                      data-node-id="I7:891;4185:3781"
-                    >
-                      個人資料
-                    </p>
-                  </a>
-                </div>
-              </div>
-              <div
-                className="bg-[#e2eeab] border-3 border-[#8c8c8c] border-solid content-stretch flex flex-col gap-[10px] items-start overflow-clip px-[10px] py-[22px] relative rounded-[20px] shrink-0 w-[208px]"
-                data-node-id="7:893"
-                data-name="爸爸"
-              >
-                <div
-                  className="content-stretch flex flex-col gap-[10px] items-center justify-center relative shrink-0 w-full"
-                  data-node-id="7:894"
-                >
-                  <div
-                    className="relative shrink-0 size-[150px]"
-                    data-node-id="7:895"
-                    data-name="爸爸"
-                  >
-                    <img
-                      alt=""
-                      className="absolute block inset-0 max-w-none size-full"
-                      height="150"
-                      src={img18}
-                      width="150"
-                    />
-                  </div>
-                  <p
-                    className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-[1.55] relative shrink-0 text-[#253e38] text-[20px] whitespace-nowrap"
-                    data-node-id="7:896"
-                  >
-                    黃爸
-                  </p>
-                  <p
-                    className="[word-break:break-word] font-['Noto_Sans_TC:Regular'] font-normal leading-[1.55] relative shrink-0 text-[#64766f] text-[14px] whitespace-nowrap"
-                    data-node-id="7:897"
-                  >
-                    39歲·丈夫
-                  </p>
-                </div>
-                <div
-                  className="content-stretch flex gap-[10px] items-start relative shrink-0 w-full"
-                  data-node-id="7:898"
-                >
-                  <a
-                    className="bg-white border border-[#d6ded3] border-solid content-stretch cursor-pointer flex flex-[1_0_0] gap-[8px] items-center justify-center min-w-px overflow-clip px-[12px] py-[14px] relative rounded-[12px]"
-                    data-node-id="7:899"
-                    data-name="查看資料"
-                  >
-                    <p
-                      className="[word-break:break-word] font-['Noto_Sans_TC:Medium'] font-medium leading-none relative shrink-0 text-[#315e4c] text-[15px] text-left whitespace-nowrap"
-                      data-node-id="I7:899;4185:3781"
-                    >
-                      個人資料
-                    </p>
-                  </a>
-                </div>
-              </div>
-              <div
-                className="bg-[#eed1ab] border-3 border-[#8c8c8c] border-solid content-stretch flex flex-col gap-[10px] items-start overflow-clip px-[10px] py-[22px] relative rounded-[20px] shrink-0 w-[208px]"
-                data-node-id="7:901"
-                data-name="阿公"
-              >
-                <div
-                  className="content-stretch flex flex-col gap-[10px] items-center justify-center relative shrink-0 w-full"
-                  data-node-id="7:902"
-                >
-                  <div
-                    className="relative shrink-0 size-[150px]"
-                    data-node-id="7:903"
-                    data-name="阿公"
-                  >
-                    <img
-                      alt=""
-                      className="absolute block inset-0 max-w-none size-full"
-                      height="150"
-                      src={img19}
-                      width="150"
-                    />
-                  </div>
-                  <p
-                    className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-[1.55] relative shrink-0 text-[#253e38] text-[20px] whitespace-nowrap"
-                    data-node-id="7:904"
-                  >
-                    王爺
-                  </p>
-                  <p
-                    className="[word-break:break-word] font-['Noto_Sans_TC:Regular'] font-normal leading-[1.55] relative shrink-0 text-[#64766f] text-[14px] whitespace-nowrap"
-                    data-node-id="7:905"
-                  >
-                    77歲·阿公
-                  </p>
-                </div>
-                <div
-                  className="content-stretch flex gap-[10px] items-start relative shrink-0 w-full"
-                  data-node-id="7:906"
-                >
-                  <a
-                    className="bg-white border border-[#d6ded3] border-solid content-stretch cursor-pointer flex flex-[1_0_0] gap-[8px] items-center justify-center min-w-px overflow-clip px-[12px] py-[14px] relative rounded-[12px]"
-                    data-node-id="7:907"
-                    data-name="查看資料"
-                  >
-                    <p
-                      className="[word-break:break-word] font-['Noto_Sans_TC:Medium'] font-medium leading-none relative shrink-0 text-[#315e4c] text-[15px] text-left whitespace-nowrap"
-                      data-node-id="I7:907;4185:3781"
-                    >
-                      個人資料
-                    </p>
-                  </a>
-                </div>
-              </div>
+              {relativesAdded.map(relative => <div key={relative.id} className="new-relative-card" data-relative-id={relative.id} style={{ backgroundColor: relative.color }}><img src={assetPathPrefix + "/" + relative.avatar} alt=""/><strong>{relative.name}</strong><p>{[relativeAge(relative.birthday) || relative.ageLabel, relative.relation].filter(Boolean).join(" · ")}</p><button type="button" onClick={event => { event.stopPropagation(); setRelativeEditor(relative); }}>個人資料</button></div>)}
             </div>
           </div>
         </div>
       </div>
-      {familyDialogOpen && <FamilySelectionDialog selected={selectedFamily} onClose={closeFamilyDialog}
+      {relativeEditor && <RelativeDialog initial={relativeEditor === "new" ? undefined : relativeEditor} onClose={() => setRelativeEditor(null)} onSave={relative => { const original = relativesAdded.find(item => item.id === relative.id); if (original?.owned === false) relative = { ...original, relation: relative.relation }; setFamilyMembers(items => items.map(item => item.id === relative.id ? { ...item, realName: relative.realName, name: item.hasEditedName ? item.name : relative.realName } : item)); setRelativesAdded(items => items.some(item => item.id === relative.id) ? items.map(item => item.id === relative.id ? relative : item) : [...items, relative]); setRelativeEditor(null); }} />}
+      {joinOpen && <JoinFamilyDialog onClose={() => setJoinOpen(false)}/>}
+      {createdDetailsOpen && createdFamily && <FamilyDetailsDialog familyId={createdFamily.id} createdAt={createdFamily.createdAt} details={createdFamily.details} editable actor="媽媽" onSave={details => setCreatedFamily({ ...createdFamily, details })} onDelete={() => deleteFamily("created")} onClose={() => setCreatedDetailsOpen(false)} />}
+      {createOpen && <CreateFamilyDialog extraRelatives={relativesAdded} existingNames={availableFamilies.map(family => family.label ?? family.name)} onClose={() => setCreateOpen(false)} onCreate={family => { setCreatedFamily(family); setCreateOpen(false); }} />}
+      {detailsOpen && !homeDeleted && familyMembers.some(member => member.id === "mom") && <FamilyDetailsDialog details={familyDetails} editable={canManageFamily} actor={familyMembers.find(member => member.id === "mom")?.name ?? "媽媽"} onSave={next => { if (canManageFamily) setFamilyDetails(next); }} onDelete={() => deleteFamily("home")} onClose={() => setDetailsOpen(false)} />}
+      {canManageFamily && <FamilyMemberDialog extraRelatives={relativesAdded} members={familyMembers} setMembers={setFamilyMembers} open={memberDialogOpen} onClose={() => setMemberDialogOpen(false)} />}
+      {familyDialogOpen && <FamilySelectionDialog families={availableFamilies} selected={selectedFamily} onClose={closeFamilyDialog}
         onSelect={(name) => { setSelectedFamily(name); closeFamilyDialog(); }} />}
     </div>
   );

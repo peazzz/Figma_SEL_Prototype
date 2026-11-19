@@ -208,18 +208,18 @@
 }
 
 .design-page [data-name="品牌"],
-.design-page [data-name="媽媽"],
+.design-page [data-name="網站標題與帳號"] [data-name="媽媽"],
 .design-page [data-name^="導覽 /"],
 .design-page [data-name="分頁主題"] > [data-name] {
   cursor: pointer;
 }
 
-.design-page [data-name="媽媽"] {
+.design-page [data-name="網站標題與帳號"] [data-name="媽媽"] {
   border-radius: 50%;
 }
 
-.design-page [data-name="媽媽"]:hover,
-.design-page [data-name="媽媽"]:focus-visible {
+.design-page [data-name="網站標題與帳號"] [data-name="媽媽"]:hover,
+.design-page [data-name="網站標題與帳號"] [data-name="媽媽"]:focus-visible {
   outline: 2px solid #315e4c;
   outline-offset: 2px;
 }
@@ -658,4 +658,27 @@
 }
 @media (max-width: 600px) {
   .emotion-toolkit-grid { grid-template-columns: 1fr; }
+}
+
+.design-page .family-relatives-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, max(150px, calc((100% - 56px) / 5))), 1fr));
+  gap: 14px;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+}
+.design-page .family-relatives-grid > div { width: 100%; min-width: 0; overflow: visible; }
+.design-page .family-relatives-grid > div > div:first-child > div {
+  width: min(150px, 100%);
+  height: auto;
+  aspect-ratio: 1;
+}
+.design-page .family-relatives-grid p { white-space: normal; overflow-wrap: anywhere; text-align: center; }
+.design-page .family-relatives-grid > div > div:last-child { margin-top: auto; }
+@media (max-width: 900px) {
+  .design-page [data-name="頁面主體"] > [data-name="家庭資訊內容"] {
+    width: 100% !important;
+    max-width: 100%;
+  }
 }

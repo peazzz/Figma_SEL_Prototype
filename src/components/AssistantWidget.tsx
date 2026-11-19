@@ -41,6 +41,12 @@ export default function AssistantWidget() {
           <button type="button" className="assistant-panel-secondary" disabled title="聊天功能尚未啟用">開始聊天</button>
         </section>
       )}
+      <button className="back-to-top" type="button" aria-label="回到網頁頂部" title="回到網頁頂部"
+        onClick={() => window.scrollTo({ top: 0, left: 0, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" })}>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M12 19V5m-6 6 6-6 6 6" />
+        </svg>
+      </button>
       <button ref={triggerRef} className="floating-assistant" type="button" aria-label="AI 小幫手" title="AI 小幫手" data-name="AI"
         aria-expanded={open} aria-controls={open ? panelId : undefined} aria-haspopup="dialog" onClick={() => setOpen((value) => !value)}>
         <img src={`${import.meta.env.BASE_URL}assets/74ef4.png`} alt="" width="50" height="50" />

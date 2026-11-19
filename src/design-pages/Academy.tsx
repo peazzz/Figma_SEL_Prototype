@@ -1,3 +1,4 @@
+import FamilyMeeting from "../components/FamilyMeeting";
 import DigitalContract from "../components/DigitalContract";
 import AgeActivityLibrary from "../components/AgeActivityLibrary";
 import ParentVideoCarousel from "../components/ParentVideoCarousel";
@@ -886,19 +887,7 @@ export default function Component() {
                 data-node-id="7:1343"
               >
                 <div className="flex flex-1 min-w-0 self-stretch"><DigitalContract /></div>
-                <div
-                  className="flex flex-[1_0_0] flex-row items-center self-stretch"
-                  data-node-id="7:1351"
-                >
-                  <div className="bg-[#ffe6e6] content-stretch flex flex-[1_0_0] flex-col h-full items-center justify-center min-w-px p-[10px] relative rounded-[12px]">
-                    <div
-                      className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#293d35] text-[24px] text-center whitespace-nowrap"
-                      data-node-id="7:1352"
-                    >
-                      <p className="leading-none">家庭會議模板</p>
-                    </div>
-                  </div>
-                </div>
+                <div className="flex flex-1 min-w-0 self-stretch"><FamilyMeeting /></div>
               </div>
             </div>
           </CollapsibleSection>

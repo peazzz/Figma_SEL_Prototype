@@ -4,7 +4,7 @@ export const accountSections = [
 ];
 
 export const familySections = [
-  { id: "households", label: "我的家庭", target: "家庭" },
+  { id: "households", label: "家庭資訊", target: "家庭資訊" },
   { id: "members", label: "家人與親戚", target: "家庭成員" },
 ];
 
