@@ -56,8 +56,8 @@ export function isValidFamilyDate(draft: FamilyDetails) {
   const date = new Date(Number(draft.year), Number(draft.month) - 1, Number(draft.day));
   return date.getFullYear() === Number(draft.year) && date.getMonth() === Number(draft.month) - 1 && date.getDate() === Number(draft.day);
 }
-export default function FamilyDetailsDialog({ details, editable, actor, onSave, onClose, familyId = "105962", createdAt = "2026/10/6", onDelete }: {
-  onDelete?: () => void; familyId?: string; createdAt?: string; details: FamilyDetails; editable: boolean; actor: string; onSave: (details: FamilyDetails) => void; onClose: () => void;
+export default function FamilyDetailsDialog({ details, editable, actor, onSave, onClose, familyId = "105962", createdAt = "2026/10/6", onDelete, avatar }: {
+  avatar?: string; onDelete?: () => void; familyId?: string; createdAt?: string; details: FamilyDetails; editable: boolean; actor: string; onSave: (details: FamilyDetails) => void; onClose: () => void;
 }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -87,7 +87,7 @@ export default function FamilyDetailsDialog({ details, editable, actor, onSave, 
   return <>{createPortal(<dialog ref={dialogRef} className="family-member-dialog family-details-dialog" aria-labelledby="family-details-title"
     onCancel={event => { event.preventDefault(); saveAndClose(); }} onClick={event => { event.stopPropagation(); if (event.target === event.currentTarget) { const r = event.currentTarget.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) saveAndClose(); } }}>
     <header><h2 id="family-details-title">家庭資料</h2><button type="button" className="member-close" aria-label="關閉家庭資料" onClick={saveAndClose}>×</button></header>
-    <img className="family-details-avatar" src={asset + (editable ? "e0be9.png" : "5b005.png")} alt="家庭頭像" width="150" height="150"/>
+    <img className="family-details-avatar" src={asset + (avatar ?? (editable ? "e0be9.png" : "5b005.png"))} alt="家庭頭像" width="150" height="150"/>
     {editable ? <form ref={formRef} id="family-details-form" onSubmit={event => { event.preventDefault(); saveAndClose(); }}>
       <FamilyDetailsFields draft={draft} update={update}/>
     </form> : <dl className="family-detail-values"><dt>家庭名稱</dt><dd>{details.name}</dd><dt>住家地區</dt><dd>{[details.city, details.district].filter(Boolean).join(" ") || "未填寫"}</dd><dt>成家日期</dt><dd>{details.year}年{details.month}月{details.day}日</dd></dl>}

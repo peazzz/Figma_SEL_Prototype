@@ -35,3 +35,6 @@
 .family-current-member > span { font-size:16px; color:#717171; }
 
 .member-confirm-text { line-height:1.7; margin-top:14px; color:#64766f; }
+
+.family-member-view-trigger { cursor:pointer; border-radius:8px; }
+.family-member-view-trigger:focus-visible { outline:3px solid #498ba0; outline-offset:3px; }
