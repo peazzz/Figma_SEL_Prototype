@@ -1,3 +1,4 @@
+import { memberMetadata } from "../data/memberMetadata";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { PrivacySwitch } from "./FamilyDetailsDialog";
@@ -5,11 +6,11 @@ import type { Member } from "./FamilyMemberDialog";
 import "./RelativeDialog.css";
 export type RelativeProfile = Member & { relation: string; birthday: string; gender: string; birthdayPublic: boolean; genderPublic: boolean; color: string; owned?: boolean; ageLabel?: string; profileAvatar?: string; memberId?: string; createdAt?: string };
 export const initialRelativeProfiles: RelativeProfile[] = [
-  { id: "brother", name: "黃哥", realName: "黃哥", avatar: "ce2f7.png", parent: false, relation: "兒子", birthday: "", gender: "男", birthdayPublic: true, genderPublic: true, color: "#d2cdc4", owned: true, ageLabel: "9歲" },
-  { id: "sister", name: "黃妹", realName: "黃妹", avatar: "af3e3.png", parent: false, relation: "女兒", birthday: "", gender: "女", birthdayPublic: true, genderPublic: true, color: "#eeabca", owned: true, ageLabel: "6歲" },
-  { id: "mouse", name: "鼠鼠", realName: "鼠鼠", avatar: "8a0f7.png", profileAvatar: "1ca11.png", parent: false, relation: "三線鼠", birthday: "2025-10-10", gender: "男", birthdayPublic: true, genderPublic: true, color: "#abe2ee", owned: true, memberId: "85684410", createdAt: "2026/10/7" },
-  { id: "dad", name: "黃爸", realName: "黃爸", avatar: "ddb18.png", parent: true, relation: "丈夫", birthday: "", gender: "男", birthdayPublic: true, genderPublic: true, color: "#e2eeab", owned: false, ageLabel: "39歲" },
-  { id: "grandpa", name: "王爺", realName: "王爺", avatar: "cc4df.png", profileAvatar: "0b78b.png", parent: false, relation: "阿公", birthday: "1949-05-05", gender: "男", birthdayPublic: true, genderPublic: true, color: "#eed1ab", owned: false, memberId: "77206810" },
+  { id: "brother", ...memberMetadata.brother, name: "黃哥", realName: "黃哥", avatar: "ce2f7.png", parent: false, relation: "兒子", birthday: "", gender: "男", birthdayPublic: true, genderPublic: true, color: "#d2cdc4", owned: true, ageLabel: "9歲" },
+  { id: "sister", ...memberMetadata.sister, name: "黃妹", realName: "黃妹", avatar: "af3e3.png", parent: false, relation: "女兒", birthday: "", gender: "女", birthdayPublic: true, genderPublic: true, color: "#eeabca", owned: true, ageLabel: "6歲" },
+  { id: "mouse", ...memberMetadata.mouse, name: "鼠鼠", realName: "鼠鼠", avatar: "8a0f7.png", profileAvatar: "1ca11.png", parent: false, relation: "三線鼠", birthday: "2025-10-10", gender: "男", birthdayPublic: true, genderPublic: true, color: "#abe2ee", owned: true },
+  { id: "dad", ...memberMetadata.dad, name: "黃爸", realName: "黃爸", avatar: "ddb18.png", parent: true, relation: "丈夫", birthday: "", gender: "男", birthdayPublic: true, genderPublic: true, color: "#e2eeab", owned: false, ageLabel: "39歲" },
+  { id: "grandpa", ...memberMetadata.grandpa, name: "王爺", realName: "王爺", avatar: "cc4df.png", profileAvatar: "0b78b.png", parent: false, relation: "阿公", birthday: "1949-05-05", gender: "男", birthdayPublic: true, genderPublic: true, color: "#eed1ab", owned: false },
 ];
 const palette = [{ name: "鼠尾草綠", value: "#dce6d5" }, { name: "霧藍", value: "#d6e6eb" }, { name: "暖粉", value: "#eed6df" }, { name: "米杏", value: "#eedfc9" }, { name: "淡紫", value: "#e1dced" }, { name: "暖灰", value: "#dedbd3" }];
 export function relativeAge(birthday: string) {
@@ -20,7 +21,7 @@ export function relativeAge(birthday: string) {
 }
 export default function RelativeDialog({ initial, onSave, onClose, viewOnly = false }: { viewOnly?: boolean; initial?: RelativeProfile; onSave: (relative: RelativeProfile) => void; onClose: () => void }) {
   const fullEdit = !viewOnly && (!initial || initial.owned !== false);
-  const [draft, setDraft] = useState<RelativeProfile>(() => initial ?? { id: crypto.randomUUID(), name: "", realName: "", avatar: "2bb3b.png", parent: false, relation: "", birthday: "", gender: "", birthdayPublic: true, genderPublic: true, color: palette[0].value, owned: true });
+  const [draft, setDraft] = useState<RelativeProfile>(() => initial ?? { id: crypto.randomUUID(), name: "", realName: "", avatar: "2bb3b.png", parent: false, relation: "", birthday: "", gender: "", birthdayPublic: true, genderPublic: true, color: palette[0].value, owned: true, memberId: "local-" + crypto.randomUUID().slice(0, 8), createdAt: new Date().toLocaleDateString("zh-TW", { timeZone: "Asia/Taipei" }) });
   const [idView, setIdView] = useState(false); const [message, setMessage] = useState("");
   const dialogRef = useRef<HTMLDialogElement>(null);
   const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Taipei" });

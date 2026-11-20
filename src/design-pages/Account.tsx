@@ -1,3 +1,5 @@
+import { memberMetadata, formatMemberCreatedAt } from "../data/memberMetadata";
+import { useState } from "react";
 import AccountFamilyNavigation, { accountSections } from "../components/AccountFamilyNavigation";
 
 const assetPathPrefix = `${import.meta.env.BASE_URL}assets`;
@@ -60,7 +62,29 @@ function Switch({ className, icon = "False", selected = true, state = "Enabled" 
   );
 }
 
+const accountMembers = [
+  { name: "王媽", birthday: "1989年3月24日", gender: "女性", id: memberMetadata.mom.memberId, avatar: img6, photo: img6, created: formatMemberCreatedAt(memberMetadata.mom.createdAt) },
+  { name: "黃哥", birthday: "2017年3月9日", gender: "男性", id: memberMetadata.brother.memberId, avatar: import.meta.env.BASE_URL + "assets/ce2f7.png", photo: import.meta.env.BASE_URL + "assets/ce2f7.png", created: formatMemberCreatedAt(memberMetadata.brother.createdAt) },
+  { name: "黃妹", birthday: "2020年8月12日", gender: "女性", id: memberMetadata.sister.memberId, avatar: import.meta.env.BASE_URL + "assets/af3e3.png", photo: import.meta.env.BASE_URL + "assets/af3e3.png", created: formatMemberCreatedAt(memberMetadata.sister.createdAt) },
+  { name: "鼠鼠", birthday: "2025年10月10日", gender: "男性", id: memberMetadata.mouse.memberId, avatar: import.meta.env.BASE_URL + "assets/1ca11.png", photo: import.meta.env.BASE_URL + "assets/1ca11.png", created: formatMemberCreatedAt(memberMetadata.mouse.createdAt) },
+];
 export default function Component() {
+  const [preferences, setPreferences] = useState({ answer: "家長一同作答", member: "固定為上次登入成員", family: "固定為上次登入家庭" });
+  const [selectedMember, setSelectedMember] = useState(0);
+  const [members, setMembers] = useState(accountMembers);
+  const member = members[selectedMember];
+  const [editing, setEditing] = useState<"name" | "birthday" | "gender" | null>(null);
+  const [draft, setDraft] = useState("");
+  function beginEdit(field: "name" | "birthday" | "gender") {
+    setEditing(field);
+    setDraft(field === "birthday" ? member.birthday.replace(/年|月/g, "-").replace("日", "").split("-").map((part, index) => index ? part.padStart(2, "0") : part).join("-") : member[field]);
+  }
+  function saveEdit() {
+    if (!editing || !draft.trim()) return;
+    const value = editing === "birthday" ? draft.split("-").map(Number).map((part, index) => part + ["年", "月", "日"][index]).join("") : draft.trim();
+    setMembers(items => items.map((item, index) => index === selectedMember ? { ...item, [editing]: value } : item));
+    setEditing(null);
+  }
   return (
     <div
       className="bg-[#f8f8f2] content-stretch flex flex-col items-start relative size-full"
@@ -214,7 +238,7 @@ export default function Component() {
           </a>
         </div>
         <div
-          className="content-stretch flex flex-col gap-[28px] items-start overflow-clip p-[40px] relative shrink-0 w-[1176px]"
+          className="content-stretch flex flex-col gap-[20px] items-start overflow-clip p-[40px] relative shrink-0 w-[1176px]"
           data-node-id="7:581"
           data-name="帳號資訊內容"
         >
@@ -229,92 +253,35 @@ export default function Component() {
               data-name="帳號資訊"
             >
               <p
-                className="font-['Noto_Sans_TC:Bold'] font-bold relative shrink-0 text-[30px] whitespace-nowrap"
+                className="font-['Noto_Sans_TC:Bold'] font-bold relative shrink-0 text-[26px] whitespace-nowrap"
                 data-node-id="7:584"
               >
                 帳號資訊
               </p>
               <p
-                className="flex-[1_0_0] font-['Noto_Sans_TC:Light'] font-light min-w-px relative text-[20px] text-right"
+                className="flex-[1_0_0] font-['Noto_Sans_TC:Light'] font-light min-w-px relative text-[18px] text-right"
                 data-node-id="7:585"
               >
                 4/6
               </p>
             </div>
             <div
-              className="flex flex-col font-['Noto_Sans_TC:Regular'] font-normal justify-center leading-[0] relative shrink-0 text-[#262d29] text-[20px] whitespace-nowrap"
+              className="flex flex-col font-['Noto_Sans_TC:Regular'] font-normal justify-center leading-[0] relative shrink-0 text-[#262d29] text-[18px] whitespace-nowrap"
               data-node-id="7:586"
             >
               <p className="leading-[1.55]">ccyang@ncu.edu.tw</p>
             </div>
           </div>
-          <div
-            className="content-stretch flex gap-[28px] items-start relative shrink-0"
-            data-node-id="7:587"
-          >
-            <div
-              className="content-stretch flex flex-col items-center justify-center relative shrink-0"
-              data-node-id="7:588"
-            >
-              <div className="relative shrink-0 size-[150px]" data-node-id="7:589" data-name="頭像">
-                <img
-                  alt=""
-                  className="absolute block inset-0 max-w-none size-full"
-                  height="150"
-                  src={img1}
-                  width="150"
-                />
-              </div>
-              <div
-                className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Regular'] font-normal justify-center leading-[0] relative shrink-0 text-[#315e4c] text-[16px] whitespace-nowrap"
-                data-node-id="7:590"
-              >
-                <p className="leading-[1.55]">帳號持有人</p>
-              </div>
-            </div>
-            <div className="relative shrink-0 size-[150px]" data-node-id="7:591" data-name="頭像">
-              <img
-                alt=""
-                className="absolute block inset-0 max-w-none size-full"
-                height="150"
-                src={img2}
-                width="150"
-              />
-            </div>
-            <div className="relative shrink-0 size-[150px]" data-node-id="7:592" data-name="頭像">
-              <img
-                alt=""
-                className="absolute block inset-0 max-w-none size-full"
-                height="150"
-                src={img3}
-                width="150"
-              />
-            </div>
-            <div className="relative shrink-0 size-[150px]" data-node-id="7:593" data-name="頭像">
-              <img
-                alt=""
-                className="absolute block inset-0 max-w-none size-full"
-                height="150"
-                src={img4}
-                width="150"
-              />
-            </div>
-            <div className="relative shrink-0 size-[150px]" data-node-id="7:594" data-name="頭像">
-              <img
-                alt=""
-                className="absolute block inset-0 max-w-none size-full"
-                height="150"
-                src={img5}
-                width="150"
-              />
-            </div>
+          <div className="account-member-picker" aria-label="帳號成員">
+            {members.map((person, index) => <button type="button" key={person.id} aria-label={"查看" + person.name + "帳號資訊"} aria-pressed={selectedMember === index} onClick={event => { event.stopPropagation(); setSelectedMember(index); }}><img src={person.photo} alt="" width="120" height="120"/>{index === 0 && <span>帳號持有人</span>}</button>)}
+            <div className="account-member-add"><img src={img5} alt="新增成員" width="120" height="120"/></div>
           </div>
           <div
             className="content-stretch flex flex-col gap-[10px] items-end relative shrink-0 w-full"
             data-node-id="7:596"
           >
             <div
-              className="bg-white content-stretch flex items-start px-[20px] py-[10px] relative rounded-[10px] shrink-0 w-full"
+              className="bg-white content-stretch flex items-start px-[16px] py-[10px] relative rounded-[10px] shrink-0 w-full"
               data-node-id="7:600"
             >
               <div
@@ -332,12 +299,12 @@ export default function Component() {
                   data-node-id="7:603"
                 >
                   <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#262d29] text-[24px] whitespace-nowrap"
+                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#262d29] text-[18px] whitespace-nowrap"
                     data-node-id="7:604"
                   >
-                    <p className="leading-[1.55]">王媽</p>
+                    <p className="leading-[1.55]">{member.name}</p>
                   </div>
-                  <a
+                  <button type="button" aria-label="編輯名稱" onClick={event => { event.stopPropagation(); beginEdit("name"); }}
                     className="content-stretch cursor-pointer flex items-center justify-center overflow-clip relative shrink-0"
                     data-node-id="7:605"
                     data-name="儲存"
@@ -353,7 +320,7 @@ export default function Component() {
                         src={imgEdit}
                       />
                     </div>
-                  </a>
+                  </button>
                 </div>
               </div>
               <div className="relative shrink-0 size-[70px]" data-node-id="7:609" data-name="頭像">
@@ -361,13 +328,13 @@ export default function Component() {
                   alt=""
                   className="absolute block inset-0 max-w-none size-full"
                   height="70"
-                  src={img6}
+                  src={member.avatar}
                   width="70"
                 />
               </div>
             </div>
             <div
-              className="bg-white content-stretch flex flex-col items-start px-[20px] py-[10px] relative rounded-[10px] shrink-0 w-full"
+              className="bg-white content-stretch flex flex-col items-start px-[16px] py-[10px] relative rounded-[10px] shrink-0 w-full"
               data-node-id="7:610"
             >
               <div
@@ -381,12 +348,12 @@ export default function Component() {
                 data-node-id="7:612"
               >
                 <div
-                  className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#262d29] text-[24px] whitespace-nowrap"
+                  className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#262d29] text-[18px] whitespace-nowrap"
                   data-node-id="7:613"
                 >
-                  <p className="leading-[1.55]">1989年3月24日</p>
+                  <p className="leading-[1.55]">{member.birthday}</p>
                 </div>
-                <a
+                <button type="button" aria-label="編輯生日" onClick={event => { event.stopPropagation(); beginEdit("birthday"); }}
                   className="content-stretch cursor-pointer flex flex-[1_0_0] items-center min-w-px overflow-clip relative"
                   data-node-id="7:614"
                   data-name="儲存"
@@ -402,7 +369,7 @@ export default function Component() {
                       src={imgEdit}
                     />
                   </div>
-                </a>
+                </button>
                 <button
                   className="content-stretch cursor-pointer flex flex-col items-center justify-center relative shrink-0"
                   data-node-id="7:618"
@@ -453,7 +420,7 @@ export default function Component() {
               </div>
             </div>
             <div
-              className="bg-white content-stretch flex flex-col items-start px-[20px] py-[10px] relative rounded-[10px] shrink-0 w-full"
+              className="bg-white content-stretch flex flex-col items-start px-[16px] py-[10px] relative rounded-[10px] shrink-0 w-full"
               data-node-id="7:619"
             >
               <div
@@ -467,12 +434,12 @@ export default function Component() {
                 data-node-id="7:621"
               >
                 <div
-                  className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#262d29] text-[24px] whitespace-nowrap"
+                  className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#262d29] text-[18px] whitespace-nowrap"
                   data-node-id="7:622"
                 >
-                  <p className="leading-[1.55]">女性</p>
+                  <p className="leading-[1.55]">{member.gender}</p>
                 </div>
-                <a
+                <button type="button" aria-label="編輯性別" onClick={event => { event.stopPropagation(); beginEdit("gender"); }}
                   className="content-stretch cursor-pointer flex flex-[1_0_0] items-center min-w-px overflow-clip relative"
                   data-node-id="7:623"
                   data-name="儲存"
@@ -488,7 +455,7 @@ export default function Component() {
                       src={imgEdit}
                     />
                   </div>
-                </a>
+                </button>
                 <button
                   className="content-stretch cursor-pointer flex flex-col items-center justify-center relative shrink-0"
                   data-node-id="7:627"
@@ -539,7 +506,7 @@ export default function Component() {
               </div>
             </div>
             <div
-              className="bg-white content-stretch flex flex-col items-start px-[20px] py-[10px] relative rounded-[10px] shrink-0 w-full"
+              className="bg-white content-stretch flex flex-col items-start px-[16px] py-[10px] relative rounded-[10px] shrink-0 w-full"
               data-node-id="7:628"
             >
               <div
@@ -553,10 +520,10 @@ export default function Component() {
                 data-node-id="7:630"
               >
                 <div
-                  className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#262d29] text-[24px] whitespace-nowrap"
+                  className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#262d29] text-[18px] whitespace-nowrap"
                   data-node-id="7:631"
                 >
-                  <p className="leading-[1.55]">50010902</p>
+                  <p className="leading-[1.55]">{member.id}</p>
                 </div>
                 <a
                   className="content-stretch cursor-pointer flex items-center justify-center overflow-clip relative shrink-0"
@@ -578,7 +545,7 @@ export default function Component() {
               </div>
             </div>
             <div
-              className="[word-break:break-word] bg-white content-stretch flex flex-col items-start leading-[0] px-[20px] py-[10px] relative rounded-[10px] shrink-0 w-full"
+              className="[word-break:break-word] bg-white content-stretch flex flex-col items-start leading-[0] px-[16px] py-[10px] relative rounded-[10px] shrink-0 w-full"
               data-node-id="7:636"
             >
               <div
@@ -588,14 +555,14 @@ export default function Component() {
                 <p className="leading-[1.55]">建立時間</p>
               </div>
               <div
-                className="flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center min-w-full relative shrink-0 text-[#262d29] text-[24px] w-[min-content]"
+                className="flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center min-w-full relative shrink-0 text-[#262d29] text-[18px] w-[min-content]"
                 data-node-id="7:638"
               >
-                <p className="leading-[1.55]">2026年10月5日</p>
+                <p className="leading-[1.55]">{member.created}</p>
               </div>
             </div>
-            <div
-              className="[word-break:break-word] bg-white content-stretch flex flex-col items-start leading-[0] px-[20px] py-[10px] relative rounded-[10px] shrink-0 w-full"
+            {selectedMember === 0 ? <><div
+              className="[word-break:break-word] bg-white content-stretch flex flex-col items-start leading-[0] px-[16px] py-[10px] relative rounded-[10px] shrink-0 w-full"
               data-node-id="7:639"
             >
               <div
@@ -609,7 +576,7 @@ export default function Component() {
                 data-node-id="7:641"
               >
                 <a
-                  className="flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center relative shrink-0 text-[#262d29] text-[24px] whitespace-nowrap"
+                  className="flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center relative shrink-0 text-[#262d29] text-[18px] whitespace-nowrap"
                   href="mailto:ccyang@ncu.edu.tw"
                   data-node-id="7:642"
                   target="_blank"
@@ -617,7 +584,7 @@ export default function Component() {
                   <p className="cursor-pointer leading-[1.55]">ccyang@ncu.edu.tw</p>
                 </a>
                 <div
-                  className="flex flex-[1_0_0] flex-col font-['Noto_Sans_TC:DemiLight'] font-[350] justify-center min-w-px relative text-[#315e4c] text-[20px] text-right"
+                  className="flex flex-[1_0_0] flex-col font-['Noto_Sans_TC:DemiLight'] font-[350] justify-center min-w-px relative text-[#315e4c] text-[18px] text-right"
                   data-node-id="7:643"
                 >
                   <p className="[text-underline-position:from-font] decoration-from-font decoration-solid leading-[1.55] underline">
@@ -625,7 +592,7 @@ export default function Component() {
                   </p>
                 </div>
                 <div
-                  className="flex flex-col font-['Noto_Sans_TC:DemiLight'] font-[350] justify-center relative shrink-0 text-[#315e4c] text-[20px] text-right whitespace-nowrap"
+                  className="flex flex-col font-['Noto_Sans_TC:DemiLight'] font-[350] justify-center relative shrink-0 text-[#315e4c] text-[18px] text-right whitespace-nowrap"
                   data-node-id="7:644"
                 >
                   <p className="[text-underline-position:from-font] decoration-from-font decoration-solid leading-[1.55] underline">
@@ -635,7 +602,7 @@ export default function Component() {
               </div>
             </div>
             <div
-              className="bg-white content-stretch flex flex-col items-start px-[20px] py-[10px] relative rounded-[10px] shrink-0 w-full"
+              className="bg-white content-stretch flex flex-col items-start px-[16px] py-[10px] relative rounded-[10px] shrink-0 w-full"
               data-node-id="7:645"
             >
               <div
@@ -649,14 +616,14 @@ export default function Component() {
                 data-node-id="7:647"
               >
                 <div
-                  className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#262d29] text-[20px] text-right whitespace-nowrap"
+                  className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#262d29] text-[18px] text-right whitespace-nowrap"
                   data-node-id="7:648"
                 >
                   <p className="leading-[1.55]">切換成員時輸入PIN碼</p>
                 </div>
                 <Switch className="bg-[#6750a4] content-stretch flex h-[32px] items-center justify-end px-[4px] py-[2px] relative rounded-[100px] shrink-0 w-[52px]" />
                 <div
-                  className="[word-break:break-word] flex flex-[1_0_0] flex-col font-['Noto_Sans_TC:DemiLight'] font-[350] justify-center leading-[0] min-w-px relative text-[#315e4c] text-[20px] text-right"
+                  className="[word-break:break-word] flex flex-[1_0_0] flex-col font-['Noto_Sans_TC:DemiLight'] font-[350] justify-center leading-[0] min-w-px relative text-[#315e4c] text-[18px] text-right"
                   data-node-id="7:650"
                 >
                   <p className="[text-underline-position:from-font] decoration-from-font decoration-solid leading-[1.55] underline">
@@ -665,17 +632,21 @@ export default function Component() {
                 </div>
               </div>
             </div>
+            </> : <>
+              <div className="account-member-field"><span>Email</span><p>無</p></div>
+              <div className="account-member-field"><span>PIN碼</span><p>無PIN碼</p></div>
+            </>}
             <div
               className="content-stretch flex gap-[10px] items-center pt-[12px] relative shrink-0"
               data-node-id="7:651"
             >
               <div className="flex flex-row items-center self-stretch" data-node-id="7:656">
-                <div className="bg-[#fcedec] border border-[#e8bfbc] border-solid content-stretch flex h-full items-center px-[20px] py-[10px] relative rounded-[10px] shrink-0">
+                <div className="bg-[#fcedec] border border-[#e8bfbc] border-solid content-stretch flex h-full items-center px-[16px] py-[10px] relative rounded-[10px] shrink-0">
                   <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#b23a36] text-[20px] whitespace-nowrap"
+                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#b23a36] text-[18px] whitespace-nowrap"
                     data-node-id="7:657"
                   >
-                    <p className="leading-[1.55]">刪除帳號</p>
+                    <p className="leading-[1.55]">{selectedMember === 0 ? "刪除帳號" : "移除成員"}</p>
                   </div>
                   <a
                     className="content-stretch cursor-pointer flex h-full items-center justify-end overflow-clip pl-[8px] pr-[2px] relative shrink-0"
@@ -701,7 +672,7 @@ export default function Component() {
               <img alt="" className="block max-w-none size-full" src={imgVector2} />
             </div>
           </div>
-          <div
+          <div onClick={event => event.stopPropagation()}
             className="content-stretch flex flex-col items-start relative shrink-0"
             data-node-id="7:664"
             data-name="偏好設定"
@@ -712,266 +683,29 @@ export default function Component() {
               data-name="帳號資訊"
             >
               <p
-                className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-[1.5] relative shrink-0 text-[#253e38] text-[30px] whitespace-nowrap"
+                className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-[1.5] relative shrink-0 text-[#253e38] text-[26px] whitespace-nowrap"
                 data-node-id="7:666"
               >
                 偏好設定
               </p>
             </div>
           </div>
-          <div
-            className="content-stretch flex flex-col gap-[10px] items-start relative shrink-0 w-full"
-            data-node-id="7:667"
-          >
-            <div
-              className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-full"
-              data-node-id="7:668"
-              data-name="作答方式"
-            >
-              <div
-                className="bg-white content-stretch flex flex-col items-start px-[20px] py-[10px] relative rounded-[10px] shrink-0 w-full"
-                data-node-id="7:669"
-              >
-                <div
-                  className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Regular'] font-normal justify-center leading-[0] relative shrink-0 text-[#315e4c] text-[16px] whitespace-nowrap"
-                  data-node-id="7:670"
-                >
-                  <p className="leading-[1.55]">作答方式</p>
-                </div>
-                <div
-                  className="content-stretch flex gap-[10px] items-center relative shrink-0 w-full"
-                  data-node-id="7:671"
-                >
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#262d29] text-[24px] whitespace-nowrap"
-                    data-node-id="7:672"
-                  >
-                    <p className="leading-[1.55]">家長一同作答</p>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="bg-white border border-[#dce5df] border-solid content-stretch drop-shadow-[0px_4px_2px_rgba(0,0,0,0.25)] flex flex-col items-start relative rounded-[10px] shrink-0 w-full"
-                data-node-id="7:677"
-              >
-                <div
-                  className="bg-[#e8f0eb] content-stretch flex gap-[10px] items-center px-[20px] py-[5px] relative shrink-0 w-full"
-                  data-node-id="7:678"
-                >
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#262d29] text-[24px] whitespace-nowrap"
-                    data-node-id="7:679"
-                  >
-                    <p className="leading-[1.55]">家長一同作答</p>
-                  </div>
-                  <a
-                    className="content-stretch cursor-pointer flex flex-[1_0_0] items-center justify-end min-w-px overflow-clip relative"
-                    data-node-id="7:680"
-                    data-name="儲存"
-                  >
-                    <div
-                      className="relative shrink-0 size-[24px]"
-                      data-node-id="7:681"
-                      data-name="Check"
-                    >
-                      <img
-                        alt=""
-                        className="absolute block inset-0 max-w-none size-full"
-                        src={imgCheck}
-                      />
-                    </div>
-                  </a>
-                </div>
-                <div className="h-0 relative shrink-0 w-full" data-node-id="7:684">
-                  <div className="absolute inset-[-0.5px_0]">
-                    <img alt="" className="block max-w-none size-full" src={imgVector4} />
-                  </div>
-                </div>
-                <div
-                  className="content-stretch flex items-center px-[20px] py-[5px] relative shrink-0 w-full"
-                  data-node-id="7:685"
-                >
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#29332e] text-[24px] whitespace-nowrap"
-                    data-node-id="7:686"
-                  >
-                    <p className="leading-[1.55]">個別作答</p>
-                  </div>
-                </div>
-                <div className="h-0 relative shrink-0 w-full" data-node-id="7:687">
-                  <div className="absolute inset-[-0.5px_0]">
-                    <img alt="" className="block max-w-none size-full" src={imgVector4} />
-                  </div>
-                </div>
-                <div
-                  className="content-stretch flex items-center px-[20px] py-[5px] relative shrink-0 w-full"
-                  data-node-id="7:688"
-                >
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#29332e] text-[24px] whitespace-nowrap"
-                    data-node-id="7:689"
-                  >
-                    <p className="leading-[1.55]">每次作答時詢問</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-full"
-              data-node-id="7:690"
-              data-name="選擇登入成員"
-            >
-              <div
-                className="bg-white content-stretch flex flex-col items-start px-[20px] py-[10px] relative rounded-[10px] shrink-0 w-full"
-                data-node-id="7:691"
-              >
-                <div
-                  className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Regular'] font-normal justify-center leading-[0] relative shrink-0 text-[#315e4c] text-[16px] whitespace-nowrap"
-                  data-node-id="7:692"
-                >
-                  <p className="leading-[1.55]">選擇登入成員</p>
-                </div>
-                <div
-                  className="content-stretch flex gap-[10px] items-center relative shrink-0 w-full"
-                  data-node-id="7:693"
-                >
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#262d29] text-[24px] whitespace-nowrap"
-                    data-node-id="7:694"
-                  >
-                    <p className="leading-[1.55]">固定為上次登入成員</p>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="bg-white border border-[#dce5df] border-solid content-stretch drop-shadow-[0px_4px_2px_rgba(0,0,0,0.25)] flex flex-col items-start relative rounded-[10px] shrink-0 w-full"
-                data-node-id="7:699"
-              >
-                <div
-                  className="bg-[#e8f0eb] content-stretch flex gap-[10px] items-center px-[20px] py-[5px] relative shrink-0 w-full"
-                  data-node-id="7:700"
-                >
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#262d29] text-[24px] whitespace-nowrap"
-                    data-node-id="7:701"
-                  >
-                    <p className="leading-[1.55]">固定為上次登入成員</p>
-                  </div>
-                  <a
-                    className="content-stretch cursor-pointer flex flex-[1_0_0] items-center justify-end min-w-px overflow-clip relative"
-                    data-node-id="7:702"
-                    data-name="儲存"
-                  >
-                    <div
-                      className="relative shrink-0 size-[24px]"
-                      data-node-id="7:703"
-                      data-name="Check"
-                    >
-                      <img
-                        alt=""
-                        className="absolute block inset-0 max-w-none size-full"
-                        src={imgCheck}
-                      />
-                    </div>
-                  </a>
-                </div>
-                <div className="h-0 relative shrink-0 w-full" data-node-id="7:706">
-                  <div className="absolute inset-[-0.5px_0]">
-                    <img alt="" className="block max-w-none size-full" src={imgVector4} />
-                  </div>
-                </div>
-                <div
-                  className="content-stretch flex items-center px-[20px] py-[5px] relative shrink-0 w-full"
-                  data-node-id="7:707"
-                >
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#29332e] text-[24px] whitespace-nowrap"
-                    data-node-id="7:708"
-                  >
-                    <p className="leading-[1.55]">每次登入時詢問</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className="content-stretch flex flex-col gap-[4px] items-start relative shrink-0 w-full"
-              data-node-id="7:709"
-            >
-              <div
-                className="bg-white content-stretch flex flex-col items-start px-[20px] py-[10px] relative rounded-[10px] shrink-0 w-full"
-                data-node-id="7:710"
-              >
-                <div
-                  className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Regular'] font-normal justify-center leading-[0] relative shrink-0 text-[#315e4c] text-[16px] whitespace-nowrap"
-                  data-node-id="7:711"
-                >
-                  <p className="leading-[1.55]">選擇登入家庭</p>
-                </div>
-                <div
-                  className="content-stretch flex gap-[10px] items-center relative shrink-0 w-full"
-                  data-node-id="7:712"
-                >
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#262d29] text-[24px] whitespace-nowrap"
-                    data-node-id="7:713"
-                  >
-                    <p className="leading-[1.55]">固定為上次登入家庭</p>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="bg-white border border-[#dce5df] border-solid content-stretch drop-shadow-[0px_4px_2px_rgba(0,0,0,0.25)] flex flex-col items-start relative rounded-[10px] shrink-0 w-full"
-                data-node-id="7:718"
-              >
-                <div
-                  className="bg-[#e8f0eb] content-stretch flex gap-[10px] items-center px-[20px] py-[5px] relative shrink-0 w-full"
-                  data-node-id="7:719"
-                >
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#262d29] text-[24px] whitespace-nowrap"
-                    data-node-id="7:720"
-                  >
-                    <p className="leading-[1.55]">固定為上次登入家庭</p>
-                  </div>
-                  <a
-                    className="content-stretch cursor-pointer flex flex-[1_0_0] items-center justify-end min-w-px overflow-clip relative"
-                    data-node-id="7:721"
-                    data-name="儲存"
-                  >
-                    <div
-                      className="relative shrink-0 size-[24px]"
-                      data-node-id="7:722"
-                      data-name="Check"
-                    >
-                      <img
-                        alt=""
-                        className="absolute block inset-0 max-w-none size-full"
-                        src={imgCheck}
-                      />
-                    </div>
-                  </a>
-                </div>
-                <div className="h-0 relative shrink-0 w-full" data-node-id="7:725">
-                  <div className="absolute inset-[-0.5px_0]">
-                    <img alt="" className="block max-w-none size-full" src={imgVector4} />
-                  </div>
-                </div>
-                <div
-                  className="content-stretch flex items-center px-[20px] py-[5px] relative shrink-0 w-full"
-                  data-node-id="7:726"
-                >
-                  <div
-                    className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#29332e] text-[24px] whitespace-nowrap"
-                    data-node-id="7:727"
-                  >
-                    <p className="leading-[1.55]">每次登入時詢問</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="account-preferences" onClick={event => event.stopPropagation()}>
+            {([
+              { key: "answer", label: "作答方式", options: ["家長一同作答", "個別作答", "每次作答時詢問"] },
+              { key: "member", label: "選擇登入成員", options: ["固定為上次登入成員", "每次登入時詢問"] },
+              { key: "family", label: "選擇登入家庭", options: ["固定為上次登入家庭", "每次登入時詢問"] },
+            ] as const).map(setting => <label key={setting.key} className="account-preference-field"><span>{setting.label}</span><select value={preferences[setting.key]} onChange={event => setPreferences(previous => ({ ...previous, [setting.key]: event.target.value }))}>{setting.options.map(option => <option key={option} value={option}>{option}</option>)}</select></label>)}
           </div>
         </div>
       </div>
+      {editing && <div className="account-edit-overlay" onClick={event => { event.stopPropagation(); if (event.target === event.currentTarget) setEditing(null); }}>
+        <form className="account-edit-dialog" role="dialog" aria-modal="true" aria-label={"編輯" + { name: "名稱", birthday: "生日", gender: "性別" }[editing]} onSubmit={event => { event.preventDefault(); saveEdit(); }}>
+          <h2>編輯{{ name: "名稱", birthday: "生日", gender: "性別" }[editing]}</h2>
+          {editing === "gender" ? <select autoFocus aria-label="性別" value={draft} onChange={event => setDraft(event.target.value)}>{["男性", "女性", "其他"].map(value => <option key={value}>{value}</option>)}</select> : <input autoFocus aria-label={editing === "name" ? "名稱" : "生日"} required maxLength={40} type={editing === "birthday" ? "date" : "text"} max={editing === "birthday" ? new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Taipei" }) : undefined} value={draft} onChange={event => setDraft(event.target.value)}/>}
+          <div><button type="button" onClick={() => setEditing(null)}>取消</button><button type="submit">儲存</button></div>
+        </form>
+      </div>}
     </div>
   );
 }
