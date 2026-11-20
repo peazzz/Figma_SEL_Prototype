@@ -10,8 +10,7 @@ const prompts = [
   { key: "review", title: "2. 回顧上次的約定", hint: "哪些做到了？哪裡需要幫忙？第一次開會可略過。" },
   { key: "topic", title: "3. 今天想討論的事情", hint: "先選一件具體的事，例如用餐滑手機、睡前收裝置或週末活動。" },
   { key: "voices", title: "4. 聽聽每個人的想法", hint: "輪流說自己的感受與需要，先聽完，不急著反駁或給答案。" },
-  { key: "ideas", title: "5. 一起想辦法", hint: "每個人都能提方法，再挑出大家願意試試看的方案。" },
-  { key: "decision", title: "6. 我們的共同決定", hint: "寫清楚何時、在哪裡、怎麼做。若還沒共識，記下待討論的問題。" },
+  { key: "decision", title: "5. 我們的共同決定", hint: "寫清楚何時、在哪裡、怎麼做。若還沒共識，記下待討論的問題。" },
 ] as const;
 type Notes = Record<typeof prompts[number]["key"], string>;
 type Action = { id: number; task: string; owner: string; due: string };
@@ -25,7 +24,7 @@ export default function FamilyMeeting() {
   const [nextDate, setNextDate] = useState("");
   const [host, setHost] = useState(profile.adults[0] ?? "");
   const [recorder, setRecorder] = useState(profile.adults[0] ?? "");
-  const [notes, setNotes] = useState<Notes>({ appreciation: "", review: "", topic: "", voices: "", ideas: "", decision: "" });
+  const [notes, setNotes] = useState<Notes>({ appreciation: "", review: "", topic: "", voices: "", decision: "" });
   const [actions, setActions] = useState<Action[]>([]);
   const nextId = useRef(1);
   const [open, setOpen] = useState(false);
@@ -86,8 +85,8 @@ export default function FamilyMeeting() {
               <header><h2>{family}的家庭會議紀錄</h2></header>
               <dl className="contract-meta"><div><dt>會議日期</dt><dd>{date}</dd></div><div><dt>參與成員</dt><dd>{participants.join("、")}</dd></div><div><dt>主持人</dt><dd>{host || "未指定"}</dd></div><div><dt>紀錄人</dt><dd>{recorder || "未指定"}</dd></div></dl>
               {prompts.map((prompt) => <section key={prompt.key}><h3>{prompt.title}</h3><p>{notes[prompt.key].trim() || "（會議時共同填寫）"}</p></section>)}
-              <section><h3>7. 誰來做、何時完成</h3>{actions.length ? <div className="meeting-action-summary">{actions.map((action) => <div key={action.id}><p><strong>任務：</strong>{action.task}</p><p>負責人：{action.owner}　完成日期：{action.due}</p><p>追蹤：□ 已完成　□ 進行中　□ 需要協助</p></div>)}</div> : <p>尚未安排分工，會議後可再補充。</p>}</section>
-              <section><h3>8. 下次一起追蹤</h3><p>追蹤日期：{nextDate || "________________"}</p><p>下次回顧：做得好的地方、遇到的困難，以及需要調整的約定。</p></section>
+              <section><h3>6. 誰來做、何時完成</h3>{actions.length ? <div className="meeting-action-summary">{actions.map((action) => <div key={action.id}><p><strong>任務：</strong>{action.task}</p><p>負責人：{action.owner}　完成日期：{action.due}</p><p>追蹤：□ 已完成　□ 進行中　□ 需要協助</p></div>)}</div> : <p>尚未安排分工，會議後可再補充。</p>}</section>
+              <section><h3>7. 下次一起追蹤</h3><p>追蹤日期：{nextDate || "________________"}</p><p>下次回顧：做得好的地方、遇到的困難，以及需要調整的約定。</p></section>
             </article>
           </> : <form className="contract-form" onSubmit={generate}>
             <fieldset><legend>本次會議</legend><div className="contract-family-identity"><img src={import.meta.env.BASE_URL + "assets/" + profile.image} alt="" width="56" height="56" /><label className="contract-field">家庭名稱<input required maxLength={100} value={family} onChange={(event) => setFamily(event.target.value)} /></label></div>
