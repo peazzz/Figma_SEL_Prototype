@@ -1,0 +1,12 @@
+.age-activity-library { width: 100%; min-width: 0; }
+.age-activity-filters { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 16px; }
+.age-activity-filters button { background: white; border: 1px solid #315e4c; border-radius: 12px; padding: 6px 12px; color: #315e4c; font-family: "Noto Sans TC:Bold", sans-serif; font-size: 12px; line-height: 1; cursor: pointer; }
+.age-activity-filters button[aria-pressed="true"] { background: #315e4c; color: white; }
+.age-activity-filters button:focus-visible { outline: 3px solid #315e4c; outline-offset: 3px; }
+.age-activity-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.age-activity-card { position: relative; height: 150px; min-width: 0; display: grid; place-items: center; border-radius: 12px; background: #ffe6e6; padding: 10px; color: #293d35; }
+.age-activity-card p { font-family: "Noto Sans TC:Medium", sans-serif; font-size: 24px; text-align: center; }
+.age-activity-card > span { position: absolute; right: 10px; bottom: 10px; border-radius: 12px; background: #679d86; color: white; padding: 6px 12px; font-size: 12px; line-height: 1; }
+@media (max-width: 1200px) { .age-activity-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .age-activity-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 360px) { .age-activity-grid { grid-template-columns: 1fr; } }

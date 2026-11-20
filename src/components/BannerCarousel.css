@@ -1,0 +1,122 @@
+.banner-carousel {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  flex-shrink: 0;
+  background: #e9efe4;
+  container-type: inline-size;
+}
+
+.banner-carousel-stage {
+  position: relative;
+  aspect-ratio: 1440 / 370;
+}
+
+.banner-carousel-slide,
+.banner-carousel-image {
+  width: 100%;
+  height: 100%;
+}
+
+.banner-carousel-image {
+  display: block;
+  object-fit: contain;
+}
+
+.banner-carousel-copy {
+  position: absolute;
+  left: 17%;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #8a5a5a;
+}
+
+.banner-carousel-copy h2 {
+  margin: 0;
+  font-size: clamp(22px, 5.55cqw, 80px);
+  font-weight: 700;
+  line-height: 1.35;
+  color: #d64e57;
+}
+
+.banner-carousel-copy p {
+  margin: 0;
+  font-size: clamp(12px, 2.78cqw, 40px);
+  line-height: 1.55;
+}
+
+.banner-carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.banner-carousel-arrow img {
+  width: clamp(28px, 3.06cqw, 44px);
+  height: auto;
+}
+
+.banner-carousel-previous { left: clamp(0px, 2cqw, 30px); }
+.banner-carousel-next { right: clamp(0px, 2cqw, 30px); }
+
+.banner-carousel-dots {
+  position: absolute;
+  bottom: clamp(0px, 1cqw, 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 44px;
+}
+
+.banner-carousel-dots button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.banner-carousel-dots span {
+  width: 10px;
+  height: 10px;
+  border: 1px solid #627769;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.banner-carousel-dots [aria-current="true"] span {
+  background: #315e4c;
+  border-color: #315e4c;
+}
+
+.banner-carousel button:focus-visible {
+  outline: 3px solid #315e4c;
+  outline-offset: -3px;
+}
+
+.banner-carousel-recommendation {
+  display: inline-block;
+  margin-top: 0.7cqw;
+  padding: clamp(3px, 0.8cqw, 12px);
+  border: 1px solid #d6ded3;
+  border-radius: 8px;
+  background: #fbfbfb;
+  color: #6c6969;
+  font-size: clamp(10px, 1.05cqw, 15px);
+  line-height: 1.2;
+}

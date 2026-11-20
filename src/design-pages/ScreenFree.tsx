@@ -1,11 +1,11 @@
-const assetPathPrefix = "/assets";
+import { CollapsibleSection, SectionToggle } from "../components/CollapsibleSection";
+
+const assetPathPrefix = `${import.meta.env.BASE_URL}assets`;
 const img = `${assetPathPrefix}/9cf24.png`;
 const img3C = `${assetPathPrefix}/0c66b.png`;
 const imgFrame142 = `${assetPathPrefix}/15aab.png`;
-const imgAi = `${assetPathPrefix}/74ef4.png`;
 const imgVector11 = `${assetPathPrefix}/bdd17.svg`;
 const imgVector1 = `${assetPathPrefix}/01bd7.svg`;
-const imgChevronUp = `${assetPathPrefix}/279f8.svg`;
 const imgGroup = `${assetPathPrefix}/1f374.svg`;
 const imgPlus = `${assetPathPrefix}/ee701.svg`;
 
@@ -242,7 +242,7 @@ export default function Component3C() {
               <img alt="" className="block max-w-none size-full" src={imgVector1} />
             </div>
           </div>
-          <div
+          <CollapsibleSection label="家庭數位共識"
             className="content-stretch flex flex-col gap-[10px] items-start relative shrink-0 w-full"
             data-node-id="7:1891"
             data-name="家庭數位共識"
@@ -257,17 +257,7 @@ export default function Component3C() {
               >
                 家庭數位共識
               </p>
-              <div
-                className="relative shrink-0 size-[24px]"
-                data-node-id="7:1894"
-                data-name="Chevron up"
-              >
-                <img
-                  alt=""
-                  className="absolute block inset-0 max-w-none size-full"
-                  src={imgChevronUp}
-                />
-              </div>
+              <SectionToggle />
             </div>
             <div
               className="content-stretch flex flex-col gap-[14px] items-start overflow-clip p-[28px] relative rounded-[20px] shrink-0 w-full"
@@ -581,13 +571,13 @@ export default function Component3C() {
                 </p>
               </div>
             </div>
-          </div>
+          </CollapsibleSection>
           <div className="h-0 relative shrink-0 w-[1096px]" data-node-id="7:1940">
             <div className="absolute inset-[-0.5px_0]">
               <img alt="" className="block max-w-none size-full" src={imgVector1} />
             </div>
           </div>
-          <div
+          <CollapsibleSection label="替代活動工具包"
             className="content-stretch flex items-center justify-center relative shrink-0 w-full"
             data-node-id="7:1941"
             data-name="替代活動工具"
@@ -606,17 +596,7 @@ export default function Component3C() {
                 >
                   替代活動工具包
                 </p>
-                <div
-                  className="relative shrink-0 size-[24px]"
-                  data-node-id="7:1945"
-                  data-name="Chevron up"
-                >
-                  <img
-                    alt=""
-                    className="absolute block inset-0 max-w-none size-full"
-                    src={imgChevronUp}
-                  />
-                </div>
+                <SectionToggle />
               </div>
               <div
                 className="bg-[#ffe6e6] content-stretch flex flex-col gap-[10px] items-start overflow-clip p-[22px] relative rounded-[20px] shrink-0 w-full"
@@ -641,13 +621,13 @@ export default function Component3C() {
                 </a>
               </div>
             </div>
-          </div>
+          </CollapsibleSection>
           <div className="h-0 relative shrink-0 w-[1096px]" data-node-id="7:1949">
             <div className="absolute inset-[-0.5px_0]">
               <img alt="" className="block max-w-none size-full" src={imgVector1} />
             </div>
           </div>
-          <div
+          <CollapsibleSection label="家庭日行事曆"
             className="content-stretch flex flex-col gap-[28px] items-start relative shrink-0 w-full"
             data-node-id="7:1950"
             data-name="家庭日行事曆"
@@ -662,17 +642,7 @@ export default function Component3C() {
               >
                 家庭日行事曆
               </p>
-              <div
-                className="relative shrink-0 size-[24px]"
-                data-node-id="7:1953"
-                data-name="Chevron up"
-              >
-                <img
-                  alt=""
-                  className="absolute block inset-0 max-w-none size-full"
-                  src={imgChevronUp}
-                />
-              </div>
+              <SectionToggle />
             </div>
             <div
               className="content-stretch flex gap-[28px] items-start relative shrink-0 w-full"
@@ -810,7 +780,7 @@ export default function Component3C() {
                 </div>
               </div>
             </div>
-          </div>
+          </CollapsibleSection>
           <div className="h-0 relative shrink-0 w-[1096px]" data-node-id="7:1978">
             <div className="absolute inset-[-0.5px_0]">
               <img alt="" className="block max-w-none size-full" src={imgVector1} />
@@ -827,22 +797,6 @@ export default function Component3C() {
             >
               實踐反思
             </p>
-          </div>
-          <div
-            className="content-stretch flex items-start justify-end relative shrink-0 w-full"
-            data-node-id="7:1981"
-          >
-            <div
-              className="content-stretch flex flex-col items-end p-[10px] relative shrink-0 size-[50px]"
-              data-node-id="7:1982"
-              data-name="AI"
-            >
-              <img
-                alt=""
-                className="absolute inset-0 max-w-none object-cover pointer-events-none size-full"
-                src={imgAi}
-              />
-            </div>
           </div>
         </div>
       </div>

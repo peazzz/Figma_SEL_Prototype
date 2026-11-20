@@ -1,8 +1,9 @@
-const assetPathPrefix = "/assets";
+import { CollapsibleSection, SectionToggle } from "../components/CollapsibleSection";
+
+const assetPathPrefix = `${import.meta.env.BASE_URL}assets`;
 const img = `${assetPathPrefix}/9cf24.png`;
 const imgVector11 = `${assetPathPrefix}/f69a5.svg`;
 const imgVector1 = `${assetPathPrefix}/01bd7.svg`;
-const imgChevronUp = `${assetPathPrefix}/279f8.svg`;
 
 export default function Component() {
   return (
@@ -255,7 +256,7 @@ export default function Component() {
               <img alt="" className="block max-w-none size-full" src={imgVector1} />
             </div>
           </div>
-          <div
+          <CollapsibleSection label="情緒天氣站"
             className="content-stretch flex flex-col gap-[28px] items-start relative shrink-0 w-full"
             data-node-id="7:1843"
             data-name="情緒天氣站"
@@ -270,19 +271,9 @@ export default function Component() {
               >
                 情緒天氣站
               </p>
-              <div
-                className="relative shrink-0 size-[24px]"
-                data-node-id="7:1847"
-                data-name="Chevron up"
-              >
-                <img
-                  alt=""
-                  className="absolute block inset-0 max-w-none size-full"
-                  src={imgChevronUp}
-                />
-              </div>
+              <SectionToggle />
             </div>
-          </div>
+          </CollapsibleSection>
           <p
             className="[word-break:break-word] font-['Noto_Sans_TC:Bold'] font-bold leading-[1.6] relative shrink-0 text-[#253e38] text-[23px] whitespace-nowrap"
             data-node-id="7:1856"

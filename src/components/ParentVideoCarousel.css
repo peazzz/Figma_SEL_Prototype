@@ -1,0 +1,15 @@
+.parent-video-carousel { width: 100%; min-width: 0; }
+.parent-video-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.parent-video-heading h3, .academy-subheading { font-family: "Noto Sans TC:Bold", sans-serif; font-weight: 700; font-size: 16px; color: #253e38; }
+.parent-video-controls { display: flex; gap: 8px; }
+.parent-video-controls button { cursor: pointer; border-radius: 50%; }
+.parent-video-controls button:disabled { opacity: .35; cursor: default; }
+.parent-video-track { --visible: 5; display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.parent-video-track::-webkit-scrollbar { display: none; }
+.parent-video-card { flex: 0 0 calc((100% - (var(--visible) - 1) * 10px) / var(--visible)); min-width: 0; scroll-snap-align: start; text-align: center; color: #293d35; font-family: "Noto Sans TC:Medium", sans-serif; font-weight: 500; }
+.parent-video-placeholder { height: 360px; padding: 10px; display: grid; place-items: center; border-radius: 12px; background: #e6eff3; font-size: 24px; }
+.parent-video-card p { margin-top: 6px; font-size: 20px; }
+.parent-video-track:focus-visible, .parent-video-controls button:focus-visible { outline: 3px solid #315e4c; outline-offset: -3px; }
+@media (max-width: 1200px) { .parent-video-track { --visible: 3; } }
+@media (max-width: 600px) { .parent-video-track { --visible: 2; } .parent-video-placeholder { font-size: 20px; } }
+@media (max-width: 360px) { .parent-video-track { --visible: 1; } }

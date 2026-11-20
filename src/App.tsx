@@ -1,4 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import AssistantWidget from "./components/AssistantWidget";
+import { accountSections, familySections } from "./components/AccountFamilyNavigation";
+import { useSectionNavigation } from "./useSectionNavigation";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import Academy from "./design-pages/Academy";
 import Account from "./design-pages/Account";
 import Family from "./design-pages/Family";
@@ -39,7 +42,6 @@ const mainPages: PageDefinition[] = [
         target: "教養情緒與壓力覺察",
       },
       { id: "emotion-coaching", label: "親子情緒教練" },
-      { id: "supportive-boundaries", label: "自主支持與有效界線" },
       { id: "conflict-repair", label: "衝突修復與家庭溝通" },
       { id: "digital-life", label: "健康數位生活與手機不育兒" },
     ],
@@ -51,7 +53,7 @@ const mainPages: PageDefinition[] = [
     sections: [
       { id: "age-stories", label: "分齡故事" },
       { id: "role-models", label: "偉人與標竿人物故事" },
-      { id: "reading-prompts", label: "共讀提問", target: "導讀教學" },
+      { id: "reading-prompts", label: "導讀教學" },
       { id: "character-actions", label: "品格行動延伸任務" },
     ],
   },
@@ -116,8 +118,8 @@ const mainPages: PageDefinition[] = [
 ];
 
 const utilityPages: PageDefinition[] = [
-  { id: "account", label: "帳號資訊", component: Account, sections: [] },
-  { id: "family", label: "家庭資訊", component: Family, sections: [] },
+  { id: "account", label: "帳號資訊", component: Account, sections: accountSections },
+  { id: "family", label: "家庭資訊", component: Family, sections: familySections },
   { id: "password", label: "設定新密碼", component: PasswordPage, sections: [] },
 ];
 
@@ -134,14 +136,14 @@ const sideRoutes: Record<string, string> = {
 };
 
 function hashFor(page: PageDefinition, sectionId?: string) {
-  const section = sectionId ?? page.sections[0]?.id;
+  const section = sectionId;
   return `#/${page.id}${section ? `/${section}` : ""}`;
 }
 
 function readRoute() {
   const [pageId = "home", sectionId] = window.location.hash.replace(/^#\/?/, "").split("/");
   const page = allPages.find((candidate) => candidate.id === pageId) ?? mainPages[0];
-  const section = page.sections.find((candidate) => candidate.id === sectionId) ?? page.sections[0];
+  const section = page.sections.find((candidate) => candidate.id === sectionId);
   return { page, section };
 }
 
@@ -168,7 +170,7 @@ function DesignHeader() {
           alt=""
           className="absolute block inset-0 max-w-none size-full"
           height="45"
-          src="/assets/9cf24.png"
+          src={`${import.meta.env.BASE_URL}assets/9cf24.png`}
           width="45"
         />
       </div>
@@ -293,13 +295,26 @@ function AvatarMenu({
   onAccount: () => void;
   onLogout: () => void;
 }) {
+  const [menuTop, setMenuTop] = useState(0);
+  useLayoutEffect(() => {
+    const header = document.querySelector<HTMLElement>('[data-name="網站標題與帳號"]');
+    const page = header?.closest<HTMLElement>(".design-page");
+    if (!header || !page) return;
+    const updatePosition = () => {
+      setMenuTop(header.getBoundingClientRect().bottom - page.getBoundingClientRect().top);
+    };
+    updatePosition();
+    const observer = new ResizeObserver(updatePosition);
+    observer.observe(header);
+    return () => observer.disconnect();
+  }, []);
   const [membersExpanded, setMembersExpanded] = useState(false);
   const [selectedMember, setSelectedMember] = useState("王媽");
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const members = [
-    { name: "黃哥", image: "/assets/45647.png" },
-    { name: "黃妹", image: "/assets/644ba.png" },
-    { name: "鼠鼠", image: "/assets/23595.png" },
+    { name: "黃哥", image: `${import.meta.env.BASE_URL}assets/45647.png` },
+    { name: "黃妹", image: `${import.meta.env.BASE_URL}assets/644ba.png` },
+    { name: "鼠鼠", image: `${import.meta.env.BASE_URL}assets/23595.png` },
   ];
 
   useEffect(() => {
@@ -323,6 +338,7 @@ function AvatarMenu({
         aria-label="帳號與家庭選單"
         aria-modal="true"
         className="avatar-menu"
+        style={{ top: menuTop }}
         onClick={(event) => event.stopPropagation()}
         role="dialog"
       >
@@ -334,25 +350,25 @@ function AvatarMenu({
             ref={closeButtonRef}
             type="button"
           >
-            <img alt="" height="30" src="/assets/8b70b.svg" width="30" />
+            <img alt="" height="30" src={`${import.meta.env.BASE_URL}assets/8b70b.svg`} width="30" />
           </button>
         </div>
         <img
           alt={`${selectedMember}的頭像`}
           className="avatar-menu-profile"
           height="100"
-          src="/assets/6c914.png"
+          src={`${import.meta.env.BASE_URL}assets/6c914.png`}
           width="100"
         />
         <p className="avatar-menu-name">{selectedMember}</p>
         <div className="avatar-menu-actions">
           <div className="avatar-menu-primary-actions">
             <button onClick={onFamily} type="button">
-              <img alt="" height="16" src="/assets/79b00.svg" width="16" />
+              <img alt="" height="16" src={`${import.meta.env.BASE_URL}assets/79b00.svg`} width="16" />
               家庭資訊
             </button>
             <button onClick={onAccount} type="button">
-              <img alt="" height="16" src="/assets/91706.svg" width="16" />
+              <img alt="" height="16" src={`${import.meta.env.BASE_URL}assets/91706.svg`} width="16" />
               帳號資訊
             </button>
           </div>
@@ -366,7 +382,7 @@ function AvatarMenu({
             <img
               alt=""
               height="24"
-              src={membersExpanded ? "/assets/e4575.svg" : "/assets/bf5a9.svg"}
+              src={membersExpanded ? `${import.meta.env.BASE_URL}assets/e4575.svg` : `${import.meta.env.BASE_URL}assets/bf5a9.svg`}
               width="24"
             />
           </button>
@@ -386,7 +402,7 @@ function AvatarMenu({
             </div>
           )}
           <button className="avatar-menu-logout" onClick={onLogout} type="button">
-            <img alt="" height="16" src="/assets/11d77.svg" width="16" />
+            <img alt="" height="16" src={`${import.meta.env.BASE_URL}assets/11d77.svg`} width="16" />
             登出
           </button>
         </div>
@@ -408,41 +424,7 @@ export default function App() {
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
-  useEffect(() => {
-    requestAnimationFrame(() => {
-      const tabBar = document.querySelector('[data-name="分頁主題"]');
-      tabBar
-        ?.querySelectorAll("[data-route-active]")
-        .forEach((element) => element.removeAttribute("data-route-active"));
-
-      if (!route.section) {
-        window.scrollTo({ top: 0 });
-        return;
-      }
-
-      const namedElements = Array.from(document.querySelectorAll<HTMLElement>("[data-name]"));
-      const tabMatches = namedElements.filter(
-        (element) => element.dataset.name === route.section?.label,
-      );
-      const activeTab = tabMatches.find((element) => element.closest('[data-name="分頁主題"]'));
-      activeTab?.setAttribute("data-route-active", "true");
-      const targetName = route.section.target ?? route.section.label;
-      const namedTarget = namedElements.find(
-        (element) =>
-          element.dataset.name === targetName &&
-          !element.closest('[data-name="分頁主題"]') &&
-          !element.closest('[data-name="八大主導覽"]'),
-      );
-      const textTarget = Array.from(document.querySelectorAll<HTMLElement>("p, h1, h2, h3")).find(
-        (element) =>
-          element.textContent?.trim() === targetName &&
-          !element.closest('[data-name="分頁主題"]') &&
-          !element.closest('[data-name="八大主導覽"]'),
-      );
-      const target = namedTarget ?? textTarget;
-      target?.scrollIntoView({ block: "start" });
-    });
-  }, [route]);
+  useSectionNavigation(route.page.sections, route.section, route);
 
   function navigate(page: PageDefinition, sectionId?: string) {
     const nextHash = hashFor(page, sectionId);
@@ -489,6 +471,10 @@ export default function App() {
   return (
     <div className="design-page" onClick={handleClick}>
       <PageComponent />
+      <footer className="site-footer">
+        Copyright © 2026 國立中央大學 學習與教學研究所
+      </footer>
+      <AssistantWidget />
       {avatarMenuOpen && (
         <AvatarMenu
           onAccount={() => {
