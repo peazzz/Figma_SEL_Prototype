@@ -844,6 +844,7 @@ export default function Component() {
             </div>
           </div>
           <CollapsibleSection label="健康數位生活與手機不育兒"
+            onClick={event => event.stopPropagation()}
             className="content-stretch flex flex-col gap-[16px] items-start relative shrink-0 w-full"
             data-node-id="7:1282"
             data-name="健康數位生活與手機不育兒"
@@ -871,26 +872,26 @@ export default function Component() {
             <AgeActivityLibrary />
 
             <ParentVideoCarousel />
-
-            <div className="h-0 relative shrink-0 w-[1096px]" data-node-id="7:1341">
-              <div className="absolute inset-[-0.5px_0]">
-                <img alt="" className="block max-w-none size-full" src={imgVector1} />
-              </div>
-            </div>
-            <div
-              className="content-stretch flex flex-col items-start relative shrink-0 w-full"
-              data-node-id="7:1342"
-              data-name="家庭數位規範共訂"
-            >
-              <div
-                className="content-stretch flex gap-[12px] items-center relative shrink-0 w-full"
-                data-node-id="7:1343"
-              >
-                <div className="flex flex-1 min-w-0 self-stretch"><DigitalContract /></div>
-                <div className="flex flex-1 min-w-0 self-stretch"><FamilyMeeting /></div>
-              </div>
-            </div>
           </CollapsibleSection>
+
+          <div className="h-0 relative shrink-0 w-[1096px]" data-node-id="7:1341" onClick={event => event.stopPropagation()}>
+            <div className="absolute inset-[-0.5px_0]">
+              <img alt="" className="block max-w-none size-full" src={imgVector1} />
+            </div>
+          </div>
+          <div
+            className="content-stretch flex flex-col items-start relative shrink-0 w-full"
+            data-node-id="7:1342"
+            data-name="家庭數位規範共訂"
+          >
+            <div
+              className="content-stretch flex gap-[12px] items-center relative shrink-0 w-full"
+              data-node-id="7:1343"
+            >
+              <div className="flex flex-1 min-w-0 self-stretch"><DigitalContract /></div>
+              <div className="flex flex-1 min-w-0 self-stretch"><FamilyMeeting /></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
