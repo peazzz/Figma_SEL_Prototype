@@ -1,5 +1,15 @@
+import HeaderAvatar from "../components/HeaderAvatar";
+import { AccountLifecycleContext, RemovedAccountMembersContext, SessionMemberContext, switchableMembers } from "../components/HeaderAvatar";
+import DeleteAccountDialog from "../components/DeleteAccountDialog";
+import ViewPermissionsDialog from "../components/ViewPermissions";
+import PrivacySwitch from "../components/PrivacySwitch";
+import AccountPinField from "../components/AccountPinField";
+import RemoveAccountMemberDialog from "../components/RemoveAccountMemberDialog";
+import RelativeDialog, { type RelativeProfile } from "../components/RelativeDialog";
 import { memberMetadata, formatMemberCreatedAt } from "../data/memberMetadata";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import AccountCredentialDialog from "../components/AccountCredentialDialog";
+import AccountPasswordDialog from "../components/AccountPasswordDialog";
 import AccountFamilyNavigation, { accountSections } from "../components/AccountFamilyNavigation";
 
 const assetPathPrefix = `${import.meta.env.BASE_URL}assets`;
@@ -17,51 +27,6 @@ const imgVector2 = `${assetPathPrefix}/b249c.svg`;
 const imgCheck = `${assetPathPrefix}/707ef.svg`;
 const imgVector4 = `${assetPathPrefix}/95730.svg`;
 
-type SwitchProps = {
-  className?: string;
-  icon?: "False";
-  selected?: boolean;
-  state?: "Enabled";
-};
-
-function Switch({ className, icon = "False", selected = true, state = "Enabled" }: SwitchProps) {
-  return (
-    <div
-      className={
-        className ||
-        "bg-[#6750a4] content-stretch flex h-[32px] items-center justify-end px-[4px] py-[2px] relative rounded-[100px] w-[52px]"
-      }
-      data-node-id="7:67"
-    >
-      <div className="flex-[1_0_0] h-full min-w-px relative" data-node-id="7:68" data-name="Handle">
-        <div
-          className="-translate-y-1/2 absolute content-stretch flex items-center justify-center p-[4px] right-[-12px] top-1/2"
-          data-node-id="7:69"
-          data-name="Target"
-        >
-          <div
-            className="content-stretch flex flex-col items-center justify-center p-[8px] relative rounded-[100px] shrink-0"
-            data-node-id="7:70"
-            data-name="State-layer"
-          >
-            <div
-              className="bg-white content-stretch flex items-center justify-center overflow-clip p-[11px] relative rounded-[24px] shrink-0"
-              data-node-id="7:71"
-              data-name="Handle shape"
-            >
-              <div
-                className="relative rounded-[23px] shrink-0 size-[2px]"
-                data-node-id="7:72"
-                data-name="Container"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 const accountMembers = [
   { name: "王媽", birthday: "1989年3月24日", gender: "女性", id: memberMetadata.mom.memberId, avatar: img6, photo: img6, created: formatMemberCreatedAt(memberMetadata.mom.createdAt) },
   { name: "黃哥", birthday: "2017年3月9日", gender: "男性", id: memberMetadata.brother.memberId, avatar: import.meta.env.BASE_URL + "assets/ce2f7.png", photo: import.meta.env.BASE_URL + "assets/ce2f7.png", created: formatMemberCreatedAt(memberMetadata.brother.createdAt) },
@@ -71,10 +36,70 @@ const accountMembers = [
 export default function Component() {
   const [preferences, setPreferences] = useState({ answer: "家長一同作答", member: "固定為上次登入成員", family: "固定為上次登入家庭" });
   const [selectedMember, setSelectedMember] = useState(0);
-  const [members, setMembers] = useState(accountMembers);
+  const [addingMember, setAddingMember] = useState(false);
+  const [deletingAccount, setDeletingAccount] = useState(false);
+  const { deleteAccount } = useContext(AccountLifecycleContext);
+  const [removingMember, setRemovingMember] = useState(false);
+  const [viewPermissionsOpen, setViewPermissionsOpen] = useState(false);
+  const sessionMember = useContext(SessionMemberContext);
+  const removedMembers = useContext(RemovedAccountMembersContext);
+  const [credentialDialog, setCredentialDialog] = useState<"email" | "pin" | "reauth" | "changePin" | null>(null);
+  const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
+  const [memberEmails, setMemberEmails] = useState<Record<string, string | null>>(() => {
+    try {
+      const saved: unknown = JSON.parse(localStorage.getItem("sel-account-email-bindings") ?? "null");
+      if (saved && typeof saved === "object" && !Array.isArray(saved) && Object.values(saved).every(email => email === null || typeof email === "string")) {
+        return saved as Record<string, string | null>;
+      }
+    } catch { /* Fall back to example data when storage is unavailable. */ }
+    return { [accountMembers[0].id]: "ccyang@ncu.edu.tw" };
+  });
+  useEffect(() => {
+    try { localStorage.setItem("sel-account-email-bindings", JSON.stringify(memberEmails)); }
+    catch { /* The current page still keeps the demonstration state. */ }
+  }, [memberEmails]);
+  const ownerEmail = memberEmails[accountMembers[0].id] ?? null;
+  const [forgotPinOpen, setForgotPinOpen] = useState(false);
+  const [memberPins, setMemberPins] = useState<Record<string, { hasPin: boolean; required: boolean }>>({ [accountMembers[0].id]: { hasPin: true, required: true } });
+  const [members, setMembers] = useState(accountMembers.filter(member => !removedMembers.ids.includes(member.id)).map(member => ({ ...member, birthdayPublic: true, genderPublic: true, relation: "", color: "" })));
   const member = members[selectedMember];
+  const memberEmail = memberEmails[member.id] ?? null;
+  const pin = memberPins[member.id] ?? { hasPin: false, required: false };
+  function updateMemberPin(hasPin: boolean) {
+    setMemberPins(current => ({ ...current, [member.id]: { hasPin, required: hasPin } }));
+  }
+  const pinField = <AccountPinField hasPin={pin.hasPin} required={pin.required} onToggle={() => setMemberPins(current => ({ ...current, [member.id]: { ...pin, required: !pin.required } }))} onEdit={() => setCredentialDialog(pin.hasPin ? "changePin" : "pin")} />;
+  function updateMemberEmail(email: string | null) {
+    setMemberEmails(current => ({ ...current, [member.id]: email }));
+  }
+  function removeSelectedMember() {
+    if (selectedMember === 0) return;
+    const id = member.id;
+    setMembers(current => current.filter(item => item.id !== id));
+    removedMembers.remove(id);
+    setMemberEmails(current => { const next = { ...current }; delete next[id]; return next; });
+    setMemberPins(current => { const next = { ...current }; delete next[id]; return next; });
+    setSelectedMember(0);
+    setRemovingMember(false);
+  }
+  function addAccountMember(profile: RelativeProfile) {
+    if (members.length >= 6) return;
+    const photo = `${assetPathPrefix}/${profile.profileAvatar ?? profile.avatar}`;
+    const birthday = profile.birthday ? profile.birthday.split("-").map(Number).map((part, index) => part + ["年", "月", "日"][index]).join("") : "";
+    setMembers(current => [...current, {
+      id: profile.memberId ?? profile.id, name: profile.name, birthday,
+      gender: ({ 男: "男性", 女: "女性" } as Record<string, string>)[profile.gender] ?? profile.gender,
+      avatar: photo, photo, created: formatMemberCreatedAt(profile.createdAt ?? new Date().toLocaleDateString("zh-TW", { timeZone: "Asia/Taipei" })),
+      birthdayPublic: profile.birthdayPublic, genderPublic: profile.genderPublic, relation: profile.relation, color: profile.color,
+    }]);
+    setSelectedMember(members.length);
+    setAddingMember(false);
+  }
   const [editing, setEditing] = useState<"name" | "birthday" | "gender" | null>(null);
   const [draft, setDraft] = useState("");
+  function togglePrivacy(field: "birthdayPublic" | "genderPublic") {
+    setMembers(items => items.map((item, index) => index === selectedMember ? { ...item, [field]: !item[field] } : item));
+  }
   function beginEdit(field: "name" | "birthday" | "gender") {
     setEditing(field);
     setDraft(field === "birthday" ? member.birthday.replace(/年|月/g, "-").replace("日", "").split("-").map((part, index) => index ? part.padStart(2, "0") : part).join("-") : member[field]);
@@ -119,15 +144,7 @@ export default function Component() {
             </p>
           </div>
         </div>
-        <div className="relative shrink-0 size-[45px]" data-node-id="7:569" data-name="媽媽">
-          <img
-            alt=""
-            className="absolute block inset-0 max-w-none size-full"
-            height="45"
-            src={img}
-            width="45"
-          />
-        </div>
+        <HeaderAvatar />
       </div>
       <AccountFamilyNavigation sections={accountSections} />
       <div
@@ -262,19 +279,19 @@ export default function Component() {
                 className="flex-[1_0_0] font-['Noto_Sans_TC:Light'] font-light min-w-px relative text-[18px] text-right"
                 data-node-id="7:585"
               >
-                4/6
+                {members.length}/6
               </p>
             </div>
             <div
               className="flex flex-col font-['Noto_Sans_TC:Regular'] font-normal justify-center leading-[0] relative shrink-0 text-[#262d29] text-[18px] whitespace-nowrap"
               data-node-id="7:586"
             >
-              <p className="leading-[1.55]">ccyang@ncu.edu.tw</p>
+              <p className="leading-[1.55]">{ownerEmail ?? "尚未綁定Email"}</p>
             </div>
           </div>
           <div className="account-member-picker" aria-label="帳號成員">
-            {members.map((person, index) => <button type="button" key={person.id} aria-label={"查看" + person.name + "帳號資訊"} aria-pressed={selectedMember === index} onClick={event => { event.stopPropagation(); setSelectedMember(index); }}><img src={person.photo} alt="" width="120" height="120"/>{index === 0 && <span>帳號持有人</span>}</button>)}
-            <div className="account-member-add"><img src={img5} alt="新增成員" width="120" height="120"/></div>
+            {members.map((person, index) => <button type="button" key={person.id} aria-label={"查看" + person.name + "帳號資訊"} aria-pressed={selectedMember === index} onClick={event => { event.stopPropagation(); setSelectedMember(index); }}><img src={person.photo} style={{ backgroundColor: person.color || undefined }} alt="" width="120" height="120"/>{index === 0 && <span>帳號持有人</span>}</button>)}
+            {members.length < 6 && <button type="button" className="account-member-add" aria-label="新增帳號成員" title="新增帳號成員" onClick={event => { event.stopPropagation(); setAddingMember(true); }}><img src={img5} alt="" width="120" height="120"/></button>}
           </div>
           <div
             className="content-stretch flex flex-col gap-[10px] items-end relative shrink-0 w-full"
@@ -329,6 +346,7 @@ export default function Component() {
                   className="absolute block inset-0 max-w-none size-full"
                   height="70"
                   src={member.avatar}
+                  style={{ backgroundColor: member.color || undefined, borderRadius: "50%" }}
                   width="70"
                 />
               </div>
@@ -351,10 +369,10 @@ export default function Component() {
                   className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#262d29] text-[18px] whitespace-nowrap"
                   data-node-id="7:613"
                 >
-                  <p className="leading-[1.55]">{member.birthday}</p>
+                  <p className="leading-[1.55]">{member.birthday || "未提供"}</p>
                 </div>
                 <button type="button" aria-label="編輯生日" onClick={event => { event.stopPropagation(); beginEdit("birthday"); }}
-                  className="content-stretch cursor-pointer flex flex-[1_0_0] items-center min-w-px overflow-clip relative"
+                  className="cursor-pointer flex size-[20px] shrink-0 items-center justify-center relative"
                   data-node-id="7:614"
                   data-name="儲存"
                 >
@@ -370,53 +388,7 @@ export default function Component() {
                     />
                   </div>
                 </button>
-                <button
-                  className="content-stretch cursor-pointer flex flex-col items-center justify-center relative shrink-0"
-                  data-node-id="7:618"
-                  data-name="切換公開按鈕"
-                >
-                  <div
-                    className="bg-[#6750a4] content-stretch flex h-[32px] items-center justify-end px-[4px] py-[2px] relative rounded-[100px] shrink-0 w-[52px]"
-                    data-node-id="I7:618;2045:1149"
-                    data-name="Switch"
-                  >
-                    <div
-                      className="flex-[1_0_0] h-full min-w-px relative"
-                      data-node-id="I7:618;2045:1150"
-                      data-name="Handle"
-                    >
-                      <div
-                        className="-translate-y-1/2 absolute content-stretch flex items-center justify-center p-[4px] right-[-12px] top-1/2"
-                        data-node-id="I7:618;2045:1151"
-                        data-name="Target"
-                      >
-                        <div
-                          className="content-stretch flex flex-col items-center justify-center p-[8px] relative rounded-[100px] shrink-0"
-                          data-node-id="I7:618;2045:1152"
-                          data-name="State-layer"
-                        >
-                          <div
-                            className="bg-white content-stretch flex items-center justify-center overflow-clip p-[11px] relative rounded-[24px] shrink-0"
-                            data-node-id="I7:618;2045:1153"
-                            data-name="Handle shape"
-                          >
-                            <div
-                              className="relative rounded-[23px] shrink-0 size-[2px]"
-                              data-node-id="I7:618;2045:1154"
-                              data-name="Container"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <p
-                    className="[word-break:break-word] font-['Noto_Sans_TC:Light'] font-light leading-[1.55] relative shrink-0 text-[12px] text-black text-center whitespace-nowrap"
-                    data-node-id="I7:618;2045:1144"
-                  >
-                    公開
-                  </p>
-                </button>
+                <div data-node-id="7:618" data-name="切換公開按鈕"><PrivacySwitch label="生日" checked={member.birthdayPublic} onChange={() => togglePrivacy("birthdayPublic")} /></div>
               </div>
             </div>
             <div
@@ -437,10 +409,10 @@ export default function Component() {
                   className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#262d29] text-[18px] whitespace-nowrap"
                   data-node-id="7:622"
                 >
-                  <p className="leading-[1.55]">{member.gender}</p>
+                  <p className="leading-[1.55]">{member.gender || "未提供"}</p>
                 </div>
                 <button type="button" aria-label="編輯性別" onClick={event => { event.stopPropagation(); beginEdit("gender"); }}
-                  className="content-stretch cursor-pointer flex flex-[1_0_0] items-center min-w-px overflow-clip relative"
+                  className="cursor-pointer flex size-[20px] shrink-0 items-center justify-center relative"
                   data-node-id="7:623"
                   data-name="儲存"
                 >
@@ -456,53 +428,7 @@ export default function Component() {
                     />
                   </div>
                 </button>
-                <button
-                  className="content-stretch cursor-pointer flex flex-col items-center justify-center relative shrink-0"
-                  data-node-id="7:627"
-                  data-name="切換公開按鈕"
-                >
-                  <div
-                    className="bg-[#6750a4] content-stretch flex h-[32px] items-center justify-end px-[4px] py-[2px] relative rounded-[100px] shrink-0 w-[52px]"
-                    data-node-id="I7:627;2045:1149"
-                    data-name="Switch"
-                  >
-                    <div
-                      className="flex-[1_0_0] h-full min-w-px relative"
-                      data-node-id="I7:627;2045:1150"
-                      data-name="Handle"
-                    >
-                      <div
-                        className="-translate-y-1/2 absolute content-stretch flex items-center justify-center p-[4px] right-[-12px] top-1/2"
-                        data-node-id="I7:627;2045:1151"
-                        data-name="Target"
-                      >
-                        <div
-                          className="content-stretch flex flex-col items-center justify-center p-[8px] relative rounded-[100px] shrink-0"
-                          data-node-id="I7:627;2045:1152"
-                          data-name="State-layer"
-                        >
-                          <div
-                            className="bg-white content-stretch flex items-center justify-center overflow-clip p-[11px] relative rounded-[24px] shrink-0"
-                            data-node-id="I7:627;2045:1153"
-                            data-name="Handle shape"
-                          >
-                            <div
-                              className="relative rounded-[23px] shrink-0 size-[2px]"
-                              data-node-id="I7:627;2045:1154"
-                              data-name="Container"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <p
-                    className="[word-break:break-word] font-['Noto_Sans_TC:Light'] font-light leading-[1.55] relative shrink-0 text-[12px] text-black text-center whitespace-nowrap"
-                    data-node-id="I7:627;2045:1144"
-                  >
-                    公開
-                  </p>
-                </button>
+                <div data-node-id="7:627" data-name="切換公開按鈕"><PrivacySwitch label="性別" checked={member.genderPublic} onChange={() => togglePrivacy("genderPublic")} /></div>
               </div>
             </div>
             <div
@@ -575,80 +501,73 @@ export default function Component() {
                 className="content-stretch flex gap-[10px] items-start relative shrink-0 w-full"
                 data-node-id="7:641"
               >
-                <a
+                {ownerEmail ? <a
                   className="flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center relative shrink-0 text-[#262d29] text-[18px] whitespace-nowrap"
-                  href="mailto:ccyang@ncu.edu.tw"
+                  href={`mailto:${ownerEmail}`}
                   data-node-id="7:642"
                   target="_blank"
                 >
-                  <p className="cursor-pointer leading-[1.55]">ccyang@ncu.edu.tw</p>
-                </a>
+                  <p className="cursor-pointer leading-[1.55]">{ownerEmail}</p>
+                </a> : <p className="text-[18px] leading-[1.55] text-[#262d29]">無</p>}
                 <div
-                  className="flex flex-[1_0_0] flex-col font-['Noto_Sans_TC:DemiLight'] font-[350] justify-center min-w-px relative text-[#315e4c] text-[18px] text-right"
+                  className="flex flex-[1_0_0] flex-col font-normal justify-center min-w-px relative text-[#315e4c] text-[16px] text-right"
                   data-node-id="7:643"
                 >
-                  <p className="[text-underline-position:from-font] decoration-from-font decoration-solid leading-[1.55] underline">
+                  {ownerEmail && <button type="button" onClick={event => { event.stopPropagation(); setPasswordDialogOpen(true); }} className="self-end w-fit cursor-pointer text-right [text-underline-position:from-font] decoration-from-font decoration-solid leading-[1.55] underline">
                     更改密碼
-                  </p>
+                  </button>}
                 </div>
                 <div
-                  className="flex flex-col font-['Noto_Sans_TC:DemiLight'] font-[350] justify-center relative shrink-0 text-[#315e4c] text-[18px] text-right whitespace-nowrap"
+                  className="flex flex-col font-normal justify-center relative shrink-0 text-[#315e4c] text-[16px] text-right whitespace-nowrap"
                   data-node-id="7:644"
                 >
-                  <p className="[text-underline-position:from-font] decoration-from-font decoration-solid leading-[1.55] underline">
-                    綁定其他Email
-                  </p>
+                  <button type="button" onClick={event => { event.stopPropagation(); setCredentialDialog(ownerEmail ? "reauth" : "email"); }} className="self-end w-fit cursor-pointer text-right [text-underline-position:from-font] decoration-from-font decoration-solid leading-[1.55] underline">
+                    {ownerEmail ? "綁定其他Email" : "綁定Email"}
+                  </button>
                 </div>
               </div>
             </div>
-            <div
-              className="bg-white content-stretch flex flex-col items-start px-[16px] py-[10px] relative rounded-[10px] shrink-0 w-full"
-              data-node-id="7:645"
-            >
-              <div
-                className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Regular'] font-normal justify-center leading-[0] relative shrink-0 text-[#315e4c] text-[16px] whitespace-nowrap"
-                data-node-id="7:646"
-              >
-                <p className="leading-[1.55]">PIN碼</p>
-              </div>
-              <div
-                className="content-stretch flex gap-[10px] items-center relative rounded-[10px] shrink-0 w-full"
-                data-node-id="7:647"
-              >
-                <div
-                  className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#262d29] text-[18px] text-right whitespace-nowrap"
-                  data-node-id="7:648"
-                >
-                  <p className="leading-[1.55]">切換成員時輸入PIN碼</p>
-                </div>
-                <Switch className="bg-[#6750a4] content-stretch flex h-[32px] items-center justify-end px-[4px] py-[2px] relative rounded-[100px] shrink-0 w-[52px]" />
-                <div
-                  className="[word-break:break-word] flex flex-[1_0_0] flex-col font-['Noto_Sans_TC:DemiLight'] font-[350] justify-center leading-[0] min-w-px relative text-[#315e4c] text-[18px] text-right"
-                  data-node-id="7:650"
-                >
-                  <p className="[text-underline-position:from-font] decoration-from-font decoration-solid leading-[1.55] underline">
-                    更改PIN碼
-                  </p>
-                </div>
-              </div>
-            </div>
+            {pinField}
             </> : <>
-              <div className="account-member-field"><span>Email</span><p>無</p></div>
-              <div className="account-member-field"><span>PIN碼</span><p>無PIN碼</p></div>
+              <div className="account-member-field">
+                <span>Email</span>
+                <div className="flex items-center justify-between gap-[10px]">
+                  <p>{memberEmail ?? "無"}</p>
+                  <button type="button" className="cursor-pointer text-[16px] font-normal text-[#315e4c] underline underline-offset-2" onClick={event => { event.stopPropagation(); setCredentialDialog(memberEmail ? "reauth" : "email"); }}>{memberEmail ? "綁定其他Email" : "綁定Email"}</button>
+                </div>
+              </div>
+              {pinField}
             </>}
             <div
               className="content-stretch flex gap-[10px] items-center pt-[12px] relative shrink-0"
               data-node-id="7:651"
             >
-              <div className="flex flex-row items-center self-stretch" data-node-id="7:656">
+              {selectedMember !== 0 && <>
+                {sessionMember.id === switchableMembers[0].id && <button type="button" onClick={event => { event.stopPropagation(); setViewPermissionsOpen(true); }} className="flex items-center gap-[8px] rounded-[10px] border border-[#cadbd0] bg-[#e8f0eb] px-[16px] py-[10px] text-[18px] font-medium text-[#315e4c]">
+                  觀看權限
+                  <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 3 4 6v6c0 4 5 7 8 9 3-2 8-5 8-9V6l-8-3Z" />
+                    <path d="m8 12 3 3 5-6" />
+                  </svg>
+                </button>}
+                <button type="button" onClick={event => { event.stopPropagation(); setRemovingMember(true); }} className="flex items-center gap-[8px] rounded-[10px] border border-[#e8bfbc] bg-[#fcedec] px-[16px] py-[10px] text-[18px] font-medium text-[#b23a36]">
+                  移除成員
+                  <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M2 21v-2a7 7 0 0 1 14 0v2M17 10h5" />
+                  </svg>
+                </button>
+              </>}
+              {selectedMember === 0 && sessionMember.id === switchableMembers[0].id &&
+              <button type="button" onClick={event => { event.stopPropagation(); setDeletingAccount(true); }} className="flex flex-row items-center self-stretch cursor-pointer" data-node-id="7:656">
                 <div className="bg-[#fcedec] border border-[#e8bfbc] border-solid content-stretch flex h-full items-center px-[16px] py-[10px] relative rounded-[10px] shrink-0">
                   <div
                     className="[word-break:break-word] flex flex-col font-['Noto_Sans_TC:Medium'] font-medium justify-center leading-[0] relative shrink-0 text-[#b23a36] text-[18px] whitespace-nowrap"
                     data-node-id="7:657"
                   >
-                    <p className="leading-[1.55]">{selectedMember === 0 ? "刪除帳號" : "移除成員"}</p>
+                    <p className="leading-[1.55]">刪除帳號</p>
                   </div>
-                  <a
+                  <span
                     className="content-stretch cursor-pointer flex h-full items-center justify-end overflow-clip pl-[8px] pr-[2px] relative shrink-0"
                     data-node-id="7:658"
                     data-name="儲存"
@@ -662,9 +581,9 @@ export default function Component() {
                         <img alt="" className="block max-w-none size-full" src={imgIcon} />
                       </div>
                     </div>
-                  </a>
+                  </span>
                 </div>
-              </div>
+              </button>}
             </div>
           </div>
           <div className="h-0 relative shrink-0 w-[1096px]" data-node-id="7:663">
@@ -699,6 +618,13 @@ export default function Component() {
           </div>
         </div>
       </div>
+      {credentialDialog && <AccountCredentialDialog kind={credentialDialog} loginEmail={memberEmail ?? ""} onUnbindEmail={() => updateMemberEmail(null)} onBindEmail={updateMemberEmail} onClose={() => setCredentialDialog(null)} onForgotPin={() => { setCredentialDialog(null); setForgotPinOpen(true); }} onPinSet={() => updateMemberPin(true)} />}
+      {passwordDialogOpen && ownerEmail && <AccountPasswordDialog ownerEmail={ownerEmail} onClose={() => setPasswordDialogOpen(false)} />}
+      {forgotPinOpen && <AccountPasswordDialog ownerEmail={memberEmail} onClose={() => setForgotPinOpen(false)} onRemovePin={() => updateMemberPin(false)} onBindEmail={() => { setForgotPinOpen(false); setCredentialDialog("email"); }} />}
+      {addingMember && <RelativeDialog title="新增帳號成員" allowMemberId={false} onSave={addAccountMember} onClose={() => setAddingMember(false)} />}
+      {deletingAccount && <DeleteAccountDialog onClose={() => setDeletingAccount(false)} onConfirm={deleteAccount} />}
+      {removingMember && selectedMember !== 0 && <RemoveAccountMemberDialog name={member.name} onClose={() => setRemovingMember(false)} onConfirm={removeSelectedMember} />}
+      {viewPermissionsOpen && selectedMember !== 0 && <ViewPermissionsDialog memberId={member.id} members={members.slice(1)} onSelectMember={id => { const index = members.findIndex(person => person.id === id); if (index > 0) setSelectedMember(index); }} onClose={() => setViewPermissionsOpen(false)} />}
       {editing && <div className="account-edit-overlay" onClick={event => { event.stopPropagation(); if (event.target === event.currentTarget) setEditing(null); }}>
         <form className="account-edit-dialog" role="dialog" aria-modal="true" aria-label={"編輯" + { name: "名稱", birthday: "生日", gender: "性別" }[editing]} onSubmit={event => { event.preventDefault(); saveEdit(); }}>
           <h2>編輯{{ name: "名稱", birthday: "生日", gender: "性別" }[editing]}</h2>

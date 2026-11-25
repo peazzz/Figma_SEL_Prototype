@@ -1,8 +1,8 @@
 import { useState } from "react";
 
 // An empty selection represents "全部".
-export function useCategoryFilter(options: readonly string[]) {
-  const [selected, setSelected] = useState<string[]>([]);
+export function useCategoryFilter(options: readonly string[], initial: string[] = []) {
+  const [selected, setSelected] = useState<string[]>(initial);
   function toggle(value: string) {
     setSelected((current) => {
       if (value === "全部") return [];

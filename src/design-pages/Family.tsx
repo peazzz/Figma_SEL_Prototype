@@ -1,3 +1,4 @@
+import HeaderAvatar from "../components/HeaderAvatar";
 import RelativeDialog, { relativeAge, initialRelativeProfiles, type RelativeProfile } from "../components/RelativeDialog";
 import JoinFamilyDialog from "../components/JoinFamilyDialog";
 import CreateFamilyDialog, { type CreatedFamily } from "../components/CreateFamilyDialog";
@@ -122,15 +123,7 @@ export default function Component() {
             </p>
           </div>
         </div>
-        <div className="relative shrink-0 size-[45px]" data-node-id="7:733" data-name="媽媽">
-          <img
-            alt=""
-            className="absolute block inset-0 max-w-none size-full"
-            height="45"
-            src={img}
-            width="45"
-          />
-        </div>
+        <HeaderAvatar />
       </div>
       <AccountFamilyNavigation sections={familySections} />
       <div
@@ -531,7 +524,7 @@ export default function Component() {
         </div>
       </div>
       {memberViewer && <RelativeDialog initial={memberViewer} viewOnly onSave={() => {}} onClose={() => setMemberViewer(null)}/>}
-      {relativeEditor && <RelativeDialog initial={relativeEditor === "new" ? undefined : relativeEditor} onClose={() => setRelativeEditor(null)} onSave={relative => { const original = relativesAdded.find(item => item.id === relative.id); if (original?.owned === false) relative = { ...original, relation: relative.relation }; setFamilyMembers(items => items.map(item => item.id === relative.id ? { ...item, realName: relative.realName, name: item.hasEditedName ? item.name : relative.realName } : item)); setRelativesAdded(items => items.some(item => item.id === relative.id) ? items.map(item => item.id === relative.id ? relative : item) : [...items, relative]); setRelativeEditor(null); }} />}
+      {relativeEditor && <RelativeDialog initial={relativeEditor === "new" ? undefined : relativeEditor} onClose={() => setRelativeEditor(null)} onSave={relative => { const original = relativesAdded.find(item => item.id === relative.id); if (original?.owned === false) relative = { ...original, relation: relative.relation }; setFamilyMembers(items => items.map(item => item.id === relative.id ? { ...item, realName: relative.realName, name: item.hasEditedName ? item.name : relative.realName } : item)); setRelativesAdded(items => items.some(item => item.id === relative.id) ? items.map(item => item.id === relative.id ? relative : item) : [...items, relative]); if (relativeEditor === "new") setRelativeEditor(null); }} />}
       {wangDetailsOpen && <FamilyDetailsDialog details={wangFamilyDetails} editable={false} actor="媽媽" familyId="208631" createdAt="2026/10/8" avatar="family-choice-wang.png" onSave={() => {}} onClose={() => setWangDetailsOpen(false)}/>}
       {joinOpen && <JoinFamilyDialog onClose={() => setJoinOpen(false)}/>}
       {createdDetailsOpen && createdFamily && <FamilyDetailsDialog familyId={createdFamily.id} createdAt={createdFamily.createdAt} details={createdFamily.details} editable actor="媽媽" onSave={details => setCreatedFamily({ ...createdFamily, details })} onDelete={() => deleteFamily("created")} onClose={() => setCreatedDetailsOpen(false)} />}

@@ -1,3 +1,4 @@
+import HeaderAvatar from "../components/HeaderAvatar";
 import FamilyMeeting from "../components/FamilyMeeting";
 import DigitalContract from "../components/DigitalContract";
 import AgeActivityLibrary from "../components/AgeActivityLibrary";
@@ -52,15 +53,7 @@ export default function Component() {
             </p>
           </div>
         </div>
-        <div className="relative shrink-0 size-[45px]" data-node-id="7:1023" data-name="媽媽">
-          <img
-            alt=""
-            className="absolute block inset-0 max-w-none size-full"
-            height="45"
-            src={img}
-            width="45"
-          />
-        </div>
+        <HeaderAvatar />
       </div>
       <div
         className="bg-[#e8f0eb] content-stretch flex h-[48px] items-start justify-center overflow-clip relative shrink-0 w-full"
@@ -742,101 +735,7 @@ export default function Component() {
               </p>
               <SectionToggle />
             </div>
-            <div
-              className="content-stretch flex flex-col gap-[12px] items-start relative rounded-[10px] shrink-0 w-full"
-              data-node-id="7:1226"
-            >
-              <div
-                className="[word-break:break-word] content-stretch flex font-['Noto_Sans_TC:Medium'] font-medium gap-[12px] items-start leading-[0] relative shrink-0 text-right w-full whitespace-nowrap"
-                data-node-id="7:1233"
-              >
-                <div
-                  className="bg-[#e8f0eb] content-stretch flex flex-[1_0_0] flex-col gap-[8px] h-[150px] items-center justify-center min-w-px relative rounded-[12px]"
-                  data-node-id="7:1234"
-                >
-                  <div
-                    className="flex flex-col justify-center relative shrink-0 text-[#293d35] text-[24px]"
-                    data-node-id="7:1235"
-                  >
-                    <p className="leading-none">承認</p>
-                  </div>
-                  <div
-                    className="flex flex-col justify-center relative shrink-0 text-[#526b60] text-[16px]"
-                    data-node-id="7:1236"
-                  >
-                    <p className="leading-none">案例影片、行動紀錄</p>
-                  </div>
-                </div>
-                <div
-                  className="bg-[#e8f0eb] content-stretch flex flex-[1_0_0] flex-col gap-[8px] h-[150px] items-center justify-center min-w-px relative rounded-[12px]"
-                  data-node-id="7:1237"
-                >
-                  <div
-                    className="flex flex-col justify-center relative shrink-0 text-[#293d35] text-[24px]"
-                    data-node-id="7:1238"
-                  >
-                    <p className="leading-none">傾聽</p>
-                  </div>
-                  <div
-                    className="flex flex-col justify-center relative shrink-0 text-[#526b60] text-[16px]"
-                    data-node-id="7:1239"
-                  >
-                    <p className="leading-none">案例影片、行動紀錄</p>
-                  </div>
-                </div>
-                <div
-                  className="bg-[#e8f0eb] content-stretch flex flex-[1_0_0] flex-col gap-[8px] h-[150px] items-center justify-center min-w-px relative rounded-[12px]"
-                  data-node-id="7:1240"
-                >
-                  <div
-                    className="flex flex-col justify-center relative shrink-0 text-[#293d35] text-[24px]"
-                    data-node-id="7:1241"
-                  >
-                    <p className="leading-none">道歉</p>
-                  </div>
-                  <div
-                    className="flex flex-col justify-center relative shrink-0 text-[#526b60] text-[16px]"
-                    data-node-id="7:1242"
-                  >
-                    <p className="leading-none">案例影片、行動紀錄</p>
-                  </div>
-                </div>
-                <div
-                  className="bg-[#e8f0eb] content-stretch flex flex-[1_0_0] flex-col gap-[8px] h-[150px] items-center justify-center min-w-px relative rounded-[12px]"
-                  data-node-id="7:1243"
-                >
-                  <div
-                    className="flex flex-col justify-center relative shrink-0 text-[#293d35] text-[24px]"
-                    data-node-id="7:1244"
-                  >
-                    <p className="leading-none">補救</p>
-                  </div>
-                  <div
-                    className="flex flex-col justify-center relative shrink-0 text-[#526b60] text-[16px]"
-                    data-node-id="7:1245"
-                  >
-                    <p className="leading-none">案例影片、行動紀錄</p>
-                  </div>
-                </div>
-                <div
-                  className="bg-[#e8f0eb] content-stretch flex flex-[1_0_0] flex-col gap-[8px] h-[150px] items-center justify-center min-w-px relative rounded-[12px]"
-                  data-node-id="7:1246"
-                >
-                  <div
-                    className="flex flex-col justify-center relative shrink-0 text-[#293d35] text-[24px]"
-                    data-node-id="7:1247"
-                  >
-                    <p className="leading-none">重新約定</p>
-                  </div>
-                  <div
-                    className="flex flex-col justify-center relative shrink-0 text-[#526b60] text-[16px]"
-                    data-node-id="7:1248"
-                  >
-                    <p className="leading-none">案例影片、行動紀錄</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <EmotionToolkits repairEntry />
           </CollapsibleSection>
           <div className="h-0 relative shrink-0 w-[1096px]" data-node-id="7:1281">
             <div className="absolute inset-[-0.5px_0]">
@@ -868,7 +767,6 @@ export default function Component() {
               </p>
               <SectionToggle />
             </div>
-            <h3 className="academy-subheading">分齡替代活動庫</h3>
             <AgeActivityLibrary />
 
             <ParentVideoCarousel />

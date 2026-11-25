@@ -118,11 +118,11 @@ export default function DigitalContract() {
     <div className="digital-contract-entry" onClick={(event) => event.stopPropagation()}>
       <h3>家庭數位契約產生器</h3>
       <p>一起約定使用時間、無螢幕情境與家庭承諾，產生可簽名的契約。</p>
-      <button ref={trigger} type="button" className="contract-primary" onClick={() => setOpen(true)} aria-haspopup="dialog">訂定家庭數位契約</button>
+      <button ref={trigger} type="button" className="contract-primary" onClick={() => setOpen(true)} aria-haspopup="dialog">家庭數位契約產生器</button>
       {open && createPortal(
         <dialog ref={dialog} className="digital-contract-dialog" aria-labelledby="digital-contract-title" onCancel={() => setOpen(false)}
           onClick={(event) => { event.stopPropagation(); if (event.target === event.currentTarget) { const r = event.currentTarget.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) setOpen(false); } }}>
-          <header className="contract-dialog-header"><div><h2 ref={heading} tabIndex={-1} id="digital-contract-title">{preview ? "契約預覽" : "訂定家庭數位契約 " + step + "/4"}</h2><p>先與孩子討論，再填入你們願意共同實踐的約定。</p></div><button type="button" aria-label="關閉家庭數位契約" onClick={() => setOpen(false)}>×</button></header>
+          <header className="contract-dialog-header"><div className="contract-title-row"><h2 ref={heading} tabIndex={-1} id="digital-contract-title">{preview ? "契約預覽" : "家庭數位契約產生器"}</h2>{!preview && <p role="status">步驟 {step} / 4：{["家庭與約定日期", "螢幕使用時間", "適用裝置與無螢幕情境", "我們的共同做法"][step - 1]}</p>}</div><button type="button" aria-label="關閉家庭數位契約" onClick={() => setOpen(false)}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg></button></header>
           {preview ? <><div className="contract-actions"><button type="button" onClick={() => setPreview(false)}>返回編輯</button><button type="button" className="contract-primary" onClick={() => window.print()}>列印契約／儲存 PDF</button></div><ContractPreview value={value} /></> :
             <form noValidate className="contract-form" onSubmit={generate}>
               {step === 1 && <fieldset><legend>家庭與約定日期</legend><div className="contract-family-identity"><img src={import.meta.env.BASE_URL + "assets/" + profile.image} alt="" width="56" height="56" />{input("family", "家庭名稱")}</div>{memberChoices("adults", "家長／照顧者", profile.adults)}{memberChoices("children", "孩子／參與成員", profile.members)}<div className="contract-field-grid">{input("startDate", "開始日期", "date")}{input("reviewDate", "共同檢視日期", "date")}</div></fieldset>}

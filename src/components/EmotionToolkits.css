@@ -39,3 +39,4 @@
 .toolkit-companion-card[data-kind="情境卡"] { background: #e3effa; }
 .toolkit-companion-card > span { width: 100%; text-align: center; }
 .toolkit-companion-card small { position: absolute; right: 10px; bottom: 10px; }
+.toolkit-companion-grid .story-book-title { margin-top: 6px; }

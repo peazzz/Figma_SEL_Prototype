@@ -1,15 +1,17 @@
-.parent-video-carousel { width: 100%; min-width: 0; }
-.parent-video-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
-.parent-video-heading h3, .academy-subheading { font-family: "Noto Sans TC:Bold", sans-serif; font-weight: 700; font-size: 16px; color: #253e38; }
-.parent-video-controls { display: flex; gap: 8px; }
-.parent-video-controls button { cursor: pointer; border-radius: 50%; }
-.parent-video-controls button:disabled { opacity: .35; cursor: default; }
-.parent-video-track { --visible: 5; display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
-.parent-video-track::-webkit-scrollbar { display: none; }
-.parent-video-card { flex: 0 0 calc((100% - (var(--visible) - 1) * 10px) / var(--visible)); min-width: 0; scroll-snap-align: start; text-align: center; color: #293d35; font-family: "Noto Sans TC:Medium", sans-serif; font-weight: 500; }
-.parent-video-placeholder { height: 360px; padding: 10px; display: grid; place-items: center; border-radius: 12px; background: #e6eff3; font-size: 24px; }
-.parent-video-card p { margin-top: 6px; font-size: 20px; }
-.parent-video-track:focus-visible, .parent-video-controls button:focus-visible { outline: 3px solid #315e4c; outline-offset: -3px; }
-@media (max-width: 1200px) { .parent-video-track { --visible: 3; } }
-@media (max-width: 600px) { .parent-video-track { --visible: 2; } .parent-video-placeholder { font-size: 20px; } }
-@media (max-width: 360px) { .parent-video-track { --visible: 1; } }
+.parent-video-carousel { width:100%; min-width:0; }
+.parent-video-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:10px; }
+.parent-video-heading h3, .academy-subheading { font-family:"Noto Sans TC:Bold",sans-serif; font-weight:700; font-size:16px; color:#253e38; }
+.parent-video-playback button { border:0; border-radius:8px; padding:6px 12px; background:#263d33; color:white; font-size:14px; }
+.parent-video-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(140px,100%),1fr)); gap:16px 12px; }
+.parent-video-card { display:flex; flex-direction:column; align-items:stretch; gap:6px; min-width:0; text-align:left; color:#253e38; }
+.parent-video-card:hover strong { text-decoration:underline; text-underline-offset:3px; }
+.parent-video-thumb { position:relative; display:grid; place-items:center; width:100%; aspect-ratio:9/16; border-radius:8px; font-size:clamp(24px,3vw,40px); }
+.parent-video-thumb small { position:absolute; bottom:4px; right:5px; border-radius:4px; background:#364b41; color:white; padding:0 4px; font-size:11px; }
+.parent-video-card strong { font-size:15px; line-height:1.45; font-weight:600; }
+.parent-video-dialog { position:fixed; inset:0; margin:auto; width:min(400px,calc(100vw - 32px),49dvh); padding:0; border:0; border-radius:12px; background:transparent; }
+.parent-video-dialog::backdrop { background:rgb(0 0 0 / 65%); }
+.parent-video-stage { display:grid; align-content:center; justify-items:center; gap:16px; width:100%; aspect-ratio:9/16; margin-inline:auto; padding:16px; border-radius:12px; text-align:center; font-size:clamp(16px,2.5vw,20px); }
+.parent-video-stage > span { font-size:clamp(32px,6vw,66px); }
+.parent-video-playback { display:flex; align-items:center; gap:12px; position:absolute; inset:auto 0 0; padding:24px 12px 12px; background:linear-gradient(transparent,rgb(0 0 0 / 72%)); color:white; font-size:14px; }
+.parent-video-playback input { min-width:0; flex:1; accent-color:white; }
+

@@ -1,3 +1,5 @@
+import PrivacySwitch from "./PrivacySwitch";
+export { default as PrivacySwitch } from "./PrivacySwitch";
 import DeleteFamilyDialog from "./DeleteFamilyDialog";
 import FamilyHistoryDialog from "./FamilyHistoryDialog";
 import { taiwanRegions } from "../data/taiwanRegions";
@@ -16,22 +18,9 @@ export const initialFamilyDetails: FamilyDetails = {
   records: ["2026/10/12 09:08 爸爸更改家庭頭像", "2026/10/8 15:33 媽媽已將爸爸晉升家長", "2026/10/7 10:25 黃爸已將黃爸更名為爸爸", "2026/10/7 10:24 王媽已將黃哥更名為哥哥", "2026/10/7 10:24 王媽已將黃妹更名為妹妹", "2026/10/7 10:24 王媽已將王媽更名為媽媽", "2026/10/6 14:01 新增黃爸", "2026/10/6 13:58 王媽邀請黃爸", "2026/10/6 13:58 王媽新增黃哥", "2026/10/6 13:58 王媽新增黃妹", "2026/10/6 13:57 王媽建立我的家庭1"],
 };
 const cities = Object.keys(taiwanRegions);
-export function PrivacySwitch({ label, checked, onChange }: { label: string; checked: boolean; onChange: () => void }) {
-  return <button type="button" role="switch" aria-label={label + "公開"} aria-checked={checked} className="family-privacy" onClick={onChange}>
-    <span className="family-privacy-track"><span/></span><small>{checked ? "公開" : "非公開"}</small>
-  </button>;
-}
 export function FamilyDetailsFields({ draft, update }: { draft: FamilyDetails; update: <K extends keyof FamilyDetails>(key: K, value: FamilyDetails[K]) => void }) {
-  const currentYear = Number(new Intl.DateTimeFormat("en", { year: "numeric", timeZone: "Asia/Taipei" }).format(new Date()));
-  const maxYear = Math.max(currentYear, Number(draft.year) || currentYear);
-  const years = Array.from({ length: maxYear - 1899 }, (_, index) => String(maxYear - index));
-  const daysInMonth = draft.year && draft.month ? new Date(Number(draft.year), Number(draft.month), 0).getDate() : 0;
-  function updateDate(key: "year" | "month", value: string) {
-    update(key, value);
-    const year = key === "year" ? value : draft.year;
-    const month = key === "month" ? value : draft.month;
-    if (!year || !month || Number(draft.day) > new Date(Number(year), Number(month), 0).getDate()) update("day", "");
-  }
+  const dateValue = draft.year && draft.month && draft.day
+    ? `${draft.year}-${draft.month.padStart(2, "0")}-${draft.day.padStart(2, "0")}` : "";
   return <>      <label htmlFor="family-detail-name">家庭名稱 <span className="family-required">*</span></label>
       <div className="family-detail-row"><input id="family-detail-name" value={draft.name} maxLength={40} required onChange={event => update("name", event.target.value)}/><PrivacySwitch label="家庭名稱" checked={draft.namePublic} onChange={() => update("namePublic", !draft.namePublic)}/></div>
       <label htmlFor="family-detail-city">住家地區</label>
@@ -44,11 +33,14 @@ export function FamilyDetailsFields({ draft, update }: { draft: FamilyDetails; u
         </select>
         <PrivacySwitch label="住家地區" checked={draft.regionPublic} onChange={() => update("regionPublic", !draft.regionPublic)}/>
       </div>
-      <label htmlFor="family-detail-year">成家日期</label>
-      <div className="family-detail-row family-date-row">
-        <select id="family-detail-year" aria-label="成家年份" required value={draft.year} onChange={event => updateDate("year", event.target.value)}><option value="">年</option>{years.map(year => <option key={year} value={year}>{year}</option>)}</select><span>年</span>
-        <select aria-label="成家月份" required value={draft.month} onChange={event => updateDate("month", event.target.value)}><option value="">月</option>{Array.from({ length: 12 }, (_, index) => <option key={index + 1} value={index + 1}>{index + 1}</option>)}</select><span>月</span>
-        <select aria-label="成家日期（日）" required disabled={!draft.year || !draft.month} value={draft.day} onChange={event => update("day", event.target.value)}><option value="">日</option>{Array.from({ length: daysInMonth }, (_, index) => <option key={index + 1} value={index + 1}>{index + 1}</option>)}</select><span>日</span>
+      <label htmlFor="family-detail-date">成家日期</label>
+      <div className="family-detail-row">
+        <input id="family-detail-date" type="date" required value={dateValue} onChange={event => {
+          const [year = "", month = "", day = ""] = event.target.value.split("-");
+          update("year", year);
+          update("month", month ? String(Number(month)) : "");
+          update("day", day ? String(Number(day)) : "");
+        }}/>
         <PrivacySwitch label="成家日期" checked={draft.datePublic} onChange={() => update("datePublic", !draft.datePublic)}/>
       </div></>;
 }
@@ -83,10 +75,17 @@ export default function FamilyDetailsDialog({ details, editable, actor, onSave, 
     if (keys.some(key => next[key] !== details[key])) next.records = [new Date().toLocaleString("zh-TW", { hour12: false, timeZone: "Asia/Taipei" }) + " " + actor + "更新家庭資料與公開設定", ...details.records];
     onSave(next); onClose();
   }
+  function dismiss() {
+    if (!editable || !formRef.current?.checkValidity() || !draft.name.trim() || !isValidFamilyDate(draft)) {
+      onClose();
+      return;
+    }
+    saveAndClose();
+  }
   const asset = import.meta.env.BASE_URL + "assets/";
-  return <>{createPortal(<dialog ref={dialogRef} className="family-member-dialog family-details-dialog" aria-labelledby="family-details-title"
-    onCancel={event => { event.preventDefault(); saveAndClose(); }} onClick={event => { event.stopPropagation(); if (event.target === event.currentTarget) { const r = event.currentTarget.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) saveAndClose(); } }}>
-    <header><h2 id="family-details-title">家庭資料</h2><button type="button" className="member-close" aria-label="關閉家庭資料" onClick={saveAndClose}>×</button></header>
+  return <>{createPortal(<dialog ref={dialogRef} className={`family-member-dialog family-details-dialog${editable ? "" : " family-details-readonly"}`} aria-labelledby="family-details-title"
+    onCancel={event => { event.preventDefault(); dismiss(); }} onClick={event => { event.stopPropagation(); if (event.target === event.currentTarget) { const r = event.currentTarget.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) dismiss(); } }}>
+    <header><h2 id="family-details-title">家庭資料</h2><button type="button" className="member-close" aria-label="關閉家庭資料" onClick={dismiss}>×</button></header>
     <img className="family-details-avatar" src={asset + (avatar ?? (editable ? "e0be9.png" : "5b005.png"))} alt="家庭頭像" width="150" height="150"/>
     {editable ? <form ref={formRef} id="family-details-form" onSubmit={event => { event.preventDefault(); saveAndClose(); }}>
       <FamilyDetailsFields draft={draft} update={update}/>

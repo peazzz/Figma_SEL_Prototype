@@ -1,3 +1,4 @@
+import HeaderAvatar from "../components/HeaderAvatar";
 import { CollapsibleSection, SectionToggle } from "../components/CollapsibleSection";
 
 const assetPathPrefix = `${import.meta.env.BASE_URL}assets`;
@@ -40,15 +41,7 @@ export default function Component() {
             </p>
           </div>
         </div>
-        <div className="relative shrink-0 size-[45px]" data-node-id="7:1817" data-name="媽媽">
-          <img
-            alt=""
-            className="absolute block inset-0 max-w-none size-full"
-            height="45"
-            src={img}
-            width="45"
-          />
-        </div>
+        <HeaderAvatar />
       </div>
       <div
         className="bg-[#e8f0eb] content-stretch cursor-pointer flex h-[48px] items-start justify-center overflow-clip relative shrink-0 w-full"

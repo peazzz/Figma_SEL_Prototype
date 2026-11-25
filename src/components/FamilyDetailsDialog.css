@@ -4,19 +4,19 @@
 .family-details-dialog label, .family-details-dialog dt, .family-details-dialog h3 { display:block; color:#315e4c; font-size:16px; font-weight:400; }
 .family-detail-row { display:flex; gap:10px; align-items:center; margin-bottom:10px; }
 .family-detail-row input { flex:1; width:0; }
+.family-details-dialog .family-detail-row input { font-size:18px; }
+@media(max-width:480px) { .family-details-dialog .family-detail-row input { font-size:16px; } }
 .family-required { color:#ff191d; }
-.family-details-dialog .family-privacy { display:flex; flex-direction:column; flex-shrink:0; background:none; color:#262d29; gap:2px; padding:0; border-radius:0; }
-.family-privacy small { font-size:12px; font-weight:300; }
-.family-privacy-track { position:relative; display:block; width:52px; height:32px; border:2px solid #79747e; border-radius:100px; background:#e6e0e9; }
-.family-privacy-track > span { position:absolute; width:18px; height:18px; border-radius:50%; background:#79747e; top:5px; left:5px; }
-.family-privacy[aria-checked=true] .family-privacy-track { background:#6750a4; border-color:#6750a4; }
-.family-privacy[aria-checked=true] .family-privacy-track > span { width:24px; height:24px; top:2px; left:22px; background:white; }
 .family-date-row { gap:5px; }
 .family-date-row input { text-align:center; padding:3px 0; font-size:18px; appearance:textfield; }
 .family-date-row input::-webkit-inner-spin-button { appearance:none; }
 .family-date-row input:first-child { flex:1.7; }
 .family-date-row > span { font-size:18px; }
 .family-detail-values dd { font-size:24px; line-height:1.55; margin-bottom:10px; overflow-wrap:anywhere; }
+.family-details-readonly .family-detail-values dt { font-size:14px; font-weight:400; color:#64766f; margin-bottom:4px; }
+.family-details-readonly .family-detail-values dd { font-family:"Noto Sans TC:Medium", "Noto Sans TC", sans-serif; font-size:18px; font-weight:500; line-height:1.6; margin-bottom:16px; }
+.family-details-readonly .family-history-entry strong { font-family:"Noto Sans TC:Medium", "Noto Sans TC", sans-serif; font-size:16px; font-weight:500; }
+.family-details-readonly .family-history-entry small { font-size:13px; font-weight:400; }
 .family-detail-meta { display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin:10px 0; }
 .family-detail-meta .member-copy { margin-left:0; }
 .family-detail-meta > span { margin-left:auto; font-size:12px; color:#888; }

@@ -1,7 +1,10 @@
 import AssistantWidget from "./components/AssistantWidget";
+import HeaderAvatar, { AccountLifecycleContext, RemovedAccountMembersContext, SessionMemberContext, switchableMembers, type SessionMember } from "./components/HeaderAvatar";
+import AccountCredentialDialog from "./components/AccountCredentialDialog";
+import { ViewPermissionsContext, readViewSettings, type ViewGroup } from "./components/ViewPermissions";
 import { accountSections, familySections } from "./components/AccountFamilyNavigation";
 import { useSectionNavigation } from "./useSectionNavigation";
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import Academy from "./design-pages/Academy";
 import Account from "./design-pages/Account";
 import Family from "./design-pages/Family";
@@ -124,6 +127,14 @@ const utilityPages: PageDefinition[] = [
 ];
 
 const allPages = [...mainPages, ...utilityPages];
+const viewGroups: ViewGroup[] = [...utilityPages.filter(page => page.id !== "password"), ...mainPages].map(page => ({ id: page.id, label: page.id === "home" ? "家庭首頁" : page.label, sections: page.id === "home" ? [
+  { id: "micro", label: "每日計畫：每日微任務", target: "今日微任務" },
+  { id: "mood", label: "每日計畫：情緒檢核", target: "情緒天氣" },
+  { id: "recommendations", label: "本週目標：推薦的教材與影音", target: "推薦的教材與影音" },
+  { id: "learning", label: "本週目標：學習計畫", target: "本週學習計畫" },
+  { id: "offline", label: "行程排定：無3C家庭日", target: "無3C家庭日" },
+  { id: "meeting", label: "行程排定：家庭會議", target: "家庭會議" },
+] : page.sections }));
 const sideRoutes: Record<string, string> = {
   "導覽 / 家庭首頁": "home",
   "導覽 / 家長陪伴學院": "academy",
@@ -165,15 +176,7 @@ function DesignHeader() {
           <span className="font-['Noto_Sans_TC:Bold'] font-bold">我的家庭1</span>
         </p>
       </div>
-      <div className="relative shrink-0 size-[45px]" data-name="媽媽">
-        <img
-          alt=""
-          className="absolute block inset-0 max-w-none size-full"
-          height="45"
-          src={`${import.meta.env.BASE_URL}assets/9cf24.png`}
-          width="45"
-        />
-      </div>
+      <HeaderAvatar />
     </div>
   );
 }
@@ -285,11 +288,15 @@ function PasswordPage() {
 }
 
 function AvatarMenu({
+  selectedMember,
+  onSelectMember,
   onClose,
   onFamily,
   onAccount,
   onLogout,
 }: {
+  selectedMember: SessionMember;
+  onSelectMember: (member: SessionMember) => void;
   onClose: () => void;
   onFamily: () => void;
   onAccount: () => void;
@@ -309,13 +316,9 @@ function AvatarMenu({
     return () => observer.disconnect();
   }, []);
   const [membersExpanded, setMembersExpanded] = useState(false);
-  const [selectedMember, setSelectedMember] = useState("王媽");
   const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const members = [
-    { name: "黃哥", image: `${import.meta.env.BASE_URL}assets/45647.png` },
-    { name: "黃妹", image: `${import.meta.env.BASE_URL}assets/644ba.png` },
-    { name: "鼠鼠", image: `${import.meta.env.BASE_URL}assets/23595.png` },
-  ];
+  const removedMembers = useContext(RemovedAccountMembersContext);
+  const members = switchableMembers.filter(member => !removedMembers.ids.includes(member.id));
 
   useEffect(() => {
     closeButtonRef.current?.focus();
@@ -354,13 +357,13 @@ function AvatarMenu({
           </button>
         </div>
         <img
-          alt={`${selectedMember}的頭像`}
+          alt={`${selectedMember.name}的頭像`}
           className="avatar-menu-profile"
           height="100"
-          src={`${import.meta.env.BASE_URL}assets/6c914.png`}
+          src={selectedMember.image}
           width="100"
         />
-        <p className="avatar-menu-name">{selectedMember}</p>
+        <p className="avatar-menu-name">{selectedMember.name}</p>
         <div className="avatar-menu-actions">
           <div className="avatar-menu-primary-actions">
             <button onClick={onFamily} type="button">
@@ -390,9 +393,10 @@ function AvatarMenu({
             <div className="avatar-menu-members">
               {members.map((member) => (
                 <button
-                  className={selectedMember === member.name ? "is-selected" : ""}
+                  className={selectedMember.name === member.name ? "is-selected" : ""}
+                  aria-pressed={selectedMember.name === member.name}
                   key={member.name}
-                  onClick={() => setSelectedMember(member.name)}
+                  onClick={() => onSelectMember(member)}
                   type="button"
                 >
                   <img alt="" height="45" src={member.image} width="45" />
@@ -414,6 +418,46 @@ function AvatarMenu({
 export default function App() {
   const [route, setRoute] = useState(readRoute);
   const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
+  const [activeMember, setActiveMember] = useState(switchableMembers[0]);
+  const [pendingMember, setPendingMember] = useState<SessionMember | null>(null);
+  const [removedMemberIds, setRemovedMemberIds] = useState<string[]>([]);
+  const [viewSettings, setViewSettings] = useState(readViewSettings);
+  const [logoutReason, setLogoutReason] = useState<string | null>(null);
+  const isOwner = activeMember.id === switchableMembers[0].id;
+  const permissions = isOwner ? {} : viewSettings[activeMember.id] ?? {};
+  const pageVisible = permissions[route.page.id] !== false && (!route.section || permissions[`${route.page.id}/${route.section.id}`] !== false);
+  useEffect(() => { if (logoutReason === "deleted") return; try { localStorage.setItem("sel-view-permissions", JSON.stringify(viewSettings)); } catch { /* Keep in-memory settings. */ } }, [viewSettings, logoutReason]);
+  useLayoutEffect(() => {
+    const root = document.querySelector(".design-page");
+    if (!root) return;
+    root.querySelectorAll("[data-view-hidden]").forEach(node => node.removeAttribute("data-view-hidden"));
+    function hide(selector: string) { root!.querySelectorAll(selector).forEach(node => node.setAttribute("data-view-hidden", "true")); }
+    for (const group of viewGroups) {
+      const page = allPages.find(page => page.id === group.id)!;
+      if (permissions[group.id] === false) {
+        const routeName = Object.entries(sideRoutes).find(([, id]) => id === group.id)?.[0];
+        if (routeName) hide(`[data-name="${routeName}"]`);
+        root.querySelectorAll(".avatar-menu-primary-actions button").forEach(node => { if (node.textContent?.trim() === group.label) node.setAttribute("data-view-hidden", "true"); });
+      }
+      if (route.page.id !== group.id) continue;
+      for (const section of group.sections) {
+        if (permissions[`${group.id}/${section.id}`] !== false) continue;
+        const target = section.target ?? section.label;
+        hide(`[data-name="分頁主題"] [data-name="${section.label}"]`);
+        hide(`[data-name="頁面主體"] [data-name="${target}"]:not([data-name="八大主導覽"] *)`);
+        if (group.id === "account") hide(section.id === "preferences" ? '[data-node-id="7:664"],.account-preferences' : '.account-member-picker,[data-node-id="7:596"] > :not([data-node-id="7:664"]):not(.account-preferences)');
+        if (group.id === "family" && section.id === "households") hide('[data-name="家庭資訊內容"] > :not([data-name="家庭成員"]):not([data-node-id="7:861"])');
+        // Section containers carry their full content, not just their title.
+        root.querySelectorAll<HTMLElement>("[data-collapsible-section]").forEach(node => { if (node.dataset.name === target) node.setAttribute("data-view-hidden", "true"); });
+      }
+      for (const section of page.sections) {
+        if (group.id === "home" && group.sections.filter(child => {
+          const parent = child.id === "micro" || child.id === "mood" ? "daily" : child.id === "learning" || child.id === "recommendations" ? "weekly-goal" : "schedule";
+          return parent === section.id;
+        }).every(child => permissions[`home/${child.id}`] === false)) hide(`[data-name="分頁主題"] [data-name="${section.label}"]`);
+      }
+    }
+  }, [route, activeMember, viewSettings, avatarMenuOpen]);
   const [logoutMessage, setLogoutMessage] = useState(false);
   const PageComponent = useMemo(() => route.page.component, [route.page]);
 
@@ -433,6 +477,12 @@ export default function App() {
   }
 
   function handleClick(event: React.MouseEvent<HTMLDivElement>) {
+    if (logoutReason) {
+      event.preventDefault();
+      setLogoutMessage(true);
+      window.setTimeout(() => setLogoutMessage(false), 3000);
+      return;
+    }
     const target = event.target as HTMLElement;
     const text = target.textContent?.trim();
     const named = target.closest<HTMLElement>("[data-name]");
@@ -451,12 +501,13 @@ export default function App() {
 
     if (text?.startsWith("目前登入家庭") || text === "我的家庭1")
       page = allPages.find((candidate) => candidate.id === "family");
-    else if (text === "更改密碼") page = allPages.find((candidate) => candidate.id === "password");
     else if (name === "品牌") page = mainPages[0];
     else if (name && sideRoutes[name])
       page = mainPages.find((candidate) => candidate.id === sideRoutes[name]);
-    else if (name) {
-      const section = route.page.sections.find((candidate) => candidate.label === name);
+    else {
+      const tab = target.closest<HTMLElement>('[data-name="分頁主題"] > [data-name]');
+      if (!tab) return;
+      const section = route.page.sections.find((candidate) => candidate.label === tab.dataset.name);
       if (section) {
         page = route.page;
         sectionId = section.id;
@@ -468,15 +519,41 @@ export default function App() {
     navigate(page, sectionId);
   }
 
+  function deleteAccount() {
+    if (!isOwner) return;
+    try {
+      localStorage.removeItem("sel-account-email-bindings");
+      localStorage.removeItem("sel-view-permissions");
+      sessionStorage.setItem("sel-account-session", "deleted");
+    } catch { /* The display still signs out if storage is unavailable. */ }
+    setAvatarMenuOpen(false);
+    setPendingMember(null);
+    setViewSettings({});
+    setRemovedMemberIds(switchableMembers.map(member => member.id));
+    setLogoutReason("deleted");
+    window.location.hash = "#/home";
+  }
+
   return (
+    <AccountLifecycleContext.Provider value={{ deleteAccount, signedOut: Boolean(logoutReason) }}>
+    <ViewPermissionsContext.Provider value={{ groups: viewGroups, settings: viewSettings, update: (memberId, key, visible) => { if (isOwner) setViewSettings(current => ({ ...current, [memberId]: { ...current[memberId], [key]: visible } })); } }}>
+    <SessionMemberContext.Provider value={activeMember}>
+    <RemovedAccountMembersContext.Provider value={{ ids: removedMemberIds, remove: id => { setRemovedMemberIds(current => [...current, id]); if (activeMember.id === id) setActiveMember(switchableMembers[0]); setViewSettings(current => { const next = { ...current }; delete next[id]; return next; }); } }}>
     <div className="design-page" onClick={handleClick}>
-      <PageComponent />
+      {logoutReason ? <Home /> : pageVisible ? <PageComponent /> : <><DesignHeader /><div className="flex"><DesignSidebar activePage="" /><p className="p-[40px] text-[#64766f]">此成員未開啟這個區塊的觀看權限，請選擇其他區塊。</p></div></>}
       <footer className="site-footer">
         Copyright © 2026 國立中央大學 學習與教學研究所
       </footer>
       <AssistantWidget />
       {avatarMenuOpen && (
         <AvatarMenu
+          selectedMember={activeMember}
+          onSelectMember={member => {
+            if (member.name === "王媽") {
+              setAvatarMenuOpen(false);
+              setPendingMember(member);
+            } else setActiveMember(member);
+          }}
           onAccount={() => {
             setAvatarMenuOpen(false);
             navigate(allPages.find((page) => page.id === "account")!);
@@ -494,11 +571,16 @@ export default function App() {
           }}
         />
       )}
+      {pendingMember && <AccountCredentialDialog kind="switchPin" onClose={() => setPendingMember(null)} onPinSet={() => setActiveMember(pendingMember)} onForgotPin={() => { setPendingMember(null); setAvatarMenuOpen(false); navigate(allPages.find(page => page.id === "account")!); }} />}
       {logoutMessage && (
         <div aria-live="polite" className="logout-toast" role="status">
-          已登出
+          {logoutReason ? "請先登入帳號" : "已登出"}
         </div>
       )}
     </div>
+    </RemovedAccountMembersContext.Provider>
+    </SessionMemberContext.Provider>
+    </ViewPermissionsContext.Provider>
+    </AccountLifecycleContext.Provider>
   );
 }

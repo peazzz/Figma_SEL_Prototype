@@ -1,3 +1,4 @@
+import HeaderAvatar from "../components/HeaderAvatar";
 import { CollapsibleSection, SectionToggle } from "../components/CollapsibleSection";
 import BannerCarousel from "../components/BannerCarousel";
 
@@ -50,15 +51,7 @@ export default function Component() {
             </p>
           </div>
         </div>
-        <div className="relative shrink-0 size-[45px]" data-node-id="7:210" data-name="媽媽">
-          <img
-            alt=""
-            className="absolute block inset-0 max-w-none size-full"
-            height="45"
-            src={img}
-            width="45"
-          />
-        </div>
+        <HeaderAvatar />
       </div>
       <BannerCarousel />
       <div

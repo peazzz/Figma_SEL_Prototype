@@ -1,0 +1,8 @@
+.family-privacy[role="switch"] { display:flex; flex-direction:column; align-items:center; flex-shrink:0; background:none; color:#262d29; gap:2px; padding:0; border:0; border-radius:0; cursor:pointer; font-size:15px; line-height:1.2; }
+.family-privacy[role="switch"]:focus-visible { outline:3px solid #498ba0; outline-offset:3px; }
+.family-privacy small { font-size:12px; font-weight:300; }
+.family-privacy-track { position:relative; display:block; flex-shrink:0; width:52px; height:32px; border:2px solid #79747e; border-radius:100px; background:#e6e0e9; transition:background-color 150ms, border-color 150ms; }
+.family-privacy-track > span { position:absolute; width:18px; height:18px; border-radius:50%; background:#79747e; top:5px; left:5px; transition:transform 150ms, width 150ms, height 150ms, top 150ms, background-color 150ms; }
+.family-privacy[aria-checked=true] .family-privacy-track { background:#6750a4; border-color:#6750a4; }
+.family-privacy[aria-checked=true] .family-privacy-track > span { width:24px; height:24px; top:2px; transform:translateX(17px); background:white; }
+@media(prefers-reduced-motion:reduce) { .family-privacy-track, .family-privacy-track > span { transition:none; } }

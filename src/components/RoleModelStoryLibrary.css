@@ -1,0 +1,12 @@
+.role-model-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; }
+.role-model-card { display:flex; flex-direction:column; align-items:stretch; gap:8px; padding:12px; border:1px solid #e2e8e2; border-radius:12px; background:white; text-align:left; cursor:pointer; transition:border-color .2s, background-color .2s; }
+.role-model-portrait { width:100%; aspect-ratio:1; object-fit:cover; border-radius:8px; }
+.role-model-caption { display:grid; gap:2px; overflow-wrap:anywhere; }
+.role-model-name { font-size:20px; font-weight:700; line-height:1.4; color:#253e38; }
+.role-model-story-title { font-size:15px; font-weight:400; line-height:1.5; color:#53685e; }
+.role-model-tags { width:100%; margin-top:auto; padding-top:4px; }
+.role-model-card:hover { border-color:#b6cbbf; background:#fafcf9; }
+.role-model-card:hover .role-model-story-title { text-decoration:underline; text-underline-offset:3px; }
+@media(max-width:900px) { .role-model-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+@media(max-width:600px) { .role-model-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:360px) { .role-model-grid { grid-template-columns:1fr; } }
